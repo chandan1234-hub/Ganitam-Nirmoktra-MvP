@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 
 const Header = () => {
     return (
-        <div className="flex justify-around items-center px-4 py-4">
+        <div className="flex justify-around items-center px-4 py-4 bg-transparent">
             {/*BrandLogo*/}
             <div>
                 {/*<img src="" alt="">*/}

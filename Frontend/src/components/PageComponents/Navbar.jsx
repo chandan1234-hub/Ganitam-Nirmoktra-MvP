@@ -1,10 +1,9 @@
-import React from 'react'
 import {NavLink} from 'react-router'
 import './Navbar.css'
 const Navbar = () => {
   return (
-    <div className="navbar mx-auto p-4">
-      <ul className="navbar-pages flex justify-around items-center place-self-auto border-2 rounded-4xl p-3">
+    <div className="Navbar w-full ">
+      <ul className="Navlinks flex justify-center gap-20 capitalize mx-auto p-4 rounded-4xl">
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
