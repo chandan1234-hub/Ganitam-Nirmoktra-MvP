@@ -1,0 +1,9 @@
+.start-footer-text{
+    line-height: 35px;
+    flex-direction: column;
+}
+.blog{
+    display: flex;
+    flex-direction: column;
+    color: aliceblue;
+}
