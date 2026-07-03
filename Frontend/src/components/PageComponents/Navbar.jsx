@@ -3,7 +3,7 @@ import './Navbar.css'
 const Navbar = () => {
   return (
     <div className="Navbar w-full ">
-      <ul className="Navlinks flex justify-center gap-20 capitalize mx-auto p-4 rounded-4xl">
+      <ul className="Navlinks flex justify-center gap-20 capitalize mx-auto p-3 rounded-4xl">
         <li>
           <NavLink to="/">Home</NavLink>
         </li>

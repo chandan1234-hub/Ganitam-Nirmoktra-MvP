@@ -1,7 +1,7 @@
 import React from 'react'
 import './Home.style.css'
 import { HiArrowLongDown } from "react-icons/hi2";
-
+import { HiArrowLongRight } from "react-icons/hi2";
 const Homepage = () => {
   return (
     <div>
@@ -16,7 +16,16 @@ const Homepage = () => {
             <HiArrowLongDown className="
             size-7"/>
         </button>
+        <section className='mx-70 mt-40 HeroSection-side-para w-2xl flex gap-4'>
+          <p className="">where curiosity meets computation step into a world where mathematics isn't about memorizing rules, but about discovering patterns, solving problems and shifting perspectives. 
+             
+             <button className="border p-2 w-[220px] text-m rounded-4xl flex items-center gap-2 justify-center">start your journey<HiArrowLongRight className='size-7'/></button>
+             </p>
+        </section>
+
+
       </article>
+
     </div>
   )
 }
