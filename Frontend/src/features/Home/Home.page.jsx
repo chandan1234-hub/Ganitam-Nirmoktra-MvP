@@ -2,7 +2,8 @@ import React from 'react'
 import './Home.style.css'
 import {HiArrowLongDown} from "react-icons/hi2";
 import {HiArrowLongRight} from "react-icons/hi2";
-import { IoIosColorWand } from "react-icons/io";
+import {IoIosColorWand} from "react-icons/io";
+import {motion} from "motion/react"
 
 
 const Dashboard = () => {
@@ -115,7 +116,8 @@ const Homepage = () => {
                     <div className="h-1 border w-20 flex items-center  bg-amber-400 my-4"></div>
                     <p className="Herarchy uppercase text-amber-400">want to learn mathematics in a new way</p>
                 </div>
-                <p className="Hero-text w-[70%]">welcome ! to ganitam nirmoktra where you get curious to learn and
+                <p className="Hero-text w-[70%]">
+                    welcome ! to ganitam nirmoktra where you get curious to learn and
                     solve</p>
                 <button className='flex items-center text-white'>
                     scroll down
@@ -134,7 +136,11 @@ const Homepage = () => {
             </article>
             <section className="onscroll-page capitalize max-w-full mt-20 mb-80 leading-3 mx-auto flex flex-col">
                 <div className="steps-container capitalize w-[80%] text-white mx-auto flex flex-col justify-center">
-                    <h1 className="text-[55px] leading-15 w-4xl text-white inset-shadow-white mx-auto font-extrabold text-center">Start
+                    <h1 className="text-[55px] leading-15 w-4xl text-white inset-shadow-white mx-auto font-extrabold text-center">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{once:true}}/>Start
                         your learning journey
                         in
                         just few simple steps</h1>
@@ -191,12 +197,15 @@ const Homepage = () => {
                 </div>
             </section>
             <section className={"onthirdscroll-page capitalize max-h-screen max-w-full mt-20 mb-30"}>
-                <div className={"somequestion-section flex flex-col justify-center items-center gap-15 w-[80%] mx-auto capitalize"}>
-                    <div className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[20%] justify-center items-center text-l"}>
+                <div
+                    className={"somequestion-section flex flex-col justify-center items-center gap-15 w-[80%] mx-auto capitalize"}>
+                    <div
+                        className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[20%] justify-center items-center text-l"}>
                         <IoIosColorWand/>
                         <h3>AI Powered Assistant</h3>
                     </div>
-                        <h1 className={"text-5xl w-[80%] text-white leading-15 text-center c"}>learn and solve with AI (Your personal assistant for mathematics solving)</h1>
+                    <h1 className={"text-5xl w-[80%] text-white leading-15 text-center c"}>learn and solve with AI (Your
+                        personal assistant for mathematics solving)</h1>
                     <div className={"dotted-bg bg-black"}>
                         <div
                             className={"h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"}>
