@@ -12,6 +12,7 @@ body{
     align-items: center;
     justify-content: space-around; */
     overflow-x: hidden;
+    font-family: 'AbhayaLibre-ExtraBold';
 }
 .Herarchy{
     letter-spacing: 5px;

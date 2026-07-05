@@ -2,7 +2,7 @@ import {NavLink} from 'react-router'
 import './Navbar.css'
 const Navbar = () => {
   return (
-    <div className="Navbar w-full ">
+    <div className="Navbar w-[80%] ">
       <ul className="Navlinks flex justify-center gap-20 capitalize mx-auto p-3 rounded-4xl">
         <li>
           <NavLink to="/">Home</NavLink>
