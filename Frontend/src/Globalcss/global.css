@@ -1,37 +1,45 @@
 @import "tailwindcss";
 
+.theme {
+    @apply bg:url(../assets/images/ForBigScreens.svg);
+}
 
 @font-face {
     font-family: '42dotsans-extrabold';
     src: url(../assets/Fonts/42dotsans-extrabold.ttf);
 }
+
 @font-face {
     font-family: 'ABeeZee-Regular';
     src: url(../assets/Fonts/ABeeZee-Regular.ttf);
 }
+
 @font-face {
     font-family: 'AbhayLibre-ExtraBold';
     src: url(../assets/Fonts/AbhayaLibre-ExtraBold.ttf);
 }
+
 @font-face {
     font-family: 'Aboreto-Regular';
     src: url(../assets/Fonts/Aboreto-Regular.ttf);
 }
+
 @font-face {
     font-family: 'Amiko-Bold';
     src: url(../assets/Fonts/Amiko-Bold.ttf);
 }
+
 @font-face {
     font-family: 'Amiko-Regular';
     src: url(../assets/Fonts/Amiko-Regular.ttf);
 }
+
 @font-face {
     font-family: 'Amiko-SemiBold';
     src: url(../assets/Fonts/Amiko-SemiBold.ttf);
 }
+
 @font-face {
     font-family: 'BonheurRoyal-Regular';
     src: url(../assets/Fonts/ABeeZee-Regular.ttf);
 }
-
-

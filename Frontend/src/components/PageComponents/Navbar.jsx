@@ -2,8 +2,8 @@ import {NavLink} from 'react-router'
 import './Navbar.css'
 const Navbar = () => {
   return (
-    <div className="Navbar w-[80%] ">
-      <ul className="Navlinks flex justify-center gap-20 capitalize mx-auto p-3 rounded-4xl">
+    <div className="Navbar w-full bg-transparent sticky top-0 z-50">
+      <ul className="Navlinks flex justify-around w-auto capitalize mx-auto p-3 rounded-4xl">
         <li>
           <NavLink to="/">Home</NavLink>
         </li>

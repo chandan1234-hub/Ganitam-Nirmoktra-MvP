@@ -33,15 +33,15 @@ const router = createBrowserRouter([
                 element: <PrivacyPolicypage/>,
             },
             {
+                path: '/lets-start',
+                element: <LetsStartpage/>,
+            },
+            {
                 path: '/SubscriptionPlans',
                 element: <SubscriptionPage/>,
             },
         ],
 },
-    {
-        path: '/lets-start',
-        element: <LetsStartpage/>,
-    },
 ])
 
 export default router

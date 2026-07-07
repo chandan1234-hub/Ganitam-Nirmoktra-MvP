@@ -110,13 +110,13 @@ const enhancedIcon = () => {
 
 const Homepage = () => {
     return (
-        <div>
-            <article className="Hero-Section h-[80vh] w-[80%] mx-100">
+        <div className={'h-full w-full HomePage'}>
+            <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
                     <div className="h-1 border w-20 flex items-center  bg-amber-400 my-4"></div>
                     <p className="Herarchy uppercase text-amber-400">want to learn mathematics in a new way</p>
                 </div>
-                <p className="Hero-text w-[70%]">
+                <p className="Hero-text w-[60%]">
                     welcome ! to ganitam nirmoktra where you get curious to learn and
                     solve</p>
                 <button className='flex items-center text-white'>
@@ -124,7 +124,7 @@ const Homepage = () => {
                     <HiArrowLongDown className="
             size-7"/>
                 </button>
-                <section className='mx-90 mt-20 HeroSection-side-para w-2xl flex gap-4'>
+                <section className='mx-90 mt-20 HeroSection-side-para w-xl flex gap-4'>
                     <p className="">where curiosity meets computation step into a world where mathematics isn't about
                         memorizing rules, but about discovering patterns, solving problems and shifting perspectives.
 
@@ -135,8 +135,8 @@ const Homepage = () => {
                 </section>
             </article>
             <section className="onscroll-page capitalize max-w-full mt-20 mb-80 leading-3 mx-auto flex flex-col">
-                <div className="steps-container capitalize w-[80%] text-white mx-auto flex flex-col justify-center">
-                    <h1 className="text-[55px] leading-15 w-4xl text-white inset-shadow-white mx-auto font-extrabold text-center linea">
+                <div className="steps-container capitalize w-full text-white mx-auto flex flex-col justify-center">
+                    <h1 className="text-[55px] leading-15 w-6xl text-white inset-shadow-white mx-auto font-extrabold text-center">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
