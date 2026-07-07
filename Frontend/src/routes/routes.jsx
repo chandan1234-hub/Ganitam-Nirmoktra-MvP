@@ -29,10 +29,6 @@ const router = createBrowserRouter([
                 element: <FAQpage/>,
             },
             {
-                path: '/lets-start',
-                element: <LetsStartpage/>,
-            },
-            {
                 path: '/privacy-policy',
                 element: <PrivacyPolicypage/>,
             },
@@ -41,6 +37,10 @@ const router = createBrowserRouter([
                 element: <SubscriptionPage/>,
             },
         ],
+},
+    {
+        path: '/lets-start',
+        element: <LetsStartpage/>,
     },
 ])
 

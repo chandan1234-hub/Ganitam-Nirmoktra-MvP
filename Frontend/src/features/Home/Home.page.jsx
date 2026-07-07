@@ -136,7 +136,7 @@ const Homepage = () => {
             </article>
             <section className="onscroll-page capitalize max-w-full mt-20 mb-80 leading-3 mx-auto flex flex-col">
                 <div className="steps-container capitalize w-[80%] text-white mx-auto flex flex-col justify-center">
-                    <h1 className="text-[55px] leading-15 w-4xl text-white inset-shadow-white mx-auto font-extrabold text-center">
+                    <h1 className="text-[55px] leading-15 w-4xl text-white inset-shadow-white mx-auto font-extrabold text-center linea">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
@@ -171,7 +171,7 @@ const Homepage = () => {
                 </div>
             </section>
             <section
-                className="ondoublescroll-page max-h-screen flex flex-col mx-auto justify-center items-center mb-40 capitalize max-w-full mt-60">
+                className="ondoublescroll-page max-h-screen flex flex-col mx-auto justify-center items-center mb-40 capitalize max-w-full mt-30">
                 <div className={"w-full mx-auto] leading-3 flex flex-col gap-40"}>
                     <div className={"w-[60%] mx-auto] flex flex-col gap-10 mx-auto"}>
                         <button
@@ -184,12 +184,12 @@ const Homepage = () => {
                         <p className={"font-mono text-6xl flex justify-center items-center text-center text-white"}>enhance
                             your learning journey with AI powered solver and mentor</p>
                     </div>
-                    <div className="dashboard-overview w-full h-[70%] mb-10">
-                        <div className={"bg-transparent opacity-45"}>
+                    <div className="dashboard-overview w-full h-full mb-10">
+                        <div className={"bg-transparent opacity-75"}>
                             <div
-                                className={"h-200 w-full bg-transparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"}>
-                                <div className={"flex justify-center items-center top-auto bottom-1.5-auto"}>
-                                    <Dashboard/>
+                                className={"h-full w-full mask-l-from-90% mask-r-from-90% bg-transparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"}>
+                                <div className={"flex justify-center items-center top-1.5-auto bottom-1.5-auto"}>
+                                    <Dashboard className="z-0"/>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +198,7 @@ const Homepage = () => {
             </section>
             <section className={"onthirdscroll-page capitalize max-h-screen max-w-full mt-20 mb-30"}>
                 <div
-                    className={"somequestion-section flex flex-col justify-center items-center gap-15 w-[80%] mx-auto capitalize"}>
+                    className={"somequestion-section flex flex-col justify-center items-center gap-15 w-full h-full mx-auto capitalize"}>
                     <div
                         className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[20%] justify-center items-center text-l"}>
                         <IoIosColorWand/>
@@ -206,10 +206,12 @@ const Homepage = () => {
                     </div>
                     <h1 className={"text-5xl w-[80%] text-white leading-15 text-center c"}>learn and solve with AI (Your
                         personal assistant for mathematics solving)</h1>
-                    <div className={"dotted-bg bg-black"}>
+                    <div className={"dotted-bg w-full h-full bg-transparent opacity-75"}>
                         <div
-                            className={"h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"}>
-                            {/*<img src="" alt="">*/}
+                            className={"h-full w-full bg-trasparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-l-from-90% mask-r-from-90%"}>
+                        <div className="flex justify-center items-center">
+                        <Dashboard className="z-0"/>
+                        </div>
                         </div>
                     </div>
                 </div>
