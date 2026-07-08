@@ -4,11 +4,18 @@
     color: snow;
     font-weight: 100;
     margin-top: 14px;
-    font-size: 14px;
+    font-size: 16px;
+
     
 }
 .Navlinks{
-    border: 0.5px solid snow  ;
-    width:40%;
+    border: 0.5px solid snow;
+    /*background-color: snow;*/
+    /*opacity: 30%;*/
+    /*backdrop-filter: blur(20px);*/
+    /*background-blend-mode: darken;*/
+    width:30%;
     align-items: center;
+    color:white;
+    z-index: auto;
 }

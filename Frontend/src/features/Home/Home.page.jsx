@@ -3,7 +3,13 @@ import './Home.style.css'
 import {HiArrowLongDown} from "react-icons/hi2";
 import {HiArrowLongRight} from "react-icons/hi2";
 import {IoIosColorWand} from "react-icons/io";
-import {motion} from "motion/react"
+// import {gsap} from 'gsap';
+// import {useRef} from "react";
+// import {useGSAP} from "@gsap/react";
+// import {ScrollTrigger} from "gsap/ScrollTrigger";
+// import {ScrollSmoother} from "gsap/ScrollSmoother";
+//
+// gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 
 const Dashboard = () => {
@@ -109,8 +115,12 @@ const enhancedIcon = () => {
 }
 
 const Homepage = () => {
+    // const ScrollAnimationRef = useRef();
+    // useGSAP(() => {
+    //     gsap.to('', {})
+    // })
     return (
-        <div className={'h-full w-full HomePage'}>
+        <div  className={'smoother h-full w-full HomePage'}>
             <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
                     <div className="h-1 border w-20 flex items-center  bg-amber-400 my-4"></div>
@@ -137,13 +147,12 @@ const Homepage = () => {
             <section className="onscroll-page capitalize max-w-full mt-20 mb-80 leading-3 mx-auto flex flex-col">
                 <div className="steps-container capitalize w-full text-white mx-auto flex flex-col justify-center">
                     <h1 className="text-[55px] leading-15 w-6xl text-white inset-shadow-white mx-auto font-extrabold text-center">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{once:true}}/>Start
+
+                        Start
                         your learning journey
                         in
-                        just few simple steps</h1>
+                        just few simple steps
+                    </h1>
                     <div className="w-[70%] mx-auto flex flex-col gap-20 mt-20">
                         <div
                             className="w-50 border rounded-full items-center ml-40 border-white justify-start p-4 flex flex-row">
@@ -209,9 +218,9 @@ const Homepage = () => {
                     <div className={"dotted-bg w-full h-full bg-transparent opacity-75"}>
                         <div
                             className={"h-full w-full bg-trasparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-l-from-90% mask-r-from-90%"}>
-                        <div className="flex justify-center items-center">
-                        <Dashboard className="z-0"/>
-                        </div>
+                            <div className="flex justify-center items-center">
+                                <Dashboard className="z-0"/>
+                            </div>
                         </div>
                     </div>
                 </div>
