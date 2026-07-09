@@ -120,7 +120,7 @@ const Homepage = () => {
     //     gsap.to('', {})
     // })
     return (
-        <div  className={'smoother h-full w-full HomePage'}>
+        <div  className={'smoother h-full w-full HomePage overflow-hidden'}>
             <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
                     <div className="h-1 border w-20 flex items-center  bg-amber-400 my-4"></div>
@@ -138,9 +138,10 @@ const Homepage = () => {
                     <p className="">where curiosity meets computation step into a world where mathematics isn't about
                         memorizing rules, but about discovering patterns, solving problems and shifting perspectives.
 
-                        <button
-                            className="border p-2 w-55 text-m rounded-4xl flex items-center gap-2 justify-center">start
-                            your journey<HiArrowLongRight className='size-7'/></button>
+                        <button className="border p-2 w-55 text-m rounded-4xl flex items-center gap-2 justify-center">
+                            start
+                            your journey<HiArrowLongRight className='size-7'/>
+                            </button>
                     </p>
                 </section>
             </article>
@@ -215,7 +216,7 @@ const Homepage = () => {
                     </div>
                     <h1 className={"text-5xl w-[80%] text-white leading-15 text-center c"}>learn and solve with AI (Your
                         personal assistant for mathematics solving)</h1>
-                    <div className={"dotted-bg w-full h-full bg-transparent opacity-75"}>
+                    <div className={" w-full h-full bg-transparent opacity-75"}>
                         <div
                             className={"h-full w-full bg-trasparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-l-from-90% mask-r-from-90%"}>
                             <div className="flex justify-center items-center">
