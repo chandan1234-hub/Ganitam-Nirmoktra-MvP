@@ -1,25 +1,24 @@
 import React from 'react'
 import './LetsStart.style.css'
 import '../../Globalcss/global.css'
-import MathBackground from '../../components/Uicomponents/MathBackground/MathBackground.jsx'
+// import { VscAccount } from "react-icons/vsc";
+
 
 const LetsStartpage = () => {
-    return (
+    return(
+        <div className='min-h-screen w-full bg-gray-950'>
+            <aside className='border border-white w-[3%] h-full fixed top-0 left-0 z-50'>
+                <img src="" alt=""className='flex justify-center items-center mt-1' />
+                {/* <div className='flex justify-center items-center mt-1'>
+                <VscAccount color='white' className='w-9 h-9'/>
+                </div> */}
 
-   <div className="w-full h-full overflow-hidden relative bg-white">
-<MathBackground/>
-<div className='my-glass-effect w-[90%] h-[90%] rounded-xl flex flex-col justify-center items-center gap-4 mx-auto mt-20'>
-    <div className='w-[90%] flex flex-col gap-4 justify-center items-center mx-auto '>
-        <div className='flex flex-row w-full'>
-        <div className='border h-100'></div>
-        <h1>
-            hello
-        </h1>
+            </aside>
+            <aside className='border border-white w-full h-[6%] fixed top-0 z-50'>
+
+            </aside>
+
         </div>
-    
-    </div>
-   </div>
-   </div>
     )
 }
 

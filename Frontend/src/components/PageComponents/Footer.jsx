@@ -79,9 +79,9 @@ const socialLinks = [
 const Footer = () => {
 
     return (
-        <div className='w-full h-80 bg-transparent'>
-            <div className="my-glass-effect flex flex-col border w-[70%] justify-around items-center mx-auto rounded-4xl h-70 ">
-                <div className="Footer-bar flex w-full items-center justify-around rounded-4xl h-60 mx-auto">
+        <div className='w-full h-80 bg-white'>
+            <div className="my-glass-effect flex flex-col border w-full justify-around items-center mx-auto h-full ">
+                <div className="Footer-bar flex w-full items-center justify-around h-60 mx-auto">
                     <section className='start-footer-text flex justify-start'>
                         <p className='capitalize'>be ready to change the future and allow you to fly in the future</p>
                         <p className='capitalize'>copyright 2026 ganitam nirmoktra , inc. tems &privacy</p>

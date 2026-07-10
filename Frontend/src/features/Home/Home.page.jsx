@@ -8,7 +8,7 @@ import {IoIosColorWand} from "react-icons/io";
 // import {useGSAP} from "@gsap/react";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollSmoother} from "gsap/ScrollSmoother";
-//
+import '../../Globalcss/global.css'
 // gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 
@@ -121,6 +121,7 @@ const Homepage = () => {
     // })
     return (
         <div  className={'smoother h-full w-full HomePage overflow-hidden'}>
+            <div className='my-glass'></div>
             <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
                     <div className="h-1 border w-20 flex items-center  bg-amber-400 my-4"></div>
