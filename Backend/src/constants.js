@@ -1,3 +1,3 @@
-const DB_Name = "GanitamNirmoktra",
+const DB_Name = "GanitamNirmoktra";
 
-export default DB_Name
+export default DB_Name;
