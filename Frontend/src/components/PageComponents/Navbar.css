@@ -4,7 +4,7 @@
     color: snow;
     font-weight: 100;
     margin-top: 14px;
-    font-size: 16px;
+    font-size: 17px;
     position: relative;
 }
 .navbar-container {
@@ -32,10 +32,10 @@
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 .Navlinks{
-    border: 0.5px solid snow;
     width: auto;
     align-items: center;
     color:white;
+    letter-spacing: 2px;
     z-index: 50;
     transition: all 0.2s ease;
 }
