@@ -1,38 +1,77 @@
-import React from 'react'
+import { useState } from 'react'
+import { FiArrowUp, FiHelpCircle, FiMenu, FiMessageSquare, FiPaperclip, FiPlus, FiX } from 'react-icons/fi'
 import './LetsStart.style.css'
-import '../../Globalcss/global.css'
-// import { VscAccount } from "react-icons/vsc";
-
 
 const LetsStartpage = () => {
-    return (
-        <div className='min-h-screen w-full bg-blue-300'>
-            <div className='min-w-full h-screen items-center justify-center '>
-                <div className='flex flex-col gap-5 justify-center items-center h-screen w-[40%] mx-auto capitalize text-center'>
-                    <h1 className='text-amber-200 text-5xl z-90 '>Welcome , how can i help you?</h1>
-                    <p className='text-amber-50 '>Please enter your question in the search box ! </p>
-                </div>
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [question, setQuestion] = useState('')
 
-                {/* side bar */}
-                <aside className='bg-blue-200 w-[3%] h-full fixed top-0 left-0 z-50 flex flex-col justify-center items-center'>
-                    <img src="" alt="" className='flex justify-center items-center mt-1' />
-                    {/* <div className='flex justify-center items-center mt-1'>
-                <VscAccount color='white' className='w-9 h-9'/>
-                </div> */}
+  const selectPrompt = (prompt) => {
+    setQuestion(prompt)
+  }
 
-                </aside>
-                {/* upper bar */}
-                <aside className='bg-blue-200 w-full h-[6%] fixed top-0 z-50'>
-                </aside>
-                {/* search bar */}
-                <div className='bg-blue-400 search-area w-[50%] h-[15%] rounded-xl fixed bottom-0 left-0 right-0 mx-auto mb-10'>
-                    <div className='w-[70%] flex justify-start h-[70%] mx-auto'>
-                    </div>
-                </div>
+  return (
+    <main className="lets-start-page">
+      <aside className={`lets-start-sidebar ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} aria-label="Learning navigation">
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+          aria-expanded={isSidebarOpen}
+          onClick={() => setIsSidebarOpen((open) => !open)}
+        >
+          {isSidebarOpen ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
+        </button>
+        <nav className="sidebar-nav">
+          <button className="sidebar-action primary-action" type="button">
+            <FiPlus aria-hidden="true" />
+            <span>New question</span>
+          </button>
+          <button className="sidebar-action" type="button">
+            <FiMessageSquare aria-hidden="true" />
+            <span>Recent questions</span>
+          </button>
+          <button className="sidebar-action" type="button">
+            <FiHelpCircle aria-hidden="true" />
+            <span>How it works</span>
+          </button>
+        </nav>
+      </aside>
+        
 
-            </div>
+      <section className={`lets-start-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <div className="welcome-area">
+          <h1>Welcome, how can I help you?</h1>
+          <p>Ask a question and we’ll work through it together.</p>
+          <div className="prompt-list" aria-label="Suggested questions">
+            {['Explain this math problem', 'Help me prepare for a test', 'Show me a worked example'].map((prompt) => (
+              <button key={prompt} type="button" onClick={() => selectPrompt(prompt)}>{prompt}</button>
+            ))}
+          </div>
         </div>
-    )
+      </section>
+
+      <form className={`search-dock ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} onSubmit={(event) => event.preventDefault()}>
+        <div className="search-box">
+          <button className="attach-button" type="button" aria-label="Attach a file">
+            <FiPaperclip aria-hidden="true" />
+          </button>
+          <label className="sr-only" htmlFor="question">Your question</label>
+          <textarea
+            id="question"
+            value={question}
+            onChange={(event) => setQuestion(event.target.value)}
+            placeholder="Type your question here…"
+            rows="1"
+          />
+          <button className="send-button" type="submit" aria-label="Send question" disabled={!question.trim()}>
+            <FiArrowUp aria-hidden="true" />
+          </button>
+        </div>
+        <p>Press Enter to send · Shift + Enter for a new line</p>
+      </form>
+    </main>
+  )
 }
 
 export default LetsStartpage
