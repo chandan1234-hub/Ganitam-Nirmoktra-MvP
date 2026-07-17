@@ -9,7 +9,4 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  ssr:{
-    noExternal:['@clerk/react-router'],
-  },
 })
