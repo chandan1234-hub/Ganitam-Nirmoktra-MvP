@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar'
-
+import {SignInButton ,SignUpButton,UserButton  ,Show }  from '@clerk/react'
 const BrandLogo = () => {
     return (
         <svg width="200" height="52" viewBox="0 0 122 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,14 +14,19 @@ const BrandLogo = () => {
 }
 const Header = () => {
     return (
-        <div className="flex justify-between w-[100%] items-center px-4 bg-transparent sticky top-0 z-100">
+        <div className="flex justify-evenly w-full items-center px-4 bg-transparent sticky top-0 z-100 mx-auto">
             <div className={'flex mt-auto items-center'}>
                 <BrandLogo className={'w-auto h-auto'}/>
             </div>
             <Navbar/>
-            <div className={'flex flex-row gap-8 mt-auto items-center '}>
-                <button className={'p-2 rounded-4xl border border-white bg-transparent text-white'}>Sign In</button>
-                <button className={'p-2 rounded-4xl bg-white text-black'}>Sign Up</button>
+            <div className={'flex flex-row gap-3 w-[20%] mt-auto items-center '}>
+                <Show when="signed-out">
+          <SignInButton className="bg-amber-50 p-2 w-[30%] rounded-3xl pointer-fine:peer-hover:bg-gray-300"/>
+          <SignUpButton className="border border-amber-50 rounded-3xl p-2 text-white w-[30%]"/>
+        </Show>
+        <Show when="signed-in">
+          <UserButton />
+        </Show>
             </div>
         </div>
     )

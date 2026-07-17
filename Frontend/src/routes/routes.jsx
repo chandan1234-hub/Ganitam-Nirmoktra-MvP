@@ -7,6 +7,8 @@ import FAQpage from '../features/FAQ/FAQ.page.jsx'
 import LetsStartpage from '../features/LetsStart/LetsStart.page.jsx'
 import PrivacyPolicypage from '../features/PrivacyPolicy/PrivacyPolicy.page.jsx'
 import SubscriptionPage from "../features/Subscription/Subscription.page.jsx";
+ 
+
 
 const router = createBrowserRouter([
     {
