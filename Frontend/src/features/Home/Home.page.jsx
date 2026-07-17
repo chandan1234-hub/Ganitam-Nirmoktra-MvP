@@ -192,7 +192,7 @@ const Homepage = () => {
                             </div>
                             AI-Powered Mathematics Assistant
                         </button>
-                        <p className={"font-mono text-6xl flex justify-center items-center text-center text-white"}>enhance
+                        <p className={"font-['AbhayLibre-ExtraBold'] text-5xl flex justify-center items-center text-center text-white"}>enhance
                             your learning journey with AI powered solver and mentor</p>
                     </div>
                     <div className="dashboard-overview w-full h-full mb-10">
@@ -207,15 +207,16 @@ const Homepage = () => {
                     </div>
                 </div>
             </section>
-            <section className={"onthirdscroll-page capitalize max-h-screen max-w-full mt-20 mb-30"}>
+            <section className={"onthirdscroll-page capitalize max-h-screen max-w-full mt-20 mb-40"}>
                 <div
                     className={"somequestion-section flex flex-col justify-center items-center gap-15 w-full h-full mx-auto capitalize"}>
                     <div
-                        className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[20%] justify-center items-center text-l"}>
+                        className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[15%] justify-center items-center text-l mx-auto"}>
                         <IoIosColorWand/>
                         <h3>AI Powered Assistant</h3>
                     </div>
-                    <h1 className={"text-5xl w-[80%] text-white leading-15 text-center c"}>learn and solve with AI (Your
+                    <h1 className={"text-5xl w-[80%] text-white leading-15 text-center "}>learn and solve with AI <br></br>
+                        (Your
                         personal assistant for mathematics solving)</h1>
                     <div className={" w-full h-full bg-transparent opacity-75"}>
                         <div
