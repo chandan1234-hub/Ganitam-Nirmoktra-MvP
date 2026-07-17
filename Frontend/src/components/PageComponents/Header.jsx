@@ -14,13 +14,13 @@ const BrandLogo = () => {
 }
 const Header = () => {
     return (
-        <div className="flex justify-evenly w-full items-center px-4 bg-transparent sticky top-0 z-100 mx-auto">
-            <div className={'flex mt-auto items-center'}>
+        <div className="flex flex-row  justify-evenly w-full items-center px-4 bg-transparent sticky top-2 z-100 mx-auto ml-auto mr-auto mt-4">
+            <div className={'flex items-center'}>
                 <BrandLogo className={'w-auto h-auto'}/>
             </div>
             <Navbar/>
-            <div className={'flex flex-row gap-3 w-[20%] mt-auto items-center '}>
-                <Show when="signed-out">
+            <div className={'flex flex-row gap-3 w-[20%] items-center '}>
+                <Show when="signed-out" className="mt-auto">
           <SignInButton className="bg-amber-50 p-2 w-[30%] rounded-3xl pointer-fine:peer-hover:bg-gray-300"/>
           <SignUpButton className="border border-amber-50 rounded-3xl p-2 text-white w-[30%]"/>
         </Show>
