@@ -19,10 +19,10 @@ const Header = () => {
                 <BrandLogo className={'w-auto h-auto'}/>
             </div>
             <Navbar/>
-            <div className={'flex flex-row gap-3 w-[20%] items-center '}>
+            <div className={'flex flex-row gap-3 w-fit items-center '}>
                 <Show when="signed-out" className="mt-auto">
-          <SignInButton className="bg-amber-50 p-2 w-[30%] rounded-3xl pointer-fine:peer-hover:bg-gray-300"/>
-          <SignUpButton className="border border-amber-50 rounded-3xl p-2 text-white w-[30%]"/>
+          <SignInButton className="bg-amber-50 p-2 w-20 rounded-3xl pointer-fine:peer-hover:bg-gray-300"/>
+          <SignUpButton className="border border-amber-50 rounded-3xl p-2 text-white w-20"/>
         </Show>
         <Show when="signed-in">
           <UserButton />
