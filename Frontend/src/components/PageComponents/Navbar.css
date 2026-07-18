@@ -33,17 +33,12 @@
 .Navlinks{
     width: auto;
     align-items: center;
-    color:white;
     letter-spacing: 2px;
     z-index: 50;
     transition: all 0.2s ease;
 }
 .Navlinks li{
     list-style: none;
-}
-.Navlinks li a{
-    color: white;
-    text-decoration: none;
 }
 
 @media (max-width: 768px) {

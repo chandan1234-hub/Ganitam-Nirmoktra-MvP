@@ -3,8 +3,8 @@ import './Navbar.css'
 import '../../Globalcss/global.css'
 const Navbar = () => {
     return (
-        <div className="Navbar w-[40%] sticky z-100">
-                <ul className=" Navlinks flex justify-around w-[40%] capitalize mx-auto p-3 ">
+        <div className="Navbar w-[40%] sticky z-0 rounded-4xl ">
+                <ul className=" Navlinks flex justify-around w-[40%] capitalize mx-auto p-3 text-white bg-white-0.6 backdrop-blur-3xl border border-white rounded-4xl">
                     <li>
                         <NavLink to="/">Home</NavLink>
                     </li>
