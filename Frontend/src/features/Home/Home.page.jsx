@@ -3,14 +3,14 @@ import './Home.style.css'
 import {HiArrowLongDown} from "react-icons/hi2";
 import {HiArrowLongRight} from "react-icons/hi2";
 import {IoIosColorWand} from "react-icons/io";
-// import {gsap} from 'gsap';
-// import {useRef} from "react";
-// import {useGSAP} from "@gsap/react";
-// import {ScrollTrigger} from "gsap/ScrollTrigger";
-// import {ScrollSmoother} from "gsap/ScrollSmoother";
-import '../../Globalcss/global.css'
-// gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
+import {gsap} from 'gsap';
+import {useRef} from "react";
+import {useGSAP} from "@gsap/react";
+import {ScrollTrigger} from "gsap/ScrollTrigger";
+import {ScrollSmoother} from "gsap/ScrollSmoother";
+import '../../Globalcss/global.css';
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+import {NavLink} from "react-router";
 
 const Dashboard = () => {
     return (
@@ -114,13 +114,16 @@ const enhancedIcon = () => {
     )
 }
 
+
+import Subscription from '../../components/Uicomponents/SubscriptionPlans/Subscription.jsx'
+
 const Homepage = () => {
-    // const ScrollAnimationRef = useRef();
-    // useGSAP(() => {
-    //     gsap.to('', {})
-    // })
+    const ScrollAnimationRef = useRef();
+    useGSAP(() => {
+        gsap.to('.smoother', {})
+    })
     return (
-        <div  className={'smoother h-full w-full HomePage overflow-hidden'}>
+        <div className={'smoother h-full w-full HomePage overflow-hidden mt-20'}>
             <div className='my-glass'></div>
             <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
@@ -140,53 +143,36 @@ const Homepage = () => {
                         memorizing rules, but about discovering patterns, solving problems and shifting perspectives.
 
                         <button className="border p-2 w-55 text-m rounded-4xl flex items-center gap-2 justify-center">
-                            start
-                            your journey<HiArrowLongRight className='size-7'/>
-                            </button>
+                            <NavLink to={'/lets-start'}>
+                                start
+                                your journey
+                            </NavLink>
+                                <HiArrowLongRight className='size-7'/>
+                        </button>
                     </p>
                 </section>
             </article>
-            <section className="onscroll-page capitalize max-w-full mt-20 mb-80 leading-3 mx-auto flex flex-col">
+            <div className="mt-30 mb-30 w-full">
+                <Subscription/>
+            </div>
+            <section className="onscroll-page capitalize max-w-full mt-20 mb-auto leading-3 mx-auto flex flex-col">
                 <div className="steps-container capitalize w-full text-white mx-auto flex flex-col justify-center">
-                    <h1 className="text-[55px] leading-15 w-6xl text-white inset-shadow-white mx-auto font-extrabold text-center">
+                    <h1 className="text-[55px] leading-15 w-5xl text-white inset-shadow-white mx-auto font-extrabold text-center">
 
                         Start
                         your learning journey
                         in
                         just few simple steps
                     </h1>
-                    <div className="w-[70%] mx-auto flex flex-col gap-20 mt-20">
-                        <div
-                            className="w-50 border rounded-full items-center ml-40 border-white justify-start p-4 flex flex-row">
-                            <h2 className="font-bold text-white inset-shadow-white mx-auto">
-                                1. add
-                                your question
-                            </h2>
-                        </div>
-                        <div className="w-60 p-4 flex ml-80 border  border-white rounded-full ">
-                            <h2 className={"font-bold text-white inset-shadow-white mx-auto flex "}>
-                                2.make some changes ATY
-                            </h2>
-                        </div>
-                        <div className="w-50 border p-4 flex items-center ml-120 border-white rounded-full mx-10">
-                            <h2 className={"font-bold text-white inset-shadow-white mx-auto"}>
-                                3.Hit explain me
-                            </h2>
-                        </div>
-                        <div className="w-50 border p-4 border-white ml-160 rounded-full flex items-center mr-10">
-                            <h2 className={"font-bold text-white inset-shadow-white mx-auto"}>
-                                4.get your answer
-                            </h2>
-                        </div>
-                    </div>
+
                 </div>
             </section>
             <section
-                className="ondoublescroll-page max-h-screen flex flex-col mx-auto justify-center items-center mb-40 capitalize max-w-full mt-30">
-                <div className={"w-full mx-auto] leading-3 flex flex-col gap-40"}>
-                    <div className={"w-[60%] mx-auto] flex flex-col gap-10 mx-auto"}>
+                className="ondoublescroll-page max-h-screen flex flex-col mx-auto justify-center items-center mb-auto capitalize max-w-full mt-20">
+                <div className={"w-full mx-auto] leading-2 flex flex-col gap-20"}>
+                    <div className={"w-[50%] mx-auto] flex flex-col gap-10 mx-auto"}>
                         <button
-                            className={"w-80 p-4 flex items-center gap-2 justify-center border border-white rounded-full mx-auto "}>
+                            className={"stroke-animation w-80 p-4 flex items-center gap-2 justify-center border border-white rounded-full mx-auto "}>
                             <div>
                                 <IoIosColorWand/>
                             </div>
@@ -209,13 +195,14 @@ const Homepage = () => {
             </section>
             <section className={"onthirdscroll-page capitalize max-h-screen max-w-full mt-20 mb-40"}>
                 <div
-                    className={"somequestion-section flex flex-col justify-center items-center gap-15 w-full h-full mx-auto capitalize"}>
+                    className={"somequestion-section flex flex-col justify-center items-center gap-10 w-full h-full mx-auto capitalize"}>
                     <div
-                        className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[15%] justify-center items-center text-l mx-auto"}>
+                        className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[13%] justify-center items-center text-l mx-auto"}>
                         <IoIosColorWand/>
                         <h3>AI Powered Assistant</h3>
                     </div>
-                    <h1 className={"text-5xl w-[80%] text-white leading-15 text-center "}>learn and solve with AI <br></br>
+                    <h1 className={"text-5xl w-[80%] text-white leading-15 text-center mb-10"}>learn and solve with
+                        AI <br></br>
                         (Your
                         personal assistant for mathematics solving)</h1>
                     <div className={" w-full h-full bg-transparent opacity-75"}>
