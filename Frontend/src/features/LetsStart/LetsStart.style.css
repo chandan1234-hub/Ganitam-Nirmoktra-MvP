@@ -1,5 +1,5 @@
 .lets-start-page {
-  --page-blue: #93c5fd;
+  --page-bg: #36454F;
   --bar-blue: #bfdbfe;
   --search-blue: #60a5fa;
   --deep-blue: #1e3a8a;
@@ -7,7 +7,7 @@
   --soft-ink: #334e7c;
   --amber: #fde68a;
   min-height: 100vh;
-  background: var(--page-blue);
+  background: var(--page-bg);
   color: var(--ink);
   font-family: 'Amiko-Regular', system-ui, sans-serif;
 }

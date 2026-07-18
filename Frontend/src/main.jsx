@@ -1,22 +1,28 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import {StrictMode} from 'react'
+import {createRoot} from 'react-dom/client'
 import './index.css'
-import { RouterProvider } from 'react-router'
+import {RouterProvider} from 'react-router'
 import router from './routes/routes.jsx'
 import './Globalcss/global.css'
 import {ClerkProvider} from '@clerk/react'
 
 
-const PUBLISHABLE_KEY =import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
-if(!PUBLISHABLE_KEY){
-  throw new Error('the clerk key is not found');
+if (!PUBLISHABLE_KEY) {
+    throw new Error('the clerk key is not found');
 }
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-<RouterProvider router={router} />
-    </ClerkProvider>
-  </StrictMode>,
+    <StrictMode>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY}
+                       appearance={
+                           {
+                               theme: 'simple',
+
+                           }
+                       }>
+            <RouterProvider router={router}/>
+        </ClerkProvider>
+    </StrictMode>,
 )
