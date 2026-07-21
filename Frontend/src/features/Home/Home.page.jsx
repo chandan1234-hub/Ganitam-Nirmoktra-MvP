@@ -11,6 +11,7 @@ import {ScrollSmoother} from "gsap/ScrollSmoother";
 import '../../Globalcss/global.css';
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 import {NavLink} from "react-router";
+import { AnimatedText } from '../../components/AnimatedText';
 
 const Dashboard = () => {
     return (
@@ -121,6 +122,17 @@ const Homepage = () => {
     const ScrollAnimationRef = useRef();
     useGSAP(() => {
         gsap.to('.smoother', {})
+
+        const tl = gsap.timeline({ delay: 0.1 });
+        tl.fromTo(".landing-sub-word", 
+            { y: "100%", opacity: 0 },
+            { y: "0%", opacity: 1, duration: 0.6, stagger: 0.03, ease: "power3.out" }
+        )
+        .fromTo(".landing-word", 
+            { y: "120%", opacity: 0, rotate: 2 },
+            { y: "0%", opacity: 1, rotate: 0, duration: 0.8, stagger: 0.05, ease: "power3.out" },
+            "-=0.4"
+        );
     })
     return (
         <div className={'smoother h-full w-full HomePage overflow-hidden mt-20'}>
@@ -128,11 +140,17 @@ const Homepage = () => {
             <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
                     <div className="h-1 border w-20 flex items-center  bg-amber-400 my-4"></div>
-                    <p className="Herarchy uppercase text-amber-400">want to learn mathematics in a new way</p>
+                    <AnimatedText 
+                        text="want to learn mathematics in a new way" 
+                        className="Herarchy uppercase text-amber-400" 
+                        wordClass="landing-sub-word"
+                    />
                 </div>
-                <p className="Hero-text w-[60%]">
-                    welcome ! to ganitam nirmoktra where you get curious to learn and
-                    solve</p>
+                <AnimatedText 
+                    text="welcome ! to ganitam nirmoktra where you get curious to learn and solve" 
+                    className="Hero-text w-[60%]" 
+                    wordClass="landing-word"
+                />
                 <button className='flex items-center text-white'>
                     scroll down
                     <HiArrowLongDown className="

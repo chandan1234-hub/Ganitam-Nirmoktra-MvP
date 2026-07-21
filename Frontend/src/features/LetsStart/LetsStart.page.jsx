@@ -1,7 +1,11 @@
 import './LetsStart.style.css'
 import { Link } from 'react-router'
-import { UserButton } from '@clerk/react'
-import react from 'react'
+import { UserButton, useUser } from '@clerk/react'
+import react, { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { useSmoothScroll } from '../../Hooks/useSmoothScroll'
+import { AnimatedText } from '../../components/AnimatedText';
 import { LuPlus } from "react-icons/lu";
 import {
     ChevronRight,
@@ -175,6 +179,28 @@ const SidebarFooterAuth = () => {
 const LetsStartpage = () => {
     const activeTeam = data.teams[0];
     const ActiveTeamLogo = activeTeam.logo;
+    const containerRef = useRef(null);
+
+    useSmoothScroll();
+
+    useGSAP(() => {
+        const tl = gsap.timeline({ delay: 0.2 });
+        
+        tl.fromTo(".hero-word", 
+            { y: "120%", opacity: 0, rotate: 3 },
+            { y: "0%", opacity: 1, rotate: 0, duration: 0.8, stagger: 0.05, ease: "power3.out" }
+        )
+        .fromTo(".hero-sub-word", 
+            { y: "100%", opacity: 0 },
+            { y: "0%", opacity: 1, duration: 0.6, stagger: 0.03, ease: "power3.out" }, 
+            "-=0.5"
+        )
+        .fromTo(".search-bar", 
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, 
+            "-=0.4"
+        );
+    }, { scope: containerRef, dependencies: [] });
 
     return (
         <SidebarProvider>
@@ -262,7 +288,7 @@ const LetsStartpage = () => {
                 </SidebarFooter>
             </Sidebar>
 
-            <div className="flex-1 flex flex-col h-screen w-full relative">
+            <div className="flex-1 flex flex-col h-screen w-full relative" ref={containerRef}>
                 {/* Header with trigger */}
                 <header className="absolute top-0 left-0 p-4 z-10">
                     <SidebarTrigger className="text-white hover:text-gray-300" />
@@ -273,10 +299,18 @@ const LetsStartpage = () => {
                     className={'lets-start-page w-full h-full bg-(--page-bg) text-white font-sans font-extralight flex flex-col items-center justify-center'}>
                     <div
                         className={'container flex justify-center w-[40%] flex-col text-center mx-auto'}>
-                        <h1 className={"text-5xl"}>Welcome to Ganitam Nirmoktra</h1>
-                        <h6 className={'text-lg mt-2'}>How can I help you chandan?</h6>
+                        <AnimatedText 
+                            text="Welcome to Ganitam Nirmoktra" 
+                            className="justify-center text-5xl font-semibold" 
+                            wordClass="hero-word" 
+                        />
+                        <AnimatedText 
+                            text="How can I help you chandan?" 
+                            className="justify-center text-lg mt-4 text-gray-300" 
+                            wordClass="hero-sub-word" 
+                        />
                     </div>
-                    <div className={'w-[50%] rounded-full mx-auto border border-gray-200 bottom-20 fixed'}>
+                    <div className={'search-bar w-[50%] rounded-full mx-auto border border-gray-200 bottom-20 fixed'}>
                         <form className="flex flex-row items-center">
                             <button
                                 className={'flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none'}>
