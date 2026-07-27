@@ -1,7 +1,7 @@
 import './LetsStart.style.css'
 import { Link } from 'react-router'
 import { UserButton, useUser } from '@clerk/react'
-import react, { useRef } from 'react'
+import react, { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useSmoothScroll } from '../../Hooks/useSmoothScroll'
@@ -15,8 +15,11 @@ import {
     Bot,
     BookOpen,
     Settings2,
+    Upload,
+    ImageIcon,
+    FileText,
 } from "lucide-react"
-
+import { BsArrowUpCircleFill } from "react-icons/bs";
 import {
     Collapsible,
     CollapsibleContent,
@@ -48,6 +51,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuLabel,
     DropdownMenuSeparator,
+    DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -185,21 +189,21 @@ const LetsStartpage = () => {
 
     useGSAP(() => {
         const tl = gsap.timeline({ delay: 0.2 });
-        
-        tl.fromTo(".hero-word", 
+
+        tl.fromTo(".hero-word",
             { y: "120%", opacity: 0, rotate: 3 },
             { y: "0%", opacity: 1, rotate: 0, duration: 0.8, stagger: 0.05, ease: "power3.out" }
         )
-        .fromTo(".hero-sub-word", 
-            { y: "100%", opacity: 0 },
-            { y: "0%", opacity: 1, duration: 0.6, stagger: 0.03, ease: "power3.out" }, 
-            "-=0.5"
-        )
-        .fromTo(".search-bar", 
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, 
-            "-=0.4"
-        );
+            .fromTo(".hero-sub-word",
+                { y: "100%", opacity: 0 },
+                { y: "0%", opacity: 1, duration: 0.6, stagger: 0.03, ease: "power3.out" },
+                "-=0.5"
+            )
+            .fromTo(".search-bar",
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+                "-=0.4"
+            );
     }, { scope: containerRef, dependencies: [] });
 
     return (
@@ -299,25 +303,60 @@ const LetsStartpage = () => {
                     className={'lets-start-page w-full h-full bg-(--page-bg) text-white font-sans font-extralight flex flex-col items-center justify-center'}>
                     <div
                         className={'container flex justify-center w-[40%] flex-col text-center mx-auto'}>
-                        <AnimatedText 
-                            text="Welcome to Ganitam Nirmoktra" 
-                            className="justify-center text-5xl font-semibold" 
-                            wordClass="hero-word" 
+                        <AnimatedText
+                            text="Welcome to Ganitam Nirmoktra"
+                            className="justify-center text-5xl font-semibold"
+                            wordClass="hero-word"
                         />
-                        <AnimatedText 
-                            text="How can I help you chandan?" 
-                            className="justify-center text-lg mt-4 text-gray-300" 
-                            wordClass="hero-sub-word" 
+                        <AnimatedText
+                            text="How can I help you chandan?"
+                            className="justify-center text-lg mt-4 text-gray-300"
+                            wordClass="hero-sub-word"
                         />
                     </div>
                     <div className={'search-bar w-[50%] rounded-full mx-auto border border-gray-200 bottom-20 fixed'}>
                         <form className="flex flex-row items-center">
-                            <button
-                                className={'flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none'}>
-                                <LuPlus className={'w-8 h-7 mx-auto'} />
-                            </button>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button
+                                        type="button"
+                                        className={'flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none hover:bg-white/10 transition-colors duration-200'}
+                                    >
+                                        <LuPlus className={'w-8 h-7 mx-auto'} />
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    side="top"
+                                    align="start"
+                                    sideOffset={12}
+                                    className="min-w-[180px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl"
+                                >
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuLabel className="text-xs text-zinc-400 px-2 py-1.5">Attach</DropdownMenuLabel>
+                                        <DropdownMenuSeparator className="bg-zinc-700" />
+                                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                                            <Upload className="w-4 h-4 text-blue-400" />
+                                            <span>Upload</span>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                                            <ImageIcon className="w-4 h-4 text-emerald-400" />
+                                            <span>Image</span>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                                            <FileText className="w-4 h-4 text-amber-400" />
+                                            <span>File</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                             <input type={'text'} id={''} placeholder={'Ask any question you want to ask.'}
                                 className={'w-full p-4 rounded-full outline-none text-white'} />
+                            <button
+                                type="submit"
+                                className="flex items-center justify-center mr-3 w-9 h-9 rounded-full text-white hover:text-blue-400 transition-colors duration-200 cursor-pointer flex-shrink-0"
+                            >
+                                <BsArrowUpCircleFill className="w-9 h-9" />
+                            </button>
                         </form>
                     </div>
                 </div>
