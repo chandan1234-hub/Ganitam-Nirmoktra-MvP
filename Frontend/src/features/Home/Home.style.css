@@ -36,145 +36,101 @@ body {
     color: aliceblue;
 }
 
-.stroke-animation {}
-
-/* Glassmorphism & Animated Looping White & Blue Gradient Stroke ONLY */
-
-@keyframes spinStroke {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.glass-gradient-stroke-btn {
+.stroke-animation {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5px;
+    border: 2px solid transparent !important;
     border-radius: 9999px;
-    background: transparent;
-    overflow: hidden;
-    cursor: pointer;
-    text-decoration: none;
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.35), rgba(15, 23, 42, 0.35)) padding-box,
+        linear-gradient(90deg, #ffffff 0%, #3b82f6 25%, #60a5fa 50%, #ffffff 75%, #1d4ed8 100%) border-box !important;
+    background-size: 200% 200% !important;
+    animation: blueWhiteGradientFlow 3.5s ease infinite !important;
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
     box-shadow: 0 4px 20px rgba(0, 33, 196, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.glass-gradient-stroke-btn:hover {
+.stroke-animation:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
+    box-shadow: 0 8px 20px rgba(209, 209, 209, 0.35), 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-.glass-gradient-stroke-btn:active {
-    transform: translateY(0) scale(0.98);
+@keyframes blueWhiteGradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
-/* Masked Gradient Stroke Animation ONLY - No background animation */
-.glass-gradient-stroke-btn::before {
-    content: '';
-    position: absolute;
-    inset: -50%;
-    padding: 1.5px;
+/* ── Glow Effect Button ─────────────────────────────────── */
+.glow {
+    --glow-line-color: #93c5fd;
+    --glow-line-thickness: 2px;
+    --glow-line-length: 20;
+    --glow-blur-color: #3b82f6;
+    --glow-blur-size: 8px;
+    --animation-speed: 1200ms;
+    --container-offset: 80px;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
     border-radius: 9999px;
-    background: conic-gradient(from 0deg,
-            transparent 0%,
-            transparent 35%,
-            #ffffff 55%,
-            #3b82f6 70%,
-            #60a5fa 80%,
-            #ffffff 90%,
-            transparent 98%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: spinStroke 3s linear infinite;
-    z-index: 2;
+}
+
+.glow-container {
     pointer-events: none;
-}
-
-/* STATIC Glass Morphism Fill (100% non-animating background) */
-.glass-gradient-stroke-inner {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px) saturate(150%);
-    -webkit-backdrop-filter: blur(10px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    font-weight: 600;
-    letter-spacing: 0.025em;
-}
-
-/* Glassmorphism Badge Component */
-.glass-badge-animated {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5px;
-    border-radius: 9999px;
-    background: transparent;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 33, 196, 0.18);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.glass-badge-animated:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-}
-
-/* Masked Gradient Stroke Animation ONLY - No background animation */
-.glass-badge-animated::before {
-    content: '';
     position: absolute;
-    inset: -50%;
-    padding: 1.5px;
-    border-radius: 9999px;
-    background: conic-gradient(from 0deg,
-            transparent 0%,
-            transparent 35%,
-            #ffffff 55%,
-            #2563eb 70%,
-            #60a5fa 80%,
-            #ffffff 90%,
-            transparent 98%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: spinStroke 3.5s linear infinite;
-    z-index: 2;
-    pointer-events: none;
+    inset: calc(var(--container-offset) / -2);
+    width: calc(100% + var(--container-offset));
+    height: calc(100% + var(--container-offset));
+    opacity: 0;
+    overflow: visible;
 }
 
-/* STATIC Glass Morphism Fill (100% non-animating background) */
-.glass-badge-inner {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 0.85rem 1.85rem;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px) saturate(150%);
-    -webkit-backdrop-filter: blur(10px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: #ffffff;
-    font-size: 1.05rem;
-    font-weight: 600;
+.glow-blur,
+.glow-line {
+    width: calc(100% - var(--container-offset));
+    height: calc(100% - var(--container-offset));
+    x: calc(var(--container-offset) / 2);
+    y: calc(var(--container-offset) / 2);
+    rx: 9999px;
+    fill: transparent;
+    stroke: black;
+    stroke-width: 5px;
+    stroke-dasharray: var(--glow-line-length) calc(50 - var(--glow-line-length));
 }
+
+.glow-line {
+    stroke: var(--glow-line-color);
+    stroke-width: var(--glow-line-thickness);
+}
+
+.glow-blur {
+    filter: blur(var(--glow-blur-size));
+    stroke: var(--glow-blur-color);
+    stroke-width: var(--glow-blur-size);
+}
+
+.glow:is(:hover, :focus) .glow-blur,
+.glow:is(:hover, :focus) .glow-line {
+    stroke-dashoffset: -80px;
+    transition: stroke-dashoffset var(--animation-speed) ease-in,
+        stroke-dasharray var(--animation-speed) ease-in;
+}
+
+.glow:is(:hover, :focus) .glow-container {
+    animation: glow-visibility var(--animation-speed) ease-in;
+}
+
+@keyframes glow-visibility {
+    0%, 100% { opacity: 0; }
+    25%, 75% { opacity: 1; }
+}
