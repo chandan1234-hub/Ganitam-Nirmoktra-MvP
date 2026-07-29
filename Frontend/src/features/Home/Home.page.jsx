@@ -119,7 +119,7 @@ const enhancedIcon = () => {
 import Subscription from '../../components/Uicomponents/SubscriptionPlans/Subscription.jsx'
 
 const Homepage = () => {
-    const ScrollAnimationRef = useRef();
+    const mainRef = useRef(null);
     useGSAP(() => {
         gsap.to('.smoother', {})
 
@@ -132,10 +132,151 @@ const Homepage = () => {
             { y: "120%", opacity: 0, rotate: 2 },
             { y: "0%", opacity: 1, rotate: 0, duration: 0.8, stagger: 0.05, ease: "power3.out" },
             "-=0.4"
+        )
+        .fromTo(".hero-scroll-btn",
+            { opacity: 0, y: 15 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            "-=0.2"
+        )
+        .fromTo(".hero-action-btn",
+            { scale: 0.85, opacity: 0, y: 20 },
+            { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
+            "-=0.3"
         );
-    })
+
+        // Section 2: Subscription section on scroll
+        gsap.fromTo(".subscription-section-wrapper", 
+            { y: 80, opacity: 0, scale: 0.96 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                scale: 1,
+                duration: 1, 
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".subscription-section-wrapper",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // Section 3: Learning Journey Steps section on scroll
+        gsap.fromTo(".onscroll-page .steps-heading", 
+            { y: 60, opacity: 0, scale: 0.95 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                scale: 1,
+                duration: 1, 
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".onscroll-page",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // Section 4: AI-Powered Mathematics Assistant section on scroll
+        gsap.fromTo(".ondoublescroll-page .section-badge-4", 
+            { scale: 0.8, opacity: 0, y: 30 },
+            { 
+                scale: 1, 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                    trigger: ".ondoublescroll-page",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+        gsap.fromTo(".ondoublescroll-page .section-heading-4", 
+            { y: 40, opacity: 0 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                duration: 0.9, 
+                delay: 0.15,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".ondoublescroll-page",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+        gsap.fromTo(".ondoublescroll-page .dashboard-overview", 
+            { y: 80, opacity: 0, scale: 0.93 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                scale: 1, 
+                duration: 1.1, 
+                delay: 0.25,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".ondoublescroll-page",
+                    start: "top 75%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // Section 5: AI Powered Assistant section on scroll
+        gsap.fromTo(".onthirdscroll-page .section-badge-5", 
+            { scale: 0.8, opacity: 0, y: 30 },
+            { 
+                scale: 1, 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                    trigger: ".onthirdscroll-page",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+        gsap.fromTo(".onthirdscroll-page .section-heading-5", 
+            { y: 40, opacity: 0 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                duration: 0.9, 
+                delay: 0.15,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".onthirdscroll-page",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+        gsap.fromTo(".onthirdscroll-page .dashboard-overview-2", 
+            { y: 80, opacity: 0, scale: 0.93 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                scale: 1, 
+                duration: 1.1, 
+                delay: 0.25,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".onthirdscroll-page",
+                    start: "top 75%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    }, { scope: mainRef });
+
     return (
-        <div className={'smoother h-full w-full HomePage overflow-hidden mt-20'}>
+        <div ref={mainRef} className={'smoother h-full w-full HomePage overflow-hidden mt-20'}>
             <div className='my-glass'></div>
             <article className=" Hero-Section h-full w-full mx-100 ">
                 <div className="flex mt-30  items-center gap-6">
@@ -151,58 +292,54 @@ const Homepage = () => {
                     className="Hero-text w-[60%]" 
                     wordClass="landing-word"
                 />
-                <button className='flex items-center text-white'>
+                <button className='hero-scroll-btn flex items-center text-white gap-2 mt-4 hover:opacity-80 transition-opacity'>
                     scroll down
-                    <HiArrowLongDown className="
-            size-7"/>
+                    <HiArrowLongDown className="size-7 animate-bounce"/>
                 </button>
-                <section className='mx-90 mt-20 HeroSection-side-para w-xl flex gap-4'>
+                <section className='mx-90 mt-20 HeroSection-side-para w-xl flex flex-col gap-6'>
                     <p className="">where curiosity meets computation step into a world where mathematics isn't about
                         memorizing rules, but about discovering patterns, solving problems and shifting perspectives.
-
-                        <button className="border p-2 w-55 text-m rounded-4xl flex items-center gap-2 justify-center">
-                            <NavLink to={'/lets-start'}>
-                                start
-                                your journey
-                            </NavLink>
-                                <HiArrowLongRight className='size-7'/>
-                        </button>
                     </p>
+                    <button className="hero-action-btn border p-2 w-55 text-m rounded-4xl flex items-center gap-2 justify-center text-white hover:bg-white/10 transition-colors">
+                        <NavLink to={'/lets-start'} className="flex items-center gap-2">
+                            start your journey
+                            <HiArrowLongRight className='size-7'/>
+                        </NavLink>
+                    </button>
                 </section>
             </article>
-            <div className="mt-30 mb-30 w-full">
+
+            {/* Subscription Section */}
+            <div className="subscription-section-wrapper mt-30 mb-30 w-full">
                 <Subscription/>
             </div>
+
+            {/* Simple Steps Section */}
             <section className="onscroll-page capitalize max-w-full mt-20 mb-auto leading-3 mx-auto flex flex-col">
                 <div className="steps-container capitalize w-full text-white mx-auto flex flex-col justify-center">
-                    <h1 className="text-[55px] leading-15 w-5xl text-white inset-shadow-white mx-auto font-extrabold text-center">
-
-                        Start
-                        your learning journey
-                        in
-                        just few simple steps
+                    <h1 className="steps-heading text-[55px] leading-15 w-5xl text-white inset-shadow-white mx-auto font-extrabold text-center">
+                        Start your learning journey in just few simple steps
                     </h1>
-
                 </div>
             </section>
-            <section
-                className="ondoublescroll-page max-h-screen flex flex-col mx-auto justify-center items-center mb-auto capitalize max-w-full mt-20">
-                <div className={"w-full mx-auto] leading-2 flex flex-col gap-20"}>
-                    <div className={"w-[50%] mx-auto] flex flex-col gap-10 mx-auto"}>
-                        <button
-                            className={"stroke-animation w-80 p-4 flex items-center gap-2 justify-center border border-white rounded-full mx-auto "}>
+
+            {/* AI-Powered Mathematics Assistant Section */}
+            <section className="ondoublescroll-page max-h-screen flex flex-col mx-auto justify-center items-center mb-auto capitalize max-w-full mt-20">
+                <div className={"w-full mx-auto leading-2 flex flex-col gap-20"}>
+                    <div className={"w-[50%] flex flex-col gap-10 mx-auto items-center"}>
+                        <button className={"stroke-animation section-badge-4 w-80 p-4 flex items-center gap-2 justify-center border border-white rounded-full mx-auto text-white"}>
                             <div>
                                 <IoIosColorWand/>
                             </div>
                             AI-Powered Mathematics Assistant
                         </button>
-                        <p className={"font-['AbhayLibre-ExtraBold'] text-5xl flex justify-center items-center text-center text-white"}>enhance
-                            your learning journey with AI powered solver and mentor</p>
+                        <p className={"section-heading-4 font-['AbhayLibre-ExtraBold'] text-5xl flex justify-center items-center text-center text-white"}>
+                            enhance your learning journey with AI powered solver and mentor
+                        </p>
                     </div>
                     <div className="dashboard-overview w-full h-full mb-10">
                         <div className={"bg-transparent opacity-75"}>
-                            <div
-                                className={"h-full w-full mask-l-from-90% mask-r-from-90% bg-transparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"}>
+                            <div className={"h-full w-full mask-l-from-90% mask-r-from-90% bg-transparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"}>
                                 <div className={"flex justify-center items-center top-1.5-auto bottom-1.5-auto"}>
                                     <Dashboard className="z-0"/>
                                 </div>
@@ -211,21 +348,20 @@ const Homepage = () => {
                     </div>
                 </div>
             </section>
+
+            {/* AI Powered Assistant Section */}
             <section className={"onthirdscroll-page capitalize max-h-screen max-w-full mt-20 mb-40"}>
-                <div
-                    className={"somequestion-section flex flex-col justify-center items-center gap-10 w-full h-full mx-auto capitalize"}>
-                    <div
-                        className={"flex flex-row border border-white p-3 gap-2 rounded-full w-[13%] justify-center items-center text-l mx-auto"}>
+                <div className={"somequestion-section flex flex-col justify-center items-center gap-10 w-full h-full mx-auto capitalize"}>
+                    <div className={"section-badge-5 flex flex-row border border-white p-3 gap-2 rounded-full w-[15%] justify-center items-center text-l mx-auto text-white"}>
                         <IoIosColorWand/>
                         <h3>AI Powered Assistant</h3>
                     </div>
-                    <h1 className={"text-5xl w-[80%] text-white leading-15 text-center mb-10"}>learn and solve with
-                        AI <br></br>
-                        (Your
-                        personal assistant for mathematics solving)</h1>
-                    <div className={" w-full h-full bg-transparent opacity-75"}>
-                        <div
-                            className={"h-full w-full bg-trasparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-l-from-90% mask-r-from-90%"}>
+                    <h1 className={"section-heading-5 text-5xl w-[80%] text-white leading-15 text-center mb-10"}>
+                        learn and solve with AI <br/>
+                        (Your personal assistant for mathematics solving)
+                    </h1>
+                    <div className={"dashboard-overview-2 w-full h-full bg-transparent opacity-75"}>
+                        <div className={"h-full w-full bg-transparent bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-l-from-90% mask-r-from-90%"}>
                             <div className="flex justify-center items-center">
                                 <Dashboard className="z-0"/>
                             </div>
