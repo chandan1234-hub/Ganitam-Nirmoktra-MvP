@@ -1,6 +1,4 @@
-
-
-body{
+body {
     background-image: url('../../assets/images/ForBigScreens.svg');
     background-color: #77ADEA;
     background-position: center;
@@ -9,30 +7,174 @@ body{
     height: 100vh;
     width: 100%;
     background-size: cover;
-      font-family:'AbhayLibre-ExtraBold';
+    font-family: 'AbhayLibre-ExtraBold';
 
 }
-.Herarchy{
+
+.Herarchy {
     letter-spacing: 5px;
 }
-.Hero-Section{
+
+.Hero-Section {
     line-height: 80px;
 }
-.Hero-text{
-    font-family:'AbhayLibre-ExtraBold';
-    font-size:55px ;
+
+.Hero-text {
+    font-family: 'AbhayLibre-ExtraBold';
+    font-size: 55px;
     line-height: 70px;
     text-transform: capitalize;
     color: azure;
-    
+
 }
-.HeroSection-side-para{
-    font-family:'AbhayaLibre-ExtraBold' ;
+
+.HeroSection-side-para {
+    font-family: 'AbhayaLibre-ExtraBold';
     text-transform: capitalize;
     line-height: 35px;
     font-size: 19px;
     color: aliceblue;
 }
-.stroke-animation{
-    
+
+.stroke-animation {}
+
+/* Glassmorphism & Animated Looping White & Blue Gradient Stroke ONLY */
+
+@keyframes spinStroke {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.glass-gradient-stroke-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5px;
+    border-radius: 9999px;
+    background: transparent;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0, 33, 196, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-gradient-stroke-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
+}
+
+.glass-gradient-stroke-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Masked Gradient Stroke Animation ONLY - No background animation */
+.glass-gradient-stroke-btn::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    padding: 1.5px;
+    border-radius: 9999px;
+    background: conic-gradient(from 0deg,
+            transparent 0%,
+            transparent 35%,
+            #ffffff 55%,
+            #3b82f6 70%,
+            #60a5fa 80%,
+            #ffffff 90%,
+            transparent 98%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: spinStroke 3s linear infinite;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* STATIC Glass Morphism Fill (100% non-animating background) */
+.glass-gradient-stroke-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+/* Glassmorphism Badge Component */
+.glass-badge-animated {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5px;
+    border-radius: 9999px;
+    background: transparent;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 33, 196, 0.18);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-badge-animated:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* Masked Gradient Stroke Animation ONLY - No background animation */
+.glass-badge-animated::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    padding: 1.5px;
+    border-radius: 9999px;
+    background: conic-gradient(from 0deg,
+            transparent 0%,
+            transparent 35%,
+            #ffffff 55%,
+            #2563eb 70%,
+            #60a5fa 80%,
+            #ffffff 90%,
+            transparent 98%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: spinStroke 3.5s linear infinite;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* STATIC Glass Morphism Fill (100% non-animating background) */
+.glass-badge-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.85rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 600;
 }
