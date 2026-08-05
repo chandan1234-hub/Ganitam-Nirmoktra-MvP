@@ -8,8 +8,6 @@ export const extractText = async (req, res) => {
                 message: 'please upload a file',
             })
         }
-
-
         const extractedText = await extractTextFromImage(req.file.path);
 
         if (!extractedText || extractedText.length < 3) {
