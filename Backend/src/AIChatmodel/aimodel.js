@@ -12,3 +12,12 @@ for await (const part of response) {
 }
 
 
+async function checkDataInDatabase(){
+
+}
+
+async function generateResponseFromModel(UserPrompt){
+
+}
+
+
