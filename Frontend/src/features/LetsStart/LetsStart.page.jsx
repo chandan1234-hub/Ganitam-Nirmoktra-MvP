@@ -71,22 +71,21 @@ const data = {
     ],
     navMain: [
         {
-            title: "Playground",
-            url: "#",
+            title: "Pages",
             icon: SquareTerminal,
             isActive: true,
             items: [
                 {
-                    title: "History",
-                    url: "#",
+                    title: "Home",
+                    url:'/'
                 },
                 {
-                    title: "Starred",
-                    url: "#",
+                    title: "About",
+                    url: "/about",
                 },
                 {
-                    title: "Settings",
-                    url: "#",
+                    title: "Contact",
+                    url: "/contact",
                 },
             ],
         },
@@ -97,7 +96,7 @@ const data = {
             items: [
                 {
                     title: "Genesis",
-                    url: "#",
+                    url: "/lets-start",
                 },
                 {
                     title: "Explorer",
