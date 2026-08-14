@@ -18,6 +18,7 @@ import {
     Upload,
     ImageIcon,
     FileText,
+    File,
 } from "lucide-react"
 import { BsArrowUpCircleFill } from "react-icons/bs";
 import {
@@ -55,6 +56,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Feature } from 'motion'
 
 const data = {
     user: {
@@ -90,21 +92,17 @@ const data = {
             ],
         },
         {
-            title: "Models",
+            title: "Features",
             url: "#",
-            icon: Bot,
+            icon: File,
             items: [
                 {
-                    title: "Genesis",
-                    url: "/lets-start",
+                    title: "History",
+                    url: "/history",
                 },
                 {
                     title: "Explorer",
-                    url: "#",
-                },
-                {
-                    title: "Quantum",
-                    url: "#",
+                    url: "/explorer",
                 },
             ],
         },
