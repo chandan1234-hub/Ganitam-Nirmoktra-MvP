@@ -2,6 +2,7 @@ import path from 'path';
 import { nodewhisper } from 'nodejs-whisper';
 
 // need to provide path to your audio file
+const path = 'public/temp/audio.mp3'
 
 const filePath = path.resolve(__dirname, 'audio.mp3');
 
