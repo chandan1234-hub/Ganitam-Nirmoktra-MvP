@@ -1,10 +1,11 @@
 import Subscription from "../../components/Uicomponents/SubscriptionPlans/Subscription.jsx";
 import './Subscription.style.css';
 import {RiCheckboxCircleFill} from "react-icons/ri";
+import { MdCancel } from "react-icons/md";
 
 const SubscriptionPage = () => {
     return (
-        <div className="min-w-full min-h-screen mt-20">
+        <div className="min-w-full min-h-screen mt-20 cursor-pointer">
             <section
                 className={
                     "flex flex-col justify-center zoom-100 items-center mx-auto mt-10 w-[70%] gap-2"
@@ -87,6 +88,24 @@ const SubscriptionPage = () => {
                         <td className={''}>
                             <div className={'items-center flex justify-center'}>
                                 <RiCheckboxCircleFill/>
+                            </div>
+                        </td>
+                        <td>
+                            <div className={'items-center flex justify-center'}>
+                                <RiCheckboxCircleFill/>
+                            </div>
+                        </td>
+                        <td>
+                            <div className={'items-center flex justify-center'}>
+                                <RiCheckboxCircleFill/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Priority Suppo</td>
+                        <td className={''}>
+                            <div className={'items-center flex justify-center'}>
+                                <MdCancel/>
                             </div>
                         </td>
                         <td>
