@@ -76,14 +76,25 @@
 
 // export default Subscription;
 
-import {PricingTable} from '@clerk/react'
+import { PricingTable } from '@clerk/react'
 
 export default function Subscription() {
     return (
         <section className="flex flex-row gap-5 items-center justify-center mt-10 w-[70%] mx-auto">
             <PricingTable
                 appearance={{
+                    variables: {
+                        fontSize: '0.8rem',
+                        fontFamily: 'Amiko-Regular',
+                        fontFamilyButtons: 'Amiko-SemiBold',
+                        spacing: '1.5rem',
+                        colorPrimary: '#414141',
+                    },
 
+
+                    // elements:{
+                    //     pricingTableCard:'custom-pricing-card-class'
+                    // }
                 }}
             />
 
