@@ -1,4 +1,4 @@
-import {createBrowserRouter} from 'react-router'
+import { createBrowserRouter } from 'react-router'
 import AppLayout from '../components/AppLayout/AppLayout.jsx'
 import Homepage from '../features/Home/Home.page.jsx'
 import Aboutpage from '../features/AboutUs/About.page.jsx'
@@ -6,44 +6,53 @@ import Contactpage from '../features/Contact/Contact.page.jsx'
 import FAQpage from '../features/FAQ/FAQ.page.jsx'
 import LetsStartpage from '../features/LetsStart/LetsStart.page.jsx'
 import PrivacyPolicypage from '../features/PrivacyPolicy/PrivacyPolicy.page.jsx'
-import SubscriptionPage from "../features/Subscription/Subscription.page.jsx";
- 
+import SubscriptionPage from "../features/Subscription/Subscription.page.jsx"
+import AdminDashboard from '@/features/AdminDashboard/AdminDashboard.jsx'
+import UserDashboard from '@/features/UserDashboard/UserDashboard.jsx'
 
 
 const router = createBrowserRouter([
     {
-        element: <AppLayout/>,
+        element: <AppLayout />,
         children: [
             {
                 path: '/',
-                element: <Homepage/>,
+                element: <Homepage />,
             },
             {
                 path: '/about',
-                element: <Aboutpage/>,
+                element: <Aboutpage />,
             },
             {
                 path: '/contact',
-                element: <Contactpage/>,
+                element: <Contactpage />,
             },
             {
                 path: '/faq',
-                element: <FAQpage/>,
+                element: <FAQpage />,
             },
             {
                 path: '/privacy-policy',
-                element: <PrivacyPolicypage/>,
+                element: <PrivacyPolicypage />,
             },
             {
                 path: '/SubscriptionPlans',
-                element: <SubscriptionPage/>,
+                element: <SubscriptionPage />,
             },
         ],
     },
     {
+        path: '/SubscriptionPlans/UserDashboard',
+        element: <UserDashboard />
+    },
+    {
+        path: '/SubscriptionPlans/AdminDashboard',
+        element: <AdminDashboard />
+    },
+    {
         path: '/lets-start',
-        element: <LetsStartpage/>,
+        element: <LetsStartpage />,
     },
 ])
 
-export default router
+export default router;
