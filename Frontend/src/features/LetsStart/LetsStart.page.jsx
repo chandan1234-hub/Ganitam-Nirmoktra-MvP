@@ -7,6 +7,7 @@ import gsap from 'gsap'
 import { useSmoothScroll } from '../../Hooks/useSmoothScroll'
 import { AnimatedText } from '../../components/AnimatedText';
 import { LuPlus } from "react-icons/lu";
+import { Logo } from '@/components/ui/Logo'
 import {
     ChevronRight,
     ChevronsUpDown,
@@ -59,16 +60,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Feature } from 'motion'
 
 const data = {
-    user: {
-        name: "shadcn",
-        email: "m@example.com",
-        avatar: "/avatars/shadcn.jpg",
-    },
     teams: [
         {
-            name: "Acme Inc",
-            logo: GalleryVerticalEnd,
-            plan: "Enterprise",
+            name: "Ganitam Nirmoktra",
+            logo: Logo,
         },
     ],
     navMain: [
@@ -167,7 +162,7 @@ const SidebarFooterAuth = () => {
                         elements: {
                             rootBox: "w-full",
                             userButtonTrigger: "w-full flex justify-center",
-                            userButtonBox: "flex-row-reverse justify-between w-full",
+                            userButtonBox: "flex-row justify-between w-full",
                             userButtonOuterIdentifier: "truncate font-semibold text-xl",
                         }
                     }} />
@@ -214,7 +209,7 @@ const LetsStartpage = () => {
                                 <DropdownMenuTrigger asChild>
                                     <SidebarMenuButton
                                         size="lg"
-                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
                                     >
                                         <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                             <ActiveTeamLogo className="size-4" />
@@ -227,19 +222,8 @@ const LetsStartpage = () => {
                                                 {activeTeam.plan}
                                             </span>
                                         </div>
-                                        <ChevronsUpDown className="ml-auto" />
                                     </SidebarMenuButton>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent
-                                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                                    align="start"
-                                    side="bottom"
-                                    sideOffset={4}
-                                >
-                                    <DropdownMenuItem>
-                                        <span>{activeTeam.name}</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
                             </DropdownMenu>
                         </SidebarMenuItem>
                     </SidebarMenu>

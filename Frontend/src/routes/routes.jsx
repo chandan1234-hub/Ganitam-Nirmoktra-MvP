@@ -7,8 +7,6 @@ import FAQpage from '../features/FAQ/FAQ.page.jsx'
 import LetsStartpage from '../features/LetsStart/LetsStart.page.jsx'
 import PrivacyPolicypage from '../features/PrivacyPolicy/PrivacyPolicy.page.jsx'
 import SubscriptionPage from "../features/Subscription/Subscription.page.jsx"
-import AdminDashboard from '@/features/AdminDashboard/AdminDashboard.jsx'
-import UserDashboard from '@/features/UserDashboard/UserDashboard.jsx'
 
 
 const router = createBrowserRouter([
@@ -40,14 +38,6 @@ const router = createBrowserRouter([
                 element: <SubscriptionPage />,
             },
         ],
-    },
-    {
-        path: '/SubscriptionPlans/UserDashboard',
-        element: <UserDashboard />
-    },
-    {
-        path: '/SubscriptionPlans/AdminDashboard',
-        element: <AdminDashboard />
     },
     {
         path: '/lets-start',
