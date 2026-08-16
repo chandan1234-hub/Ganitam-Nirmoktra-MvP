@@ -3,9 +3,9 @@ import './Contact.style.css'
 
 const Contactpage = () => {
     return (
-        <div className='w-full overflow-x-hidden'>
+        <div className='w-full overflow-x-hidden mx-auto'>
             <section className="bg-transparent dark:bg-transparent overflow-y-hidden w-full ">
-                <div className="container px-6 py-12">
+                <div className="container px-6 py-12 w-full mx-auto">
                     <div className="text-center ">
                         <p className="font-medium text-blue-500 dark:text-blue-400">Contact us</p>
 
