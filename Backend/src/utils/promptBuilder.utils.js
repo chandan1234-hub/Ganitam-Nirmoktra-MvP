@@ -85,6 +85,146 @@ Now provide your complete response following the structure above.
 }
 
 export const FEW_SHOT_EXAMPLES = `
+
+EXAMPLE OF A PERFECT RESPONSE:
+
+Student Question: Solve ∫tan⁴x dx
+
+## Understanding the Problem
+We need to integrate tan⁴x. Since there is no direct 
+formula for this, we need to reduce it using 
+trigonometric identities. The key identity we will 
+use is:
+$$\\tan^{2}x = \\sec^{2}x - 1$$
+
+---
+
+## Method 1: Split and Substitute
+
+**Step 1 — Rewrite using identity**
+$$I = \\int \\tan^{4}x \\, dx$$
+$$= \\int \\tan^{2}x \\cdot \\tan^{2}x \\, dx$$
+$$= \\int (\\sec^{2}x - 1) \\cdot \\tan^{2}x \\, dx$$
+
+WHY: We replace one tan²x using the identity 
+tan²x = sec²x - 1 to break the problem into 
+simpler parts.
+
+**Step 2 — Expand and split**
+$$= \\int \\sec^{2}x \\cdot \\tan^{2}x \\, dx 
+  - \\int \\tan^{2}x \\, dx$$
+
+**Step 3 — Simplify second integral**
+$$\\int \\tan^{2}x \\, dx = \\int (\\sec^{2}x - 1) \\, dx$$
+$$= \\tan x - x + C$$
+
+WHY: We again use tan²x = sec²x - 1 because 
+∫sec²x dx = tanx is a standard formula.
+
+**Step 4 — Solve first integral by substitution**
+
+Let $\\tan x = t$
+
+Differentiating both sides:
+$$\\frac{d}{dx}(\\tan x) = \\frac{dt}{dx}$$
+$$\\sec^{2}x = \\frac{dt}{dx}$$
+$$\\sec^{2}x \\, dx = dt \\quad \\cdots (1)$$
+
+WHY: We use substitution because sec²x dx appears 
+in the integral which is exactly the derivative 
+of tanx — perfect for substitution.
+
+$$\\int \\sec^{2}x \\cdot \\tan^{2}x \\, dx 
+= \\int t^{2} \\, dt \\quad \\text{(from equation 1)}$$
+
+$$= \\frac{t^{3}}{3} + C$$
+
+$$= \\frac{\\tan^{3}x}{3} + C$$
+
+WHY: Using power rule $$\\int m^{n} \\, dm 
+= \\frac{m^{n+1}}{n+1}$$
+
+**Step 5 — Combine all values**
+$$I = \\frac{\\tan^{3}x}{3} - \\tan x + x + C$$
+
+---
+
+## Method 2: Expand using (a-b)²
+
+**Step 1 — Rewrite as perfect square**
+$$I = \\int (\\tan^{2}x)^{2} \\, dx$$
+$$= \\int (\\sec^{2}x - 1)^{2} \\, dx$$
+
+WHY: We convert the entire tan⁴x using 
+the identity instead of splitting it.
+
+**Step 2 — Expand the square**
+$$= \\int (\\sec^{4}x - 2\\sec^{2}x + 1) \\, dx$$
+
+Using $(a - b)^{2} = a^{2} - 2ab + b^{2}$
+
+$$= \\int \\sec^{4}x \\, dx 
+  - 2\\int \\sec^{2}x \\, dx 
+  + \\int 1 \\, dx \\quad \\cdots eq(a)$$
+
+**Step 3 — Solve ∫sec⁴x dx**
+
+$$\\int \\sec^{4}x \\, dx 
+= \\int \\sec^{2}x \\cdot \\sec^{2}x \\, dx$$
+
+$$= \\int \\sec^{2}x (1 + \\tan^{2}x) \\, dx$$
+
+WHY: We use identity sec²x = 1 + tan²x 
+to break sec⁴x into workable parts.
+
+$$= \\int \\sec^{2}x \\, dx 
+  + \\int \\sec^{2}x \\cdot \\tan^{2}x \\, dx$$
+
+$$= \\tan x + \\frac{\\tan^{3}x}{3} + C$$
+
+WHY: The second part solved by substitution 
+(same as Method 1 Step 4)
+
+**Step 4 — Combine all values in eq(a)**
+
+$$I = \\left(\\tan x + \\frac{\\tan^{3}x}{3}\\right) 
+  - 2\\tan x + x + C$$
+
+$$= \\frac{\\tan^{3}x}{3} + \\tan x 
+  - 2\\tan x + x + C$$
+
+$$\\boxed{I = \\frac{\\tan^{3}x}{3} 
+  - \\tan x + x + C}$$
+
+---
+
+## Verification
+Both Method 1 and Method 2 give identical answers:
+$$\\frac{\\tan^{3}x}{3} - \\tan x + x + C ✓$$
+
+This confirms our solution is correct.
+
+---
+
+## Key Concept
+When integrating higher powers of tan x always use:
+$$\\tan^{2}x = \\sec^{2}x - 1$$
+This identity breaks complex tan integrals into 
+standard forms involving sec²x which is easy 
+to integrate.
+
+## Common Mistake
+Students often forget the constant of integration C.
+Also many students forget to substitute back 
+t = tanx at the end of substitution.
+
+## Remember
+$$\\int \\sec^{2}x \\, dx = \\tan x + C$$
+This is the most important formula for solving 
+tan integrals — never forget it!
+
+END OF EXAMPLE
+---
 `
 
 export const buildCompletePrompt = (question, subject, grade) => {
