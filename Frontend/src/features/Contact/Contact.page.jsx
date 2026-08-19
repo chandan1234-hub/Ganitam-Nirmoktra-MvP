@@ -1,7 +1,8 @@
 import React from 'react'
 import './Contact.style.css'
 import { useForm } from 'react-hook-form'
-import ApiClient from '@/lib/ApiClient'
+// import ApiClient from '@/lib/ApiClient'
+import axios from 'axios'
 
 const Contactpage = () => {
     const {
@@ -18,6 +19,15 @@ const Contactpage = () => {
         })
     }
 
+    axios.post('http://localhost:3000/')
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => {
+            console.log("fetching data error :", error);
+        })
+
+        
     const onSubmit = async (data) => {
         let dataresposnse = await fetch('', {
             method: "POST",
@@ -119,7 +129,7 @@ const Contactpage = () => {
                                     <div className="flex-1 px-2 mt-4 md:mt-0">
                                         <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Email
                                             address</label>
-                                        <input type="email" placeholder="johndoe@example.com"  {...register("email", { required: { value: true , message:"email is required" }},)}
+                                        <input type="email" placeholder="johndoe@example.com"  {...register("email", { required: { value: true, message: "email is required" } },)}
                                             className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                                         {errors.email && <div>errors.email.message</div>}
                                     </div>
