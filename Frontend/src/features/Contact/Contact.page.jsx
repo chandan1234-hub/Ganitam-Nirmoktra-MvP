@@ -1,7 +1,34 @@
 import React from 'react'
 import './Contact.style.css'
+import { useForm } from 'react-hook-form'
+
 
 const Contactpage = () => {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isSubmitting },
+    } = useForm()
+    const delay = (d) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve()
+            }, d * 1000)
+        })
+    }
+
+    const onSubmit = async (data) => {
+        let dataresposnse = await fetch('', {
+            method: "POST",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        let res = await dataresposnse.text()
+        console.log(data, res);
+    }
     return (
         <div className='w-full overflow-x-hidden mx-auto'>
             <section className="bg-transparent dark:bg-transparent overflow-y-hidden w-full ">
@@ -79,21 +106,22 @@ const Contactpage = () => {
                                 Ask us everything and we would love
                                 to hear from you
                             </p>
-
-                            <form className="mt-12">
+                            {isSubmitting && <div>Loading......</div>}
+                            <form className="mt-12" onSubmit={handleSubmit(onSubmit)}>
                                 <div className="-mx-2 md:items-center md:flex">
                                     <div className="flex-1 px-2">
                                         <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Full
                                             Name</label>
-                                        <input type="text" placeholder="John Doe"
+                                        <input type="text" placeholder="John Doe" {...register("username", { required: true })}
                                             className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                                        {errors.username && <div>this is required</div>}
                                     </div>
-
                                     <div className="flex-1 px-2 mt-4 md:mt-0">
                                         <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Email
                                             address</label>
-                                        <input type="email" placeholder="johndoe@example.com"
+                                        <input type="email" placeholder="johndoe@example.com"  {...register("email", { required: { value: true , message:"email is required" }},)}
                                             className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                                        {errors.email && <div>errors.email.message</div>}
                                     </div>
                                 </div>
 
