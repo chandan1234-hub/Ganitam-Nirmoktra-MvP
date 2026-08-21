@@ -90,6 +90,7 @@ export default function Subscription() {
                         spacing: '1.5rem',
                         colorPrimary: '#414141',
                     },
+                   
 
 
                     // elements:{
