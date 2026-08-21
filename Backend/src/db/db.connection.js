@@ -1,14 +1,29 @@
-import mongoose from "mongoose"
-import DB_Name from "../constants.js"
+import mongoose from "mongoose";
+import dns from "node:dns";
+import DB_Name from "../constants.js";
 
 const connectDB = async () => {
-    try {
-        const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_Name}`)
-        console.log(`MongoDB server connection is successful! DB_HOST: ${connectionInstance.connection.host}`)
-    } catch (error) {
-        console.log("Something is wrong in MongoDB server connection", error)
-        throw error
+    const baseUri = process.env.MONGODB_URI?.trim().replace(/\/+$/, "");
+
+    if (!baseUri) {
+        throw new Error("MONGODB_URI is not configured");
     }
-}
+
+    const dnsServer = process.env.MONGODB_DNS_SERVER?.trim();
+    if (dnsServer) {
+        dns.setServers([dnsServer]);
+    }
+
+    try {
+        const connection = await mongoose.connect(`${baseUri}/${DB_Name}`);
+        console.log(`MongoDB connected: ${connection.connection.host}/${DB_Name}`);
+        return connection;
+    } catch (error) {
+        console.error("MongoDB connection failed:", error.message);
+        throw error;
+    }
+};
 
 export default connectDB;
+
+     
