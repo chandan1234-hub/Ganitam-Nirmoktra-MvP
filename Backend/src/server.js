@@ -11,6 +11,13 @@ await connectDB()
         app.get('/', (req, res) => {
             res.send("hello")
         })
+        app.post('/', (req, res) => {
+            console.log('Contact form received:', req.body)
+            res.status(201).json({
+                success: true,
+                message: 'Contact form received successfully',
+            })
+        })
         app.on("error", (error) => {
             console.log("ERROR :", error)
             throw error;

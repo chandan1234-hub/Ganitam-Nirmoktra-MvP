@@ -1,7 +1,6 @@
 import React from 'react'
 import './Contact.style.css'
 import { useForm } from 'react-hook-form'
-// import ApiClient from '@/lib/ApiClient'
 import axios from 'axios'
 
 const Contactpage = () => {
@@ -11,33 +10,13 @@ const Contactpage = () => {
         watch,
         formState: { errors, isSubmitting },
     } = useForm()
-    const delay = (d) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve()
-            }, d * 1000)
-        })
-    }
-
-    axios.post('http://localhost:3000/')
-        .then(res => {
-            console.log(res.data);
-        })
-        .catch(err => {
-            console.log("fetching data error :", error);
-        })
-
-        
     const onSubmit = async (data) => {
-        let dataresposnse = await fetch('', {
-            method: "POST",
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        let res = await dataresposnse.text()
-        console.log(data, res);
+        try {
+            const response = await axios.post('http://localhost:8000/', data)
+            console.log(response.data)
+        } catch (error) {
+            console.error('Sending contact form failed:', error)
+        }
     }
     return (
         <div className='w-full overflow-x-hidden mx-auto'>
@@ -138,8 +117,10 @@ const Contactpage = () => {
                                 <div className="w-full mt-4">
                                     <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Message</label>
                                     <textarea
+                                        {...register("message", { required: true })}
                                         className="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                                         placeholder="Message"></textarea>
+                                    {errors.message && <div>this is required</div>}
                                 </div>
 
                                 <button
