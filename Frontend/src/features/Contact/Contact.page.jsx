@@ -1,36 +1,44 @@
 import { useRef } from "react";
 import "./Contact.style.css";
-import { useForm } from "react-hook-form";
-import axios from "axios";
+// import { useForm } from "react-hook-form";
+// import axios from "axios";
 import emailjs from "@emailjs/browser";
 import { LogIn } from "lucide-react";
+// import ThankyouPage from "../ThankyouPage/ThankyouPage";
+import { useNavigate } from "react-router";
 
 const Contactpage = () => {
+  const form = useRef(null);
+  const navigate = useNavigate();
   const sendEmail = (e) => {
     e.preventDefault();
-    emailjs
-      .sendForm(`process.env.EMAILJS_SERVICE_KEY`, `process.env.EMAILJS_TEMPLATE_KEY`, form.current, `process.env.EMAILJS_PUBILIC_KEY`)
-      .then((response) => {
-        console.log("Email sent successfully:", response);
-      })
-      .catch((error) => {
-        console.error("Sending contact form failed:", error);
-      });
-  };
-  const form = useRef(null);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm();
-  const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:8000/", data);
+      emailjs
+        .sendForm(
+          `process.env.EMAILJS_SERVICE_KEY`,
+          `process.env.EMAILJS_TEMPLATE_KEY`,
+          form.current,
+          `process.env.EMAILJS_PUBILIC_KEY`,
+        )
+        .then((response) => {
+          console.log("Email sent successfully:", response);
+        })
+        .then(() => navigate('/thankyou'))
+        .then(() => setTimeout(() => navigate('/contact'), 1000))
+        .catch((error) => {
+          console.error("Sending contact form failed:", error);
+        })
     } catch (error) {
-      console.error("Sending contact form failed:", error);
+      console.error("Error sending contact form:", error);
     }
   };
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   watch,
+  //   formState: { errors, isSubmitting },
+  // } = useForm();
+
   return (
     <div className="w-full overflow-x-hidden mx-auto">
       <section className="bg-transparent dark:bg-transparent overflow-y-hidden w-full ">
@@ -161,7 +169,7 @@ const Contactpage = () => {
               <p className="mt-4 text-gray-500 dark:text-black">
                 Ask us everything and we would love to hear from you
               </p>
-              {isSubmitting && <div>Loading......</div>}
+              {/* {isSubmitting && <div>Loading......</div>}*/}
               <form className="mt-12" ref={form} onSubmit={sendEmail}>
                 <div className="-mx-2 md:items-center md:flex">
                   <div className="flex-1 px-2">
@@ -171,10 +179,11 @@ const Contactpage = () => {
                     <input
                       type="text"
                       placeholder="John Doe"
-                      {...register("username", { required: true })}
+                      required="true"
+                      // {...register("username", { required: true, message: "Full name is required" })}
                       className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
-                    {errors.username && <div>this is required</div>}
+                    {/* {errors.username && <div>this is required</div>}*/}
                   </div>
                   <div className="flex-1 px-2 mt-4 md:mt-0">
                     <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
@@ -183,12 +192,13 @@ const Contactpage = () => {
                     <input
                       type="email"
                       placeholder="johndoe@example.com"
-                      {...register("email", {
-                        required: { value: true, message: "email is required" },
-                      })}
+                      required="true"
+                      // {...register("email", {
+                      //   required: { value: true, message: "email is required" },
+                      // })}
                       className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
-                    {errors.email && <div>errors.email.message</div>}
+                    {/* {errors.email && <div>errors.email.message</div>}*/}
                   </div>
                 </div>
 
@@ -197,11 +207,12 @@ const Contactpage = () => {
                     Message
                   </label>
                   <textarea
-                    {...register("message", { required: true })}
+                    // {...register("message", { required: true })}
                     className="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Message"
+                    required="true"
                   ></textarea>
-                  {errors.message && <div>this is required</div>}
+                  {/* {errors.message && <div>this is required</div>}*/}
                 </div>
 
                 <button className="w-full px-6 py-3 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">

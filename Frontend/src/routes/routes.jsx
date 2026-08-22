@@ -7,7 +7,7 @@ import FAQpage from '../features/FAQ/FAQ.page.jsx'
 import LetsStartpage from '../features/LetsStart/LetsStart.page.jsx'
 import PrivacyPolicypage from '../features/PrivacyPolicy/PrivacyPolicy.page.jsx'
 import SubscriptionPage from "../features/Subscription/Subscription.page.jsx"
-
+import ThankyouPage from "../features/ThankyouPage/ThankyouPage.jsx"
 
 const router = createBrowserRouter([
     {
@@ -42,7 +42,11 @@ const router = createBrowserRouter([
     {
         path: '/lets-start',
         element: <LetsStartpage />,
-    },
+  },
+  {
+      path: '/thankyou',
+      element: <ThankyouPage />,
+  }
 ])
 
 export default router;
