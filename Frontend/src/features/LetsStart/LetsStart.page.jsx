@@ -1,350 +1,406 @@
-import './LetsStart.style.css'
-import { Link } from 'react-router'
-import { UserButton, useUser } from '@clerk/react'
-import react, { useRef, useState } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { useSmoothScroll } from '../../Hooks/useSmoothScroll'
-import { AnimatedText } from '../../components/AnimatedText';
+import "./LetsStart.style.css";
+import { Link } from "react-router";
+import { UserButton, useUser } from "@clerk/react";
+import react, { useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { useSmoothScroll } from "../../Hooks/useSmoothScroll";
+import { AnimatedText } from "../../components/AnimatedText";
 import { LuPlus } from "react-icons/lu";
-import { Logo } from '@/components/ui/Logo'
+import { Logo } from "@/components/ui/Logo";
 import {
-    ChevronRight,
-    ChevronsUpDown,
-    GalleryVerticalEnd,
-    SquareTerminal,
-    Bot,
-    BookOpen,
-    Settings2,
-    Upload,
-    ImageIcon,
-    FileText,
-    File,
-} from "lucide-react"
+  ChevronRight,
+  ChevronsUpDown,
+  GalleryVerticalEnd,
+  SquareTerminal,
+  Bot,
+  BookOpen,
+  Settings2,
+  Upload,
+  ImageIcon,
+  FileText,
+  File,
+} from "lucide-react";
 import { BsArrowUpCircleFill } from "react-icons/bs";
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubItem,
-    SidebarMenuSubButton,
-    SidebarProvider,
-    SidebarTrigger,
-    SidebarHeader,
-    SidebarFooter,
-    useSidebar,
-} from "@/components/ui/sidebar"
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarHeader,
+  SidebarFooter,
+  useSidebar,
+} from "@/components/ui/sidebar";
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuGroup,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+} from "@/components/ui/dropdown-menu";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Feature } from 'motion'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Feature } from "motion";
+import { useEffect } from "react";
 
 const data = {
-    teams: [
+  teams: [
+    {
+      name: "Ganitam Nirmoktra",
+      logo: Logo,
+    },
+  ],
+  navMain: [
+    {
+      title: "Pages",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
         {
-            name: "Ganitam Nirmoktra",
-            logo: Logo,
-        },
-    ],
-    navMain: [
-        {
-            title: "Pages",
-            icon: SquareTerminal,
-            isActive: true,
-            items: [
-                {
-                    title: "Home",
-                    url:'/'
-                },
-                {
-                    title: "About",
-                    url: "/about",
-                },
-                {
-                    title: "Contact",
-                    url: "/contact",
-                },
-            ],
+          title: "Home",
+          url: "/",
         },
         {
-            title: "Features",
-            url: "#",
-            icon: File,
-            items: [
-                {
-                    title: "History",
-                    url: "/history",
-                },
-                {
-                    title: "Explorer",
-                    url: "/explorer",
-                },
-            ],
+          title: "About",
+          url: "/about",
         },
         {
-            title: "Documentation",
-            url: "#",
-            icon: BookOpen,
-            items: [
-                {
-                    title: "Introduction",
-                    url: "#",
-                },
-                {
-                    title: "Get Started",
-                    url: "#",
-                },
-                {
-                    title: "Tutorials",
-                    url: "#",
-                },
-                {
-                    title: "Changelog",
-                    url: "#",
-                },
-            ],
+          title: "Contact",
+          url: "/contact",
+        },
+      ],
+    },
+    {
+      title: "Features",
+      url: "#",
+      icon: File,
+      items: [
+        {
+          title: "History",
+          url: "/history",
         },
         {
-            title: "Settings",
-            url: "#",
-            icon: Settings2,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "/SubscriptionPlans",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
+          title: "Explorer",
+          url: "/explorer",
         },
-    ],
-}
+      ],
+    },
+    {
+      title: "Documentation",
+      url: "#",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Introduction",
+          url: "#",
+        },
+        {
+          title: "Get Started",
+          url: "#",
+        },
+        {
+          title: "Tutorials",
+          url: "#",
+        },
+        {
+          title: "Changelog",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "/SubscriptionPlans",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+    },
+  ],
+};
 
 const SidebarFooterAuth = () => {
-    const { state } = useSidebar();
-    const isCollapsed = state === "collapsed";
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
 
-    return (
-        <SidebarMenu>
-            <SidebarMenuItem>
-                <SidebarMenuButton size="lg" className="w-full justify-center">
-                    <UserButton showName={!isCollapsed} appearance={{
-                        elements: {
-                            rootBox: "w-full",
-                            userButtonTrigger: "w-full flex justify-center",
-                            userButtonBox: "flex-row justify-between w-full",
-                            userButtonOuterIdentifier: "truncate font-semibold text-xl",
-                        }
-                    }} />
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-        </SidebarMenu>
-    );
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton size="lg" className="w-full justify-center">
+          <UserButton
+            showName={!isCollapsed}
+            appearance={{
+              elements: {
+                rootBox: "w-full",
+                userButtonTrigger: "w-full flex justify-center",
+                userButtonBox: "flex-row justify-between w-full",
+                userButtonOuterIdentifier: "truncate font-semibold text-xl",
+              },
+            }}
+          />
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
 };
 
 const LetsStartpage = () => {
-    const activeTeam = data.teams[0];
-    const ActiveTeamLogo = activeTeam.logo;
-    const containerRef = useRef(null);
+  const activeTeam = data.teams[0];
+  const ActiveTeamLogo = activeTeam.logo;
+  const containerRef = useRef(null);
 
-    useSmoothScroll();
 
-    useGSAP(() => {
-        const tl = gsap.timeline({ delay: 0.2 });
+  useSmoothScroll();
 
-        tl.fromTo(".hero-word",
-            { y: "120%", opacity: 0, rotate: 3 },
-            { y: "0%", opacity: 1, rotate: 0, duration: 0.8, stagger: 0.05, ease: "power3.out" }
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({ delay: 0.2 });
+
+      tl.fromTo(
+        ".hero-word",
+        { y: "120%", opacity: 0, rotate: 3 },
+        {
+          y: "0%",
+          opacity: 1,
+          rotate: 0,
+          duration: 0.8,
+          stagger: 0.05,
+          ease: "power3.out",
+        },
+      )
+        .fromTo(
+          ".hero-sub-word",
+          { y: "100%", opacity: 0 },
+          {
+            y: "0%",
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.03,
+            ease: "power3.out",
+          },
+          "-=0.5",
         )
-            .fromTo(".hero-sub-word",
-                { y: "100%", opacity: 0 },
-                { y: "0%", opacity: 1, duration: 0.6, stagger: 0.03, ease: "power3.out" },
-                "-=0.5"
-            )
-            .fromTo(".search-bar",
-                { y: 20, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-                "-=0.4"
-            );
-    }, { scope: containerRef, dependencies: [] });
+        .fromTo(
+          ".search-bar",
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+          "-=0.4",
+        );
+    },
+    { scope: containerRef, dependencies: [] },
+  );
 
-    return (
-        <SidebarProvider>
-            {/* The default shadcn sidebar is variant="sidebar" which styles it nicely based on CSS vars */}
-            <Sidebar collapsible="icon">
-                <SidebarHeader>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <SidebarMenuButton
-                                        size="lg"
-                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
-                                    >
-                                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                            <ActiveTeamLogo className="size-4" />
-                                        </div>
-                                        <div className="grid flex-1 text-left leading-tight">
-                                            <span className="truncate font-semibold text-lg">
-                                                {activeTeam.name}
-                                            </span>
-                                            <span className="truncate text-sm">
-                                                {activeTeam.plan}
-                                            </span>
-                                        </div>
-                                    </SidebarMenuButton>
-                                </DropdownMenuTrigger>
-                            </DropdownMenu>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarHeader>
-
-                <SidebarContent>
-                    <SidebarGroup>
-                        <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">Platform</SidebarGroupLabel>
-                        <SidebarMenu>
-                            {data.navMain.map((item) => (
-                                <Collapsible
-                                    key={item.title}
-                                    asChild
-                                    defaultOpen={item.isActive}
-                                    className="group/collapsible"
-                                >
-                                    <SidebarMenuItem>
-                                        <CollapsibleTrigger asChild>
-                                            <SidebarMenuButton tooltip={item.title} className="text-base h-10">
-                                                {item.icon && <item.icon className="!w-5 !h-5" />}
-                                                <span>{item.title}</span>
-                                                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                                            </SidebarMenuButton>
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent>
-                                            <SidebarMenuSub>
-                                                {item.items?.map((subItem) => (
-                                                    <SidebarMenuSubItem key={subItem.title}>
-                                                        <SidebarMenuSubButton asChild className="text-sm h-8">
-                                                            <a href={subItem.url}>
-                                                                <span className="text-base">{subItem.title}</span>
-                                                            </a>
-                                                        </SidebarMenuSubButton>
-                                                    </SidebarMenuSubItem>
-                                                ))}
-                                            </SidebarMenuSub>
-                                        </CollapsibleContent>
-                                    </SidebarMenuItem>
-                                </Collapsible>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroup>
-                </SidebarContent>
-
-                <SidebarFooter>
-                    <SidebarFooterAuth />
-                </SidebarFooter>
-            </Sidebar>
-
-            <div className="flex-1 flex flex-col h-screen w-full relative" ref={containerRef}>
-                {/* Header with trigger */}
-                <header className="absolute top-0 left-0 p-4 z-10">
-                    <SidebarTrigger className="text-white hover:text-gray-300" />
-                </header>
-
-                {/*main page*/}
-                <div
-                    className={'lets-start-page w-full h-full bg-(--page-bg) text-white font-sans font-extralight flex flex-col items-center justify-center'}>
-                    <div
-                        className={'container flex justify-center w-[40%] flex-col text-center mx-auto'}>
-                        <AnimatedText
-                            text="Welcome to Ganitam Nirmoktra"
-                            className="justify-center text-5xl font-semibold"
-                            wordClass="hero-word"
-                        />
-                        <AnimatedText
-                            text="How can I help you chandan?"
-                            className="justify-center text-lg mt-4 text-gray-300"
-                            wordClass="hero-sub-word"
-                        />
+  return (
+    <SidebarProvider>
+      {/* The default shadcn sidebar is variant="sidebar" which styles it nicely based on CSS vars */}
+      <Sidebar collapsible="icon">
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton
+                    size="lg"
+                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
+                  >
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                      <ActiveTeamLogo className="size-4" />
                     </div>
-                    <div className={'search-bar w-[50%] rounded-full mx-auto border border-gray-200 bottom-20 fixed'}>
-                        <form className="flex flex-row items-center">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <button
-                                        type="button"
-                                        className={'flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none hover:bg-white/10 transition-colors duration-200'}
-                                    >
-                                        <LuPlus className={'w-8 h-7 mx-auto'} />
-                                    </button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent
-                                    side="top"
-                                    align="start"
-                                    sideOffset={12}
-                                    className="min-w-[180px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl"
-                                >
-                                    <DropdownMenuGroup>
-                                        <DropdownMenuLabel className="text-xs text-zinc-400 px-2 py-1.5">Attach</DropdownMenuLabel>
-                                        <DropdownMenuSeparator className="bg-zinc-700" />
-                                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                                            <Upload className="w-4 h-4 text-blue-400" />
-                                            <span>Upload</span>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                                            <ImageIcon className="w-4 h-4 text-emerald-400" />
-                                            <span>Image</span>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                                            <FileText className="w-4 h-4 text-amber-400" />
-                                            <span>File</span>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuGroup>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                            <input type={'text'} id={''} placeholder={'Ask any question you want to ask.'}
-                                className={'w-full p-4 rounded-full outline-none text-white'} />
-                            <button
-                                type="submit"
-                                className="flex items-center justify-center mr-3 w-9 h-9 rounded-full text-white hover:text-blue-400 transition-colors duration-200 cursor-pointer flex-shrink-0"
+                    <div className="grid flex-1 text-left leading-tight">
+                      <span className="truncate font-semibold text-lg">
+                        {activeTeam.name}
+                      </span>
+                      <span className="truncate text-sm">
+                        {activeTeam.plan}
+                      </span>
+                    </div>
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">
+              Platform
+            </SidebarGroupLabel>
+            <SidebarMenu>
+              {data.navMain.map((item) => (
+                <Collapsible
+                  key={item.title}
+                  asChild
+                  defaultOpen={item.isActive}
+                  className="group/collapsible"
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        className="text-base h-10"
+                      >
+                        {item.icon && <item.icon className="!w-5 !h-5" />}
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.items?.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton
+                              asChild
+                              className="text-sm h-8"
                             >
-                                <BsArrowUpCircleFill className="w-9 h-9" />
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </SidebarProvider>
-    )
-}
+                              <a href={subItem.url}>
+                                <span className="text-base">
+                                  {subItem.title}
+                                </span>
+                              </a>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
 
-export default LetsStartpage
+        <SidebarFooter>
+          <SidebarFooterAuth />
+        </SidebarFooter>
+      </Sidebar>
 
+      <div
+        className="flex-1 flex flex-col h-screen w-full relative"
+        ref={containerRef}
+      >
+        {/* Header with trigger */}
+        <header className="absolute top-0 left-0 p-4 z-10">
+          <SidebarTrigger className="text-white hover:text-gray-300" />
+        </header>
+
+        {/*main page*/}
+        <div
+          className={
+            "lets-start-page w-full h-full bg-(--page-bg) text-white font-sans font-extralight flex flex-col items-center justify-center"
+          }
+        >
+          <div
+            className={
+              "container flex justify-center w-[40%] flex-col text-center mx-auto"
+            }
+          >
+            <AnimatedText
+              text="Welcome to Ganitam Nirmoktra"
+              className="justify-center text-5xl font-semibold"
+              wordClass="hero-word"
+            />
+            <AnimatedText
+              text="How can I help you chandan?"
+              className="justify-center text-lg mt-4 text-gray-300"
+              wordClass="hero-sub-word"
+            />
+          </div>
+          <div
+            className={
+              "search-bar w-[50%] rounded-full mx-auto border border-gray-200 bottom-20 fixed"
+            }
+          >
+            <form className="flex flex-row items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className={
+                      "flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none hover:bg-white/10 transition-colors duration-200"
+                    }
+                  >
+                    <LuPlus className={"w-8 h-7 mx-auto"} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="top"
+                  align="start"
+                  sideOffset={12}
+                  className="min-w-[180px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl"
+                >
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel className="text-xs text-zinc-400 px-2 py-1.5">
+                      Attach
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-zinc-700" />
+                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <Upload
+                        className="w-4 h-4 text-blue-400"
+                      />
+                      <span>Upload</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <ImageIcon className="w-4 h-4 text-emerald-400"  />
+                      <span>Image</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <FileText className="w-4 h-4 text-amber-400" />
+                      <span>File</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <input
+                type={"text"}
+                id={""}
+                placeholder={"Ask any question you want to ask."}
+                className={"w-full p-4 rounded-full outline-none text-white"}
+              />
+              <button
+                type="submit"
+                className="flex items-center justify-center mr-3 w-9 h-9 rounded-full text-white hover:text-blue-400 transition-colors duration-200 cursor-pointer flex-shrink-0"
+              >
+                <BsArrowUpCircleFill className="w-9 h-9" />
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+};
+
+export default LetsStartpage;
