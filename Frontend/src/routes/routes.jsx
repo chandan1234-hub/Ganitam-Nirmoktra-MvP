@@ -8,6 +8,7 @@ import LetsStartpage from '../features/LetsStart/LetsStart.page.jsx'
 import PrivacyPolicypage from '../features/PrivacyPolicy/PrivacyPolicy.page.jsx'
 import SubscriptionPage from "../features/Subscription/Subscription.page.jsx"
 import ThankyouPage from "../features/ThankyouPage/ThankyouPage.jsx"
+import PageNotFound from '../features/ErrorPage/PageNotFound.jsx'
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
       path: '/thankyou',
       element: <ThankyouPage />,
+  },
+  {
+    path: '*',
+    element: <PageNotFound />,
   }
 ])
 

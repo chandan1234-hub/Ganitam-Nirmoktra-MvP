@@ -4,32 +4,33 @@ import "./Contact.style.css";
 // import axios from "axios";
 import emailjs from "@emailjs/browser";
 import { LogIn } from "lucide-react";
-// import ThankyouPage from "../ThankyouPage/ThankyouPage";
 import { useNavigate } from "react-router";
 
 const Contactpage = () => {
   const form = useRef(null);
   const navigate = useNavigate();
   const sendEmail = (e) => {
+
     e.preventDefault();
     try {
       emailjs
         .sendForm(
-          `process.env.EMAILJS_SERVICE_KEY`,
-          `process.env.EMAILJS_TEMPLATE_KEY`,
+          import.meta.env.VITE_EMAILJS_SERVICE_KEY,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_KEY,
           form.current,
-          `process.env.EMAILJS_PUBILIC_KEY`,
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
         )
         .then((response) => {
           console.log("Email sent successfully:", response);
         })
-        .then(() => navigate('/thankyou'))
-        .then(() => setTimeout(() => navigate('/contact'), 1000))
+        .then(() => navigate("/thankyou"))
+        .then(() => setTimeout(() => navigate("/contact"), 3000))
         .catch((error) => {
           console.error("Sending contact form failed:", error);
-        })
+        });
     } catch (error) {
       console.error("Error sending contact form:", error);
+      navigate("*");
     }
   };
   // const {
@@ -179,7 +180,7 @@ const Contactpage = () => {
                     <input
                       type="text"
                       placeholder="John Doe"
-                      required="true"
+                      required={true}
                       // {...register("username", { required: true, message: "Full name is required" })}
                       className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
@@ -192,7 +193,7 @@ const Contactpage = () => {
                     <input
                       type="email"
                       placeholder="johndoe@example.com"
-                      required="true"
+                      required={true}
                       // {...register("email", {
                       //   required: { value: true, message: "email is required" },
                       // })}
@@ -210,7 +211,7 @@ const Contactpage = () => {
                     // {...register("message", { required: true })}
                     className="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Message"
-                    required="true"
+                    required={true}
                   ></textarea>
                   {/* {errors.message && <div>this is required</div>}*/}
                 </div>
