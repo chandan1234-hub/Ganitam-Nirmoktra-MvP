@@ -1,14 +1,15 @@
 import { createBrowserRouter } from 'react-router'
-import AppLayout from '../components/AppLayout/AppLayout.jsx'
-import Homepage from '../features/Home/Home.page.jsx'
-import Aboutpage from '../features/AboutUs/About.page.jsx'
-import Contactpage from '../features/Contact/Contact.page.jsx'
-import FAQpage from '../features/FAQ/FAQ.page.jsx'
-import LetsStartpage from '../features/LetsStart/LetsStart.page.jsx'
-import PrivacyPolicypage from '../features/PrivacyPolicy/PrivacyPolicy.page.jsx'
-import SubscriptionPage from "../features/Subscription/Subscription.page.jsx"
-import ThankyouPage from "../features/ThankyouPage/ThankyouPage.jsx"
-import PageNotFound from '../features/ErrorPage/PageNotFound.jsx'
+import { lazy } from 'react'
+const AppLayout = lazy(() => import('../components/AppLayout/AppLayout.jsx'))
+const Homepage = lazy(() => import('../features/Home/Home.page.jsx'))
+const Aboutpage = lazy(() => import('../features/AboutUs/About.page.jsx'))
+const Contactpage = lazy(() => import('../features/Contact/Contact.page.jsx'))
+const FAQpage = lazy(() => import('../features/FAQ/FAQ.page.jsx'))
+const LetsStartpage = lazy(() => import('../features/LetsStart/LetsStart.page.jsx'))
+const PrivacyPolicypage = lazy(() => import('../features/PrivacyPolicy/PrivacyPolicy.page.jsx'))
+const SubscriptionPage = lazy(() => import("../features/Subscription/Subscription.page.jsx"))
+const ThankyouPage = lazy(() => import("../features/ThankyouPage/ThankyouPage.jsx"))
+const PageNotFound = lazy(() => import('../features/ErrorPage/PageNotFound.jsx'))
 
 const router = createBrowserRouter([
     {
