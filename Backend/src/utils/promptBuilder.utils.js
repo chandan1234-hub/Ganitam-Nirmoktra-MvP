@@ -228,9 +228,8 @@ END OF EXAMPLE
 `
 
 export const buildCompletePrompt = (question, subject, grade) => {
-    //  system prompt - who the ai is 
-    system: SYSTEM_PROMPT + FEW_SHOT_EXAMPLES
-
-    // user prompt - the question with CoT
-    user: buildUserPrompt(question, subject, grade)
+  return {
+    system: SYSTEM_PROMPT + FEW_SHOT_EXAMPLES,
+    user: buildUserPrompt(question, subject, grade),
+  }
 }

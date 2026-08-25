@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 // import cookieParser from "cookie-parser";
 import bodyParser from 'body-parser'
+import solverRoutes from './features/solver/solver.routes.js'
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors())
 // }))
 
 app.use(bodyParser.json())
+app.use('/api/solver', solverRoutes)
 // app.use(express.urlencoded({
 //     extended: true,
 //     limit: "16kb",

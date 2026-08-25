@@ -5,20 +5,20 @@ const ollama = new Ollama()
 
 export const generateSolution = async (question, subject, grade) => {
     const { system, user } = buildCompletePrompt(question, subject, grade)
-}
+    const response = await ollama.chat({
+        model: process.env.OLLAMA_MODEL || 'gpt-oss:120b-cloud',
+        messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: user },
+        ],
+        stream: false,
+        options: {
+            temperature: 0.2,
+            num_predict: 2000,
+        },
+    })
 
-const response = await ollama.chat({
-    model: 'gpt-oss:120b-cloud',
-    system: system,
-    user: user,
-    stream: false,
-    options: {
-        temperature: 0.2,
-        num_predict: 2000,
-    }
-})
-for await (const part of response) {
-    process.stdout.write(part.message.content)
+    return response.message?.content || ''
 }
 
 

@@ -1,27 +1,29 @@
 import "./LetsStart.style.css";
-import { Link } from "react-router";
-import { UserButton, useUser } from "@clerk/react";
-import react, { useRef, useState } from "react";
+import "katex/dist/katex.min.css";
+import { UserButton } from "@clerk/react";
+import { useRef, useState } from "react";
+import { BlockMath, InlineMath } from "react-katex";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useSmoothScroll } from "../../Hooks/useSmoothScroll";
 import { AnimatedText } from "../../components/AnimatedText";
 import { LuPlus } from "react-icons/lu";
 import { Logo } from "@/components/ui/Logo";
+import axios from "axios";
 import {
   ChevronRight,
-  ChevronsUpDown,
-  GalleryVerticalEnd,
   SquareTerminal,
-  Bot,
   BookOpen,
   Settings2,
   Upload,
   ImageIcon,
   FileText,
   File,
+  LoaderCircle,
+  Send,
+  Sparkles,
 } from "lucide-react";
-import { BsArrowUpCircleFill } from "react-icons/bs";
+import ApiClient from "../../lib/ApiClient";
 import {
   Collapsible,
   CollapsibleContent,
@@ -56,9 +58,26 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Feature } from "motion";
-import { useEffect } from "react";
+const renderAssistantContent = (content) => {
+  const parts = content.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$)/g);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("$$") && part.endsWith("$$")) {
+      return <BlockMath key={index} math={part.slice(2, -2).trim()} />;
+    }
+
+    if (part.startsWith("$") && part.endsWith("$")) {
+      return <InlineMath key={index} math={part.slice(1, -1).trim()} />;
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+};
+
+axios.fetch('http://localhost:3000/api/solver')
+  .then((data) => {
+
+  })
 
 const data = {
   teams: [
@@ -180,6 +199,43 @@ const LetsStartpage = () => {
   const activeTeam = data.teams[0];
   const ActiveTeamLogo = activeTeam.logo;
   const containerRef = useRef(null);
+  const [question, setQuestion] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const askAssistant = async (event) => {
+    event?.preventDefault();
+    const trimmedQuestion = question.trim();
+
+    if (!trimmedQuestion || isLoading) return;
+
+    setMessages((current) => [...current, { role: "user", content: trimmedQuestion }]);
+    setQuestion("");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const endpoint = import.meta.env.VITE_AI_ENDPOINT || "api/solver/solve";
+      const response = await ApiClient.post(endpoint, {
+        question: trimmedQuestion,
+        subject: "mathematics",
+        grade: "general",
+      }, { timeout: 60000 });
+      const solution = response.data?.data?.solution || response.data?.solution;
+
+      if (!solution) throw new Error("The assistant returned an empty response.");
+      setMessages((current) => [...current, { role: "assistant", content: solution }]);
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "The assistant is unavailable right now.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSuggestion = (suggestion) => {
+    setQuestion(suggestion);
+  };
 
 
   useSmoothScroll();
@@ -316,34 +372,48 @@ const LetsStartpage = () => {
           <SidebarTrigger className="text-white hover:text-gray-300" />
         </header>
 
-        {/*main page*/}
-        <div
-          className={
-            "lets-start-page w-full h-full bg-(--page-bg) text-white font-sans font-extralight flex flex-col items-center justify-center"
-          }
-        >
-          <div
-            className={
-              "container flex justify-center w-[40%] flex-col text-center mx-auto"
-            }
-          >
-            <AnimatedText
-              text="Welcome to Ganitam Nirmoktra"
-              className="justify-center text-5xl font-semibold"
-              wordClass="hero-word"
-            />
-            <AnimatedText
-              text="How can I help you chandan?"
-              className="justify-center text-lg mt-4 text-gray-300"
-              wordClass="hero-sub-word"
-            />
+        <main className="lets-start-page" aria-label="Ganitam Nirmoktra assistant">
+          <div className="assistant-workspace">
+            {messages.length === 0 ? (
+              <section className="assistant-welcome">
+                <div className="assistant-mark" aria-hidden="true"><Sparkles size={18} /></div>
+                <AnimatedText
+                  text="Welcome to Ganitam Nirmoktra"
+                  className="justify-center text-5xl font-semibold"
+                  wordClass="hero-word"
+                />
+                <AnimatedText
+                  text="Work through a question with a clear, patient explanation."
+                  className="justify-center text-lg mt-4 text-gray-300"
+                  wordClass="hero-sub-word"
+                />
+                <div className="suggestion-row" aria-label="Example questions">
+                  {["Explain quadratic equations", "Solve 2x + 7 = 19", "Teach me integration"].map((suggestion) => (
+                    <button type="button" key={suggestion} onClick={() => handleSuggestion(suggestion)}>
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ) : (
+              <section className="conversation" aria-live="polite">
+                {messages.map((message, index) => (
+                  <article className={`message message-${message.role}`} key={`${message.role}-${index}`}>
+                    <div className="message-label">{message.role === "assistant" ? "Ganitam" : "You"}</div>
+                    <div className="message-content">
+                      {message.role === "assistant"
+                        ? renderAssistantContent(message.content)
+                        : message.content}
+                    </div>
+                  </article>
+                ))}
+                {isLoading && <div className="message message-assistant loading-message"><LoaderCircle size={18} className="loading-icon" /> Thinking through it...</div>}
+              </section>
+            )}
           </div>
-          <div
-            className={
-              "search-bar w-[50%] rounded-full mx-auto border border-gray-200 bottom-20 fixed"
-            }
-          >
-            <form className="flex flex-row items-center">
+
+          <div className="search-bar">
+            <form className="composer" onSubmit={askAssistant}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
@@ -383,21 +453,30 @@ const LetsStartpage = () => {
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <input
-                type={"text"}
-                id={""}
-                placeholder={"Ask any question you want to ask."}
-                className={"w-full p-4 rounded-full outline-none text-white"}
+              <textarea
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) askAssistant(event);
+                }}
+                rows={1}
+                aria-label="Ask a mathematical question"
+                placeholder="Ask a mathematical question..."
+                className="composer-input"
               />
               <button
                 type="submit"
-                className="flex items-center justify-center mr-3 w-9 h-9 rounded-full text-white hover:text-blue-400 transition-colors duration-200 cursor-pointer flex-shrink-0"
+                aria-label="Send question"
+                disabled={!question.trim() || isLoading}
+                className="send-button"
               >
-                <BsArrowUpCircleFill className="w-9 h-9" />
+                <Send size={18} />
               </button>
             </form>
+            {error && <p className="assistant-error" role="alert">{error}</p>}
+            <p className="composer-note">Ganitam can make mistakes. Check important work.</p>
           </div>
-        </div>
+        </main>
       </div>
     </SidebarProvider>
   );
