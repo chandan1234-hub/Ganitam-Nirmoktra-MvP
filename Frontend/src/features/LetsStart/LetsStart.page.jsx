@@ -1,7 +1,7 @@
 import "./LetsStart.style.css";
 import "katex/dist/katex.min.css";
 import { UserButton } from "@clerk/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -9,16 +9,13 @@ import { useSmoothScroll } from "../../Hooks/useSmoothScroll";
 import { AnimatedText } from "../../components/AnimatedText";
 import { LuPlus } from "react-icons/lu";
 import { Logo } from "@/components/ui/Logo";
-import axios from "axios";
 import {
   ChevronRight,
   SquareTerminal,
-  BookOpen,
   Settings2,
   Upload,
   ImageIcon,
   FileText,
-  File,
   LoaderCircle,
   Send,
   Sparkles,
@@ -74,11 +71,6 @@ const renderAssistantContent = (content) => {
   });
 };
 
-axios.fetch('http://localhost:3000/api/solver')
-  .then((data) => {
-
-  })
-
 const data = {
   teams: [
     {
@@ -103,44 +95,6 @@ const data = {
         {
           title: "Contact",
           url: "/contact",
-        },
-      ],
-    },
-    {
-      title: "Features",
-      url: "#",
-      icon: File,
-      items: [
-        {
-          title: "History",
-          url: "/history",
-        },
-        {
-          title: "Explorer",
-          url: "/explorer",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
         },
       ],
     },
@@ -196,13 +150,66 @@ const SidebarFooterAuth = () => {
 };
 
 const LetsStartpage = () => {
+  const historyStorageKey = "ganitam-solver-history";
+  const maxHistoryChats = 10;
   const activeTeam = data.teams[0];
   const ActiveTeamLogo = activeTeam.logo;
   const containerRef = useRef(null);
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
+  const [historyItems, setHistoryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    try {
+      const savedMessages = JSON.parse(localStorage.getItem(historyStorageKey) || "[]");
+      if (Array.isArray(savedMessages)) {
+        setMessages(savedMessages);
+        const savedHistory = [];
+        for (let index = 0; index < savedMessages.length - 1; index += 1) {
+          if (savedMessages[index].role === "user" && savedMessages[index + 1].role === "assistant") {
+            savedHistory.push({
+              id: `local-${index}`,
+              question: savedMessages[index].content,
+              solution: savedMessages[index + 1].content,
+            });
+          }
+        }
+        setHistoryItems(savedHistory.slice(-maxHistoryChats).reverse());
+      }
+    } catch {
+      localStorage.removeItem(historyStorageKey);
+    }
+
+    ApiClient.get("api/solver/history")
+      .then((response) => {
+        const history = response.data?.data?.history || [];
+        setHistoryItems(history.slice(0, maxHistoryChats));
+        const restoredMessages = history.slice(0, maxHistoryChats).reverse().flatMap((item) => [
+          { role: "user", content: item.question },
+          { role: "assistant", content: item.solution },
+        ]);
+
+        if (restoredMessages.length > 0) {
+          setMessages((current) => current.length > 0 ? current : restoredMessages.reverse());
+        }
+      })
+      .catch(() => {
+        // The browser copy remains available when the API is offline.
+      });
+  }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      const limitedMessages = messages.slice(-(maxHistoryChats * 2));
+      localStorage.setItem(historyStorageKey, JSON.stringify(limitedMessages));
+
+      if (limitedMessages.length !== messages.length) {
+        setMessages(limitedMessages);
+      }
+    }
+  }, [messages]);
 
   const askAssistant = async (event) => {
     event?.preventDefault();
@@ -221,11 +228,23 @@ const LetsStartpage = () => {
         question: trimmedQuestion,
         subject: "mathematics",
         grade: "general",
-      }, { timeout: 60000 });
+      }, { timeout: 120000 });
       const solution = response.data?.data?.solution || response.data?.solution;
 
       if (!solution) throw new Error("The assistant returned an empty response.");
       setMessages((current) => [...current, { role: "assistant", content: solution }]);
+      setHistoryItems((current) => [
+        { id: `local-${Date.now()}`, question: trimmedQuestion, solution },
+        ...current,
+      ].slice(0, maxHistoryChats));
+      ApiClient.post("api/solver/history", {
+        question: trimmedQuestion,
+        solution,
+        subject: "mathematics",
+        grade: "general",
+      }).catch(() => {
+        // localStorage preserves the conversation if the history API is unavailable.
+      });
     } catch (requestError) {
       setError(requestError.response?.data?.message || "The assistant is unavailable right now.");
     } finally {
@@ -235,6 +254,14 @@ const LetsStartpage = () => {
 
   const handleSuggestion = (suggestion) => {
     setQuestion(suggestion);
+  };
+
+  const openHistoryChat = (historyItem) => {
+    setMessages([
+      { role: "user", content: historyItem.question },
+      { role: "assistant", content: historyItem.solution },
+    ]);
+    setError("");
   };
 
 
@@ -356,6 +383,34 @@ const LetsStartpage = () => {
               ))}
             </SidebarMenu>
           </SidebarGroup>
+
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">
+              History
+            </SidebarGroupLabel>
+            <SidebarMenu>
+              {historyItems.length === 0 ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
+                    No previous chats
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ) : (
+                historyItems.map((historyItem, index) => (
+                  <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
+                    <SidebarMenuButton
+                      type="button"
+                      tooltip={historyItem.question}
+                      onClick={() => openHistoryChat(historyItem)}
+                      className="h-9 text-sm"
+                    >
+                      <span className="truncate">{historyItem.question}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+              )}
+            </SidebarMenu>
+          </SidebarGroup>
         </SidebarContent>
 
         <SidebarFooter>
@@ -364,12 +419,12 @@ const LetsStartpage = () => {
       </Sidebar>
 
       <div
-        className="flex-1 flex flex-col h-screen w-full relative"
+        className="flex-1 flex flex-col min-h-screen w-full relative bg-black"
         ref={containerRef}
       >
         {/* Header with trigger */}
-        <header className="absolute top-0 left-0 p-4 z-10">
-          <SidebarTrigger className="text-white hover:text-gray-300" />
+        <header className="fixed top-0 left-0 z-20 p-4 pointer-events-none">
+          <SidebarTrigger className="pointer-events-auto text-white hover:text-gray-300" />
         </header>
 
         <main className="lets-start-page" aria-label="Ganitam Nirmoktra assistant">

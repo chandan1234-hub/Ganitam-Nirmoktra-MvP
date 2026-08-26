@@ -47,7 +47,7 @@ YOUR RESPONSE STRUCTURE — always follow this exact format:
 [One powerful line the student should never forget]
 `
 
-export const buildUserPrompt = (question, subject) => {
+export const buildUserPrompt = (question, subject, grade) => {
     return `
 SUBJECT: ${subject}
 QUESTION: ${question}
@@ -229,7 +229,8 @@ END OF EXAMPLE
 
 export const buildCompletePrompt = (question, subject, grade) => {
   return {
-    system: SYSTEM_PROMPT + FEW_SHOT_EXAMPLES,
+    // The example is very large and makes local Ollama inference unnecessarily slow.
+    system: SYSTEM_PROMPT,
     user: buildUserPrompt(question, subject, grade),
   }
 }

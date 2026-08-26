@@ -17,10 +17,11 @@
   --assistant-panel: rgba(255, 255, 255, 0.06);
   --assistant-accent: #60a5fa;
   position: relative;
-  height: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   box-sizing: border-box;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
   background: var(--page-bg);
   color: #fff;
   font-family: 'Geist Variable', sans-serif;
@@ -28,7 +29,8 @@
 
 .assistant-workspace {
   width: min(760px, calc(100% - 48px));
-  min-height: 100%;
+  flex: 1 0 auto;
+  min-height: calc(100vh - 150px);
   margin: 0 auto;
   padding: 0 0 180px;
   box-sizing: border-box;
@@ -93,6 +95,7 @@
 
 .conversation {
   width: 100%;
+  padding: 24px 8px 32px 0;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -126,20 +129,37 @@
   letter-spacing: 0.03em;
 }
 
-.message-content { margin: 0; white-space: pre-wrap; }
+.message-content { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .message-content .katex { color: #f4f4f5; }
 .message-content .katex-display { margin: 1rem 0; overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; }
 .loading-message { display: flex; align-items: center; gap: 8px; color: var(--assistant-muted); }
 .loading-icon { animation: assistant-spin 1s linear infinite; }
 
 .search-bar {
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
+  position: sticky;
+  bottom: 16px;
   z-index: 5;
+  isolation: isolate;
   width: min(760px, calc(100% - 48px));
-  margin: 0 auto;
-  transform: translateX(-50%);
+  flex: 0 0 auto;
+  margin: 0 auto 24px;
+  padding: 24px 0 44px;
+  background: transparent;
+}
+
+.search-bar::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -20px -100vw -28px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.92) 28px,
+    #000 64px,
+    #000 100%
+  );
 }
 
 .composer {
@@ -195,7 +215,7 @@
   .assistant-workspace { padding-bottom: 160px; }
   .assistant-welcome .text-5xl { font-size: 2rem; }
   .message { max-width: 92%; }
-  .search-bar { bottom: 16px; }
+  .search-bar { bottom: 8px; margin-bottom: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
