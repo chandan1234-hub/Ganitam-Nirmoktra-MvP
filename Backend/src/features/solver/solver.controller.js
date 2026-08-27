@@ -12,10 +12,10 @@ export const solveProblem = async (req, res) => {
         const solution = await generateSolution(question.trim(), subject, grade)
         return res.status(200).json({ success: true, data: { solution } })
     } catch (error) {
-        console.error('Ollama solver request failed:', error.message)
+        console.error('Ollama Cloud solver request failed:', error.message)
         return res.status(502).json({
             success: false,
-            message: 'The AI solver is unavailable. Make sure Ollama is running and the configured model is installed.',
+            message: 'The AI solver is unavailable. Check the Ollama Cloud API key and configured model.',
         })
     }
 }
