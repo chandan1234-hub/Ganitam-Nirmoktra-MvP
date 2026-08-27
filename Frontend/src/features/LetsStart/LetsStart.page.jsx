@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useSmoothScroll } from "../../Hooks/useSmoothScroll";
 import { AnimatedText } from "../../components/AnimatedText";
 import { LuPlus } from "react-icons/lu";
 import { Logo } from "@/components/ui/Logo";
@@ -149,6 +148,17 @@ const SidebarFooterAuth = () => {
   );
 };
 
+const LetsStartSidebarTrigger = () => {
+  const { state, isMobile } = useSidebar();
+  const isCollapsed = state === "collapsed";
+
+  return (
+    <SidebarTrigger
+      className={`lets-start-collapse-button ${isCollapsed || isMobile ? "is-collapsed" : ""}`}
+    />
+  );
+};
+
 const LetsStartpage = () => {
   const historyStorageKey = "ganitam-solver-history";
   const maxHistoryChats = 10;
@@ -264,8 +274,12 @@ const LetsStartpage = () => {
     setError("");
   };
 
+  const startNewChat = () => {
+    setMessages([]);
+    setQuestion("");
+    setError("");
+  };
 
-  useSmoothScroll();
 
   useGSAP(
     () => {
@@ -319,7 +333,7 @@ const LetsStartpage = () => {
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
                   >
                     <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                      <ActiveTeamLogo className="size-4" />
+                      <ActiveTeamLogo className="size-5" />
                     </div>
                     <div className="grid flex-1 text-left leading-tight">
                       <span className="truncate font-semibold text-lg">
@@ -336,7 +350,23 @@ const LetsStartpage = () => {
           </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent className="lets-start-sidebar-content">
+          <SidebarGroup>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  type="button"
+                  tooltip="New Chat"
+                  onClick={startNewChat}
+                  className="h-10 text-base"
+                >
+                  <LuPlus className="!h-5 !w-5" />
+                  <span>New Chat</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+
           <SidebarGroup>
             <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">
               Platform
@@ -384,32 +414,34 @@ const LetsStartpage = () => {
             </SidebarMenu>
           </SidebarGroup>
 
-          <SidebarGroup>
+          <SidebarGroup className="lets-start-history-group">
             <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">
               History
             </SidebarGroupLabel>
-            <SidebarMenu>
-              {historyItems.length === 0 ? (
-                <SidebarMenuItem>
-                  <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
-                    No previous chats
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ) : (
-                historyItems.map((historyItem, index) => (
-                  <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
-                    <SidebarMenuButton
-                      type="button"
-                      tooltip={historyItem.question}
-                      onClick={() => openHistoryChat(historyItem)}
-                      className="h-9 text-sm"
-                    >
-                      <span className="truncate">{historyItem.question}</span>
+            <div className="lets-start-history-list" data-lenis-prevent>
+              <SidebarMenu>
+                {historyItems.length === 0 ? (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
+                      No previous chats
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))
-              )}
-            </SidebarMenu>
+                ) : (
+                  historyItems.map((historyItem, index) => (
+                    <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
+                      <SidebarMenuButton
+                        type="button"
+                        tooltip={historyItem.question}
+                        onClick={() => openHistoryChat(historyItem)}
+                        className="h-9 text-sm"
+                      >
+                        <span className="truncate">{historyItem.question}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))
+                )}
+              </SidebarMenu>
+            </div>
           </SidebarGroup>
         </SidebarContent>
 
@@ -419,13 +451,10 @@ const LetsStartpage = () => {
       </Sidebar>
 
       <div
-        className="flex-1 flex flex-col min-h-screen w-full relative bg-black"
+        className="lets-start-shell flex-1 flex flex-col w-full relative bg-black"
         ref={containerRef}
       >
-        {/* Header with trigger */}
-        <header className="fixed top-0 left-0 z-20 p-4 pointer-events-none">
-          <SidebarTrigger className="pointer-events-auto text-white hover:text-gray-300" />
-        </header>
+        <LetsStartSidebarTrigger />
 
         <main className="lets-start-page" aria-label="Ganitam Nirmoktra assistant">
           <div className="assistant-workspace">
