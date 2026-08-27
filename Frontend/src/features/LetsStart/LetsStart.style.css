@@ -17,20 +17,105 @@
   --assistant-panel: rgba(255, 255, 255, 0.06);
   --assistant-accent: #60a5fa;
   position: relative;
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow-x: clip;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-width: thin;
   background: var(--page-bg);
   color: #fff;
   font-family: 'Geist Variable', sans-serif;
 }
 
+.lets-start-page::-webkit-scrollbar {
+  width: 7px;
+}
+
+.lets-start-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.lets-start-page::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.lets-start-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.lets-start-shell {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lets-start-collapse-button {
+  position: fixed;
+  top: 1rem;
+  left: calc(var(--sidebar-width) + 0.5rem);
+  z-index: 30;
+  color: #fff;
+  background: #09090b;
+  border: 1px solid var(--assistant-line);
+  pointer-events: auto;
+}
+
+.lets-start-collapse-button.is-collapsed {
+  left: calc(var(--sidebar-width-icon) + 0.5rem);
+}
+
+.lets-start-collapse-button:hover,
+.lets-start-collapse-button:focus-visible {
+  color: #d4d4d8;
+  background: #18181b;
+}
+
+.lets-start-sidebar-content {
+  overflow: hidden;
+}
+
+.lets-start-history-group {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lets-start-history-list {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-width: thin;
+}
+
+.lets-start-history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lets-start-history-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.lets-start-history-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.lets-start-history-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
 .assistant-workspace {
   width: min(760px, calc(100% - 48px));
-  flex: 1 0 auto;
-  min-height: calc(100vh - 150px);
+  flex: 0 0 auto;
+  min-height: calc(100dvh - 150px);
   margin: 0 auto;
   padding: 0 0 180px;
   box-sizing: border-box;

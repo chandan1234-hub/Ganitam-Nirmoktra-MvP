@@ -2,15 +2,16 @@ import { Ollama } from 'ollama'
 import { buildCompletePrompt } from '../utils/promptBuilder.utils.js'
 
 const getOllamaClient = () => new Ollama({
-    host: process.env.OLLAMA_URL || process.env.OLLAMA_HOST || 'http://127.0.0.1:11434',
+    host: process.env.OLLAMA_URL || process.env.OLLAMA_HOST || 'https://ollama.com',
+    headers: process.env.OLLAMA_API_KEY
+        ? { Authorization: `Bearer ${process.env.OLLAMA_API_KEY}` }
+        : undefined,
 })
 
 export const generateSolution = async (question, subject, grade) => {
     const { system, user } = buildCompletePrompt(question, subject, grade)
     const response = await getOllamaClient().chat({
-        // llama3.2:latest is installed locally and responds reliably.
-        // Set OLLAMA_MODEL in Backend/.env to override this default.
-        model: process.env.OLLAMA_MODEL || 'llama3.2:latest',
+        model: process.env.OLLAMA_MODEL || 'gpt-oss:120b',
         messages: [
             { role: 'system', content: system },
             { role: 'user', content: user },
