@@ -8,8 +8,8 @@ const getOllamaClient = () => new Ollama({
         : undefined,
 })
 
-export const generateSolution = async (question, subject, grade) => {
-    const { system, user } = buildCompletePrompt(question, subject, grade)
+export const generateSolution = async (question, subject, grade, solutionMode = 'single', examinerMode = false) => {
+    const { system, user } = buildCompletePrompt(question, subject, grade, solutionMode, examinerMode)
     const response = await getOllamaClient().chat({
         model: process.env.OLLAMA_MODEL || 'gpt-oss:120b',
         messages: [
