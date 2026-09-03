@@ -1,16 +1,16 @@
-import { generateSolution } from '../../AIChatmodel/aimodel.js'
+import { MathAgent } from '../../services/agent.service.js'
 import { SolverHistory } from './solver.history.model.js'
 
 export const solveProblem = async (req, res) => {
-    const { question, subject = 'mathematics', grade = 'general' } = req.body
+    const { question, subject = 'mathematics', grade = 'general', solutionMode = 'single', examinerMode = false } = req.body
 
     if (!question?.trim()) {
         return res.status(400).json({ success: false, message: 'A question is required.' })
     }
 
     try {
-        const solution = await generateSolution(question.trim(), subject, grade)
-        return res.status(200).json({ success: true, data: { solution } })
+        const result = await MathAgent(question.trim(), subject, grade, solutionMode, examinerMode)
+        return res.status(200).json({ success: true, data: result })
     } catch (error) {
         console.error('Ollama Cloud solver request failed:', error.message)
         return res.status(502).json({
