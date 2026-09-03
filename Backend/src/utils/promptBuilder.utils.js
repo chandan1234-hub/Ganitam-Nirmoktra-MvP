@@ -11,7 +11,7 @@ YOUR IDENTITY:
 - You love mathmatics deeply
 
 YOUR RULES - follow these strictly:
-1. ALWAYS solve every problem using minimum 2 methods
+1. Use a minimum of 2 methods unless the user requests a single solution
 2. ALWAYS explain WHY each step is done, not just HOW
 3. ALWAYS use simple language a school student understands
 4. ALWAYS wrap every math expression in proper and understandable format
@@ -30,7 +30,7 @@ YOUR RESPONSE STRUCTURE — always follow this exact format:
 [Step by step solution with explanations for each step]
 [Explain WHY each step is done]
 
-## Method 2: [Alternative method]
+## Method 2: [Alternative method — include when solution mode is multiple]
 [Step by step solution with explanations for each step]
 [Explain WHY each step is done]
 
@@ -47,11 +47,43 @@ YOUR RESPONSE STRUCTURE — always follow this exact format:
 [One powerful line the student should never forget]
 `
 
-export const buildUserPrompt = (question, subject, grade) => {
+const EXAMINER_SYSTEM_PROMPT = `
+EXAMINER MODE:
+- Teach interactively instead of only presenting the finished solution.
+- Before each major step, ask the student one short question about what should happen next.
+- Do not immediately reveal the answer to that question; give a small hint or checkpoint first.
+- After the hint, show the correct step and explain why it is correct.
+- Ask the student to try the next reasoning step whenever practical.
+- Finish with a brief verification question that lets the student check the result.
+- Keep the questions specific to this problem, encouraging, and suitable for the student's grade.
+`
+
+const SOLUTION_MODE_SYSTEM_PROMPT = `
+SOLUTION MODE:
+- In single mode, provide exactly one complete solution method and do not provide Method 2 or Method 3.
+- In multiple mode, provide at least two distinct complete solution methods and compare them when useful.
+`
+
+export const buildUserPrompt = (question, subject, grade, solutionMode = 'single', examinerMode = false) => {
+  const normalizedSolutionMode = solutionMode === 'single' ? 'single' : 'multiple'
+  const methodInstruction = normalizedSolutionMode === 'single'
+    ? 'Use exactly ONE method. Give the clearest method for the student and do not include alternative methods.'
+    : 'Use at least TWO different methods and compare them when practical.'
+  let examinerInstruction
+  if (examinerMode) {
+    examinerInstruction = 'Examiner mode is ON. Use the interactive question-led teaching rules from the system prompt. Include checkpoints and questions throughout the explanation, not only at the end.'
+  } else {
+    examinerInstruction = 'Examiner mode is OFF. Explain the solution directly. Do not ask the student interactive questions or pause for responses.'
+  }
+
     return `
 SUBJECT: ${subject}
 QUESTION: ${question}
 GRADE: ${grade}
+SOLUTION MODE: ${normalizedSolutionMode}
+
+${methodInstruction}
+${examinerInstruction}
 
 Before you answer think through this step by step:
 
@@ -63,12 +95,11 @@ What does the student need to find?
 STEP 2 — PLAN:
 What methods can solve this?
 Which method is most suitable for ${grade}?
-Which alternative method exists?
+Which alternative method exists, if solution mode is multiple?
 
 STEP 3 — SOLVE:
 Execute Method 1 carefully
-Execute Method 2 carefully
-Check if answers match
+${normalizedSolutionMode === 'single' ? 'Do not execute another method.' : 'Execute Method 2 carefully and check if both answers match.'}
 
 STEP 4 — EXPLAIN:
 Can a Class ${grade} student understand this?
@@ -227,10 +258,13 @@ END OF EXAMPLE
 ---
 `
 
-export const buildCompletePrompt = (question, subject, grade) => {
+export const buildCompletePrompt = (question, subject, grade, solutionMode = 'single', examinerMode = false) => {
+  const normalizedSolutionMode = solutionMode === 'single' ? 'single' : 'multiple'
+  const isExaminerMode = examinerMode === true || examinerMode === 'true'
+
   return {
     // The example is very large and makes local Ollama inference unnecessarily slow.
-    system: SYSTEM_PROMPT,
-    user: buildUserPrompt(question, subject, grade),
+    system: `${SYSTEM_PROMPT}\n${SOLUTION_MODE_SYSTEM_PROMPT}${isExaminerMode ? `\n${EXAMINER_SYSTEM_PROMPT}` : ''}`,
+    user: buildUserPrompt(question, subject, grade, normalizedSolutionMode, isExaminerMode),
   }
 }
