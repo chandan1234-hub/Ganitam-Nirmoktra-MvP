@@ -1,0 +1,48 @@
+.faq-page {
+	width: min(100%, 56rem);
+	overflow-wrap: anywhere;
+}
+
+.faq-page .toggle-button {
+	min-height: 3.5rem;
+	padding-right: 0.5rem;
+}
+
+@media (max-width: 639px) {
+	.faq-page {
+		margin-top: 4rem;
+		padding: 1rem;
+	}
+
+	.faq-page > div:first-child {
+		margin-bottom: 3rem;
+	}
+
+	.faq-page > div:first-child h2 {
+		font-size: 1.85rem;
+		line-height: 1.15;
+	}
+
+	.faq-page > div:last-child {
+		gap: 2.75rem;
+	}
+
+	.faq-page .toggle-button {
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding-top: 1.15rem;
+		padding-bottom: 1.15rem;
+		line-height: 1.4;
+	}
+
+	.faq-page .toggle-button span {
+		margin-left: 0;
+	}
+
+	.faq-page [aria-labelledby] > p {
+		margin-left: 1.5rem;
+		padding-bottom: 1.25rem;
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+}
