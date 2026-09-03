@@ -41,7 +41,7 @@ const Contactpage = () => {
   // } = useForm();
 
   return (
-    <div className="w-full overflow-x-hidden mx-auto">
+    <div className="contact-page w-full overflow-x-hidden mx-auto">
       <section className="bg-transparent dark:bg-transparent overflow-y-hidden w-full ">
         <div className="container px-6 py-12 w-full mx-auto">
           <div className="text-center ">

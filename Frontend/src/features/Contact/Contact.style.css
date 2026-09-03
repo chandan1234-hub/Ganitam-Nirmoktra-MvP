@@ -1,0 +1,39 @@
+.contact-page {
+	overflow-wrap: anywhere;
+}
+
+.contact-page img {
+	max-width: 100%;
+}
+
+@media (max-width: 639px) {
+	.contact-page .container {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	.contact-page section:first-child img {
+		height: 13rem;
+		margin-top: 2rem;
+	}
+
+	.contact-page section:nth-child(2) .container {
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+	}
+
+	.contact-page form {
+		margin-top: 2rem;
+	}
+
+	.contact-page .w-72 {
+		width: auto;
+		min-width: 0;
+		white-space: normal;
+	}
+
+	.contact-page section:nth-child(2) p.flex {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
