@@ -90,7 +90,7 @@ const
             setOpenItems(newOpenItems);
         };
         return (
-            <div className="max-w-4xl mx-auto p-4 mt-10">
+            <div className="faq-page max-w-4xl mx-auto p-4 mt-10">
                 <div className="max-w-3xl mb-12 md:mb-16  ">
                     <h2 className="text-slate-900 text-3xl font-bold md:text-4xl dark:text-slate-50 ">
                         Frequently Asked Questions
