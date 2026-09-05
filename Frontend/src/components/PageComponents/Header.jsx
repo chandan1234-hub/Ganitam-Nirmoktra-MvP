@@ -14,12 +14,21 @@ const BrandLogo = () => {
 }
 const Header = () => {
     return (
-        <div className="flex flex-row  justify-evenly w-full items-center px-4 bg-transparent sticky top-2 z-100 mx-auto ml-auto mr-auto mt-4">
+        <div className="site-header flex flex-row w-full items-center gap-6 px-4 bg-transparent sticky top-2 z-100 mx-auto ml-auto mr-auto mt-4">
             <div className={'flex items-center cursor-pointer'}>
                 <BrandLogo className={'w-auto h-auto'}/>
             </div>
-            <Navbar/>
-            <div className={'flex flex-row gap-5 font-sans w-fit items-center'}>
+            <Navbar
+                mobileActions={
+                    <Show when="signed-out">
+                        <div className="mobile-auth-buttons">
+                            <SignInButton className="mobile-auth-button mobile-auth-button-primary" />
+                            <SignUpButton className="mobile-auth-button mobile-auth-button-secondary" />
+                        </div>
+                    </Show>
+                }
+            />
+            <div className={'header-actions flex flex-row gap-5 font-sans w-fit items-center'}>
                 <Show when="signed-out" className="mt-auto">
           <SignInButton className="bg-amber-50 cursor-pointer p-2 w-20 rounded-3xl pointer-fine:peer-hover:bg-gray-300"/>
           <SignUpButton className="border border-amber-50 cursor-pointer rounded-3xl p-2 text-white w-20"/>
