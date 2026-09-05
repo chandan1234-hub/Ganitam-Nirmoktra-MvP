@@ -1,24 +1,44 @@
+import { useState } from 'react'
 import {NavLink} from 'react-router'
 import './Navbar.css'
 import '../../Globalcss/global.css'
-const Navbar = () => {
+const Navbar = ({ mobileActions }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
     return (
-        <div className="Navbar w-[40%] sticky z-0 rounded-4xl ">
-                <ul className=" Navlinks flex justify-around w-[40%] capitalize mx-auto p-3 text-white bg-white-0.6 backdrop-blur-3xl border border-white rounded-4xl">
+        <nav className="Navbar" aria-label="Primary navigation">
+                <button
+                    type="button"
+                    className="navbar-toggle"
+                    aria-expanded={isMenuOpen}
+                    aria-controls="primary-navigation"
+                    aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                    onClick={() => setIsMenuOpen((open) => !open)}
+                >
+                    <span className="bar" />
+                    <span className="bar" />
+                    <span className="bar" />
+                </button>
+                <ul id="primary-navigation" className={`Navlinks${isMenuOpen ? ' active' : ''}`}>
                     <li>
-                        <NavLink to="/">Home</NavLink>
+                        <NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/lets-start">Let's Start</NavLink>
+                        <NavLink to="/lets-start" onClick={() => setIsMenuOpen(false)}>Let's Start</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/SubscriptionPlans">Plans</NavLink>
+                        <NavLink to="/SubscriptionPlans" onClick={() => setIsMenuOpen(false)}>Plans</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/contact">Contact Us</NavLink>
+                        <NavLink to="/contact" onClick={() => setIsMenuOpen(false)}>Contact Us</NavLink>
                     </li>
+                    {mobileActions && (
+                        <li className="mobile-auth-actions" onClick={() => setIsMenuOpen(false)}>
+                            {mobileActions}
+                        </li>
+                    )}
                 </ul>
-        </div>
+        </nav>
     )
 }
 
