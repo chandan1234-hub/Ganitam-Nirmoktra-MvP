@@ -133,4 +133,33 @@ body {
 @keyframes glow-visibility {
     0%, 100% { opacity: 0; }
     25%, 75% { opacity: 1; }
-}
+}
+
+@media (max-width: 480px) {
+    .Hero-Section {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .Herarchy {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        max-width: calc(100vw - 4rem);
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .HomePage {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .Hero-text {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(2.25rem, 11vw, 3.5rem);
+        line-height: 1.08;
+        overflow-wrap: anywhere;
+    }
+}

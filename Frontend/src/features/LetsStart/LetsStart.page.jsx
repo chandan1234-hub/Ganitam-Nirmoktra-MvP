@@ -2,11 +2,10 @@ import "./LetsStart.style.css";
 import "katex/dist/katex.min.css";
 import { UserButton } from "@clerk/react";
 import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
+import { BlockMath, InlineMath } from "react-katex";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useSmoothScroll } from "../../Hooks/useSmoothScroll";
 import { AnimatedText } from "../../components/AnimatedText";
 import { LuPlus } from "react-icons/lu";
 import { Logo } from "@/components/ui/Logo";
@@ -20,9 +19,6 @@ import {
   LoaderCircle,
   Send,
   Sparkles,
-  ChevronDown,
-  Mic,
-  Check,
 } from "lucide-react";
 import ApiClient from "../../lib/ApiClient";
 import {
@@ -55,22 +51,45 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 
 const renderAssistantContent = (content) => {
-  const normalizedContent = String(content || "")
-    .replace(/\\textor\b/g, "\\text{or}")
-    .replace(/```(?:latex|tex|math)\s*([\s\S]*?)```/gi, (_, math) => `$$\n${math}\n$$`)
-    .replace(/\\\[([\s\S]*?)\\\]/g, (_, math) => `$$\n${math}\n$$`)
-    .replace(/\\\(([\s\S]*?)\\\)/g, (_, math) => `$${math}$`)
-    .replace(/\\\\(?=[()[\]])/g, "\\");
+  const parts = content.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$)/g);
 
-  return (
-    <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-      {normalizedContent}
-    </ReactMarkdown>
-  );
+  return parts.map((part, index) => {
+    if (part.startsWith("$$") && part.endsWith("$$")) {
+      return <BlockMath key={index} math={part.slice(2, -2).trim()} />;
+    }
+
+    if (part.startsWith("$") && part.endsWith("$")) {
+      return <InlineMath key={index} math={part.slice(1, -1).trim()} />;
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+};
+
+const RevealingAssistantContent = ({ content }) => {
+  const [visibleContent, setVisibleContent] = useState("");
+
+  useEffect(() => {
+    setVisibleContent("");
+    let position = 0;
+    const revealTimer = window.setInterval(() => {
+      position = Math.min(position + 4, content.length);
+      setVisibleContent(content.slice(0, position));
+
+      if (position >= content.length) {
+        window.clearInterval(revealTimer);
+      }
+    }, 14);
+
+    return () => window.clearInterval(revealTimer);
+  }, [content]);
+
+  return <div className="assistant-reveal">{renderAssistantContent(visibleContent)}</div>;
 };
 
 const data = {
@@ -151,17 +170,6 @@ const SidebarFooterAuth = () => {
   );
 };
 
-const LetsStartSidebarTrigger = () => {
-  const { state, isMobile } = useSidebar();
-  const isCollapsed = state === "collapsed";
-
-  return (
-    <SidebarTrigger
-      className={`lets-start-collapse-button ${isCollapsed || isMobile ? "is-collapsed" : ""}`}
-    />
-  );
-};
-
 const LetsStartpage = () => {
   const historyStorageKey = "ganitam-solver-history";
   const maxHistoryChats = 10;
@@ -169,8 +177,6 @@ const LetsStartpage = () => {
   const ActiveTeamLogo = activeTeam.logo;
   const containerRef = useRef(null);
   const [question, setQuestion] = useState("");
-  const [solutionMode, setSolutionMode] = useState("single");
-  const [examinerEnabled, setExaminerEnabled] = useState(false);
   const [messages, setMessages] = useState([]);
   const [historyItems, setHistoryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -243,8 +249,6 @@ const LetsStartpage = () => {
         question: trimmedQuestion,
         subject: "mathematics",
         grade: "general",
-        solutionMode,
-        examinerMode: examinerEnabled,
       }, { timeout: 120000 });
       const solution = response.data?.data?.solution || response.data?.solution;
 
@@ -287,6 +291,8 @@ const LetsStartpage = () => {
     setError("");
   };
 
+
+  useSmoothScroll();
 
   useGSAP(
     () => {
@@ -340,7 +346,7 @@ const LetsStartpage = () => {
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
                   >
                     <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                      <ActiveTeamLogo className="size-5" />
+                      <ActiveTeamLogo className="size-4" />
                     </div>
                     <div className="grid flex-1 text-left leading-tight">
                       <span className="truncate font-semibold text-lg">
@@ -357,7 +363,7 @@ const LetsStartpage = () => {
           </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent className="lets-start-sidebar-content">
+        <SidebarContent>
           <SidebarGroup>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -421,34 +427,32 @@ const LetsStartpage = () => {
             </SidebarMenu>
           </SidebarGroup>
 
-          <SidebarGroup className="lets-start-history-group">
+          <SidebarGroup>
             <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">
               History
             </SidebarGroupLabel>
-            <div className="lets-start-history-list" data-lenis-prevent>
-              <SidebarMenu>
-                {historyItems.length === 0 ? (
-                  <SidebarMenuItem>
-                    <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
-                      No previous chats
+            <SidebarMenu>
+              {historyItems.length === 0 ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
+                    No previous chats
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ) : (
+                historyItems.map((historyItem, index) => (
+                  <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
+                    <SidebarMenuButton
+                      type="button"
+                      tooltip={historyItem.question}
+                      onClick={() => openHistoryChat(historyItem)}
+                      className="h-9 text-sm"
+                    >
+                      <span className="truncate">{historyItem.question}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ) : (
-                  historyItems.map((historyItem, index) => (
-                    <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
-                      <SidebarMenuButton
-                        type="button"
-                        tooltip={historyItem.question}
-                        onClick={() => openHistoryChat(historyItem)}
-                        className="h-9 text-sm"
-                      >
-                        <span className="truncate">{historyItem.question}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))
-                )}
-              </SidebarMenu>
-            </div>
+                ))
+              )}
+            </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
 
@@ -458,10 +462,13 @@ const LetsStartpage = () => {
       </Sidebar>
 
       <div
-        className="lets-start-shell flex-1 flex flex-col w-full relative bg-black"
+        className="flex-1 flex flex-col min-h-screen w-full relative bg-black"
         ref={containerRef}
       >
-        <LetsStartSidebarTrigger />
+        {/* Header with trigger */}
+        <header className="fixed top-0 left-0 z-20 p-4 pointer-events-none">
+          <SidebarTrigger className="pointer-events-auto text-white hover:text-gray-300" />
+        </header>
 
         <main className="lets-start-page" aria-label="Ganitam Nirmoktra assistant">
           <div className="assistant-workspace">
@@ -493,7 +500,7 @@ const LetsStartpage = () => {
                     <div className="message-label">{message.role === "assistant" ? "Ganitam" : "You"}</div>
                     <div className="message-content">
                       {message.role === "assistant"
-                        ? renderAssistantContent(message.content)
+                        ? <RevealingAssistantContent content={message.content} />
                         : message.content}
                     </div>
                   </article>
@@ -503,82 +510,66 @@ const LetsStartpage = () => {
             )}
           </div>
 
-          <div className="search-bar ">
+          <div className="search-bar">
             <form className="composer" onSubmit={askAssistant}>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className={
+                      "flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none hover:bg-white/10 transition-colors duration-200"
+                    }
+                  >
+                    <LuPlus className={"w-8 h-7 mx-auto"} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="top"
+                  align="start"
+                  sideOffset={12}
+                  className="min-w-[180px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl"
+                >
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel className="text-xs text-zinc-400 px-2 py-1.5">
+                      Attach
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-zinc-700" />
+                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <Upload
+                        className="w-4 h-4 text-blue-400"
+                      />
+                      <span>Upload</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <ImageIcon className="w-4 h-4 text-emerald-400"  />
+                      <span>Image</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <FileText className="w-4 h-4 text-amber-400" />
+                      <span>File</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <textarea
                 value={question}
                 onChange={(event) => setQuestion(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" && !event.shiftKey) askAssistant(event);
                 }}
-                rows={2}
+                rows={1}
                 aria-label="Ask a mathematical question"
-                placeholder="Describe the math problem you want to solve..."
+                placeholder="Ask a mathematical question..."
                 className="composer-input"
               />
-              <div className="composer-toolbar">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button type="button" className="composer-tool-button attach-trigger" aria-label="Add an attachment">
-                      <LuPlus size={19} aria-hidden="true" />
-                      <span className="composer-tool-label">Add</span>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent side="top" align="start" sideOffset={12} className="min-w-[180px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl">
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                        <Upload className="w-4 h-4 text-blue-400" /><span>Upload</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                        <ImageIcon className="w-4 h-4 text-emerald-400" /><span>Image</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                        <FileText className="w-4 h-4 text-amber-400" /><span>File</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button type="button" className="solution-mode-trigger" aria-label="Choose solution mode">
-                      <span>{solutionMode === "single" ? "Single solution" : "Multiple solutions"}</span>
-                      <ChevronDown size={15} aria-hidden="true" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" side="top" className="solution-mode-menu">
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem className="solution-mode-item" onClick={() => setSolutionMode("single")}>
-                        Single solution
-                        {solutionMode === "single" && <Check size={15} className="solution-mode-check" aria-hidden="true" />}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="solution-mode-item" onClick={() => setSolutionMode("multiple")}>
-                        Multiple solutions
-                        {solutionMode === "multiple" && <Check size={15} className="solution-mode-check" aria-hidden="true" />}
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <button
-                  type="button"
-                  className={`examiner-toggle ${examinerEnabled ? "is-active" : ""}`}
-                  role="switch"
-                  aria-checked={examinerEnabled}
-                  aria-label="Toggle examiner mode"
-                  onClick={() => setExaminerEnabled((enabled) => !enabled)}
-                >
-                  <span className="examiner-toggle-track" aria-hidden="true">
-                    <span className="examiner-toggle-thumb" />
-                  </span>
-                  <span>Examiner</span>
-                </button>
-                <span className="composer-toolbar-spacer" />
-                <button type="button" className="composer-tool-button" aria-label="Voice input">
-                  <Mic size={17} aria-hidden="true" />
-                </button>
-                <button type="submit" aria-label="Send question" disabled={!question.trim() || isLoading} className="send-button">
-                  <Send size={17} aria-hidden="true" />
-                </button>
-              </div>
+              <button
+                type="submit"
+                aria-label="Send question"
+                disabled={!question.trim() || isLoading}
+                className="send-button"
+              >
+                <Send size={18} />
+              </button>
             </form>
             {error && <p className="assistant-error" role="alert">{error}</p>}
             <p className="composer-note">Ganitam can make mistakes. Check important work.</p>
