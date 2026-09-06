@@ -77,51 +77,44 @@ const socialLinks = [
     },
 ];
 const Footer = () => {
-
     return (
-        <div className='w-full h-80 bg-white'>
-            <div className="my-glass-effect flex flex-col border w-full justify-around items-center mx-auto h-full ">
-                <div className="Footer-bar flex w-full items-center justify-around h-60 mx-auto">
-                    <section className='start-footer-text flex justify-start'>
-                        <p className='capitalize'>be ready to change the future and allow you to fly in the future</p>
-                        <p className='capitalize'>copyright 2026 ganitam nirmoktra , inc. tems &privacy</p>
-                    </section>
-                    <div className="blog text-black">
-                        <h1 className='text-amber-400 capitalize'>more on the Blog</h1>
-                        <Link to='/about'>About Us</Link>
-                        <Link to='/privacy-policy'>Privacy Policy</Link>
-                        <Link to='/SubscriptionPlans'>Subscription Plans</Link>
+        <footer className="site-footer">
+            <div className="site-footer-inner">
+                <section className="footer-lead">
+                    <span className="footer-kicker">ganitam nirmoktra</span>
+                    <h2>Stay curious. Keep solving.</h2>
+                    <p>Make space for better questions and the ideas that follow them.</p>
+                </section>
+                <nav className="footer-links" aria-label="Footer navigation">
+                    <div>
+                        <h3>Explore</h3>
+                        <Link to="/about">About us</Link>
+                        <Link to="/lets-start">Let&apos;s start</Link>
+                        <Link to="/SubscriptionPlans">Plans</Link>
                     </div>
-                    <div className="about-Ganitam-Nirmoktra flex flex-col text-black">
-                        <h1 className='text-amber-400 capitalize'>more on ganitam nirmoktra</h1>
-                        <Link to='/contact'>Contact Us</Link>
-                        <Link to='/faq'>FAQs</Link>
-                        <Link to='/SubscriptionPlans'>Subscription Plans</Link>
+                    <div>
+                        <h3>Support</h3>
+                        <Link to="/faq">FAQs</Link>
+                        <Link to="/contact">Contact us</Link>
+                        <Link to="/privacy-policy">Privacy policy</Link>
+                    </div>
+                </nav>
+                <div className="footer-social">
+                    <span>Follow the question</span>
+                    <div className="social-list">
+                        {socialLinks.map(({name, icon}) => (
+                            <button key={name} type="button" aria-label={name} className="social-button">
+                                {icon}
+                            </button>
+                        ))}
                     </div>
                 </div>
-                <div className="text-xl font-ABeeZee text-amber-400 flex justify-center items-center gap-2">
-                    <h1>Follow Us On</h1>
-                </div>
-                <div
-                    className="flex flex-row justify-between gap-8 w-[40%] border border-black rounded-full p-1 mb-3">
-
-                    {socialLinks.map(({name, icon}) => (
-                        // here we cannot use div because it make the map to gives error learn more on it......
-                        <button
-                            key={name}
-                            type="button"
-                            aria-label={name}
-                            className="flex flex-row h-10 w-10 items-center justify-center rounded-full border text-black transition hover:-translate-y-0.5 "
-                        >
-              <span className="h-6 w-6 [&>svg]:h-full [&>svg]:w-full [&>svg]:fill-current">
-                {icon}
-              </span>
-                        </button>
-                    ))}
-                </div>
-
             </div>
-        </div>
+            <div className="footer-bottom">
+                <span>© 2026 Ganitam Nirmoktra, Inc.</span>
+                <span>Made for curious minds.</span>
+            </div>
+        </footer>
     );
 };
 

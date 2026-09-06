@@ -24,7 +24,7 @@ export const extractText = async (req, res) => {
         })
     } catch (err) {
         return res.status(400).json({
-            message: error.message,
+            message: err.message,
         })
     }
 

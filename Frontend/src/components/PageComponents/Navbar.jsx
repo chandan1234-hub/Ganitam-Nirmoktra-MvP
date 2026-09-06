@@ -6,7 +6,7 @@ const Navbar = ({ mobileActions }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     return (
-        <nav className="Navbar" aria-label="Primary navigation">
+        <nav className="site-nav" aria-label="Primary navigation">
                 <button
                     type="button"
                     className="navbar-toggle"
@@ -19,7 +19,7 @@ const Navbar = ({ mobileActions }) => {
                     <span className="bar" />
                     <span className="bar" />
                 </button>
-                <ul id="primary-navigation" className={`Navlinks${isMenuOpen ? ' active' : ''}`}>
+                <ul id="primary-navigation" className={`nav-links${isMenuOpen ? ' is-open' : ''}`}>
                     <li>
                         <NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink>
                     </li>

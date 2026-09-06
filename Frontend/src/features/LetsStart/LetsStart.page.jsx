@@ -13,12 +13,14 @@ import {
   ChevronRight,
   SquareTerminal,
   Settings2,
-  Upload,
   ImageIcon,
-  FileText,
   LoaderCircle,
   Send,
   Sparkles,
+  Mic,
+  MicOff,
+  Check,
+  ChevronDown,
 } from "lucide-react";
 import ApiClient from "../../lib/ApiClient";
 import {
@@ -50,9 +52,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 
 const renderAssistantContent = (content) => {
@@ -176,11 +175,16 @@ const LetsStartpage = () => {
   const activeTeam = data.teams[0];
   const ActiveTeamLogo = activeTeam.logo;
   const containerRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const recognitionRef = useRef(null);
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [historyItems, setHistoryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [solutionMode, setSolutionMode] = useState("single");
+  const [examinerMode, setExaminerMode] = useState(false);
 
   useEffect(() => {
     try {
@@ -249,6 +253,8 @@ const LetsStartpage = () => {
         question: trimmedQuestion,
         subject: "mathematics",
         grade: "general",
+        solutionMode,
+        examinerMode,
       }, { timeout: 120000 });
       const solution = response.data?.data?.solution || response.data?.solution;
 
@@ -263,6 +269,8 @@ const LetsStartpage = () => {
         solution,
         subject: "mathematics",
         grade: "general",
+        solutionMode,
+        examinerMode,
       }).catch(() => {
         // localStorage preserves the conversation if the history API is unavailable.
       });
@@ -275,6 +283,56 @@ const LetsStartpage = () => {
 
   const handleSuggestion = (suggestion) => {
     setQuestion(suggestion);
+  };
+
+  const handleImageSelected = async (event) => {
+    const image = event.target.files?.[0];
+    event.target.value = "";
+    if (!image) return;
+
+    setError("");
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      const response = await ApiClient.post("api/ocr/extract", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 120000,
+      });
+      const extractedQuestion = response.data?.extractedQuestion;
+      if (!extractedQuestion) throw new Error("No question was found in that image.");
+      setQuestion(extractedQuestion);
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || requestError.message || "Could not read that image.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleVoiceInput = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setError("Voice input is not supported in this browser.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.onstart = () => { setError(""); setIsListening(true); };
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results).map((result) => result[0].transcript).join(" ");
+      setQuestion((current) => `${current} ${transcript}`.trim());
+    };
+    recognition.onerror = () => setError("Voice input could not hear that. Please try again.");
+    recognition.onend = () => { setIsListening(false); recognitionRef.current = null; };
+    recognitionRef.current = recognition;
+    recognition.start();
   };
 
   const openHistoryChat = (historyItem) => {
@@ -511,46 +569,8 @@ const LetsStartpage = () => {
           </div>
 
           <div className="search-bar">
+            <input ref={fileInputRef} className="sr-only" type="file" accept="image/*" onChange={handleImageSelected} />
             <form className="composer" onSubmit={askAssistant}>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className={
-                      "flex justify-start mx-2 items-center w-10 h-10 rounded-full focus:outline-none hover:bg-white/10 transition-colors duration-200"
-                    }
-                  >
-                    <LuPlus className={"w-8 h-7 mx-auto"} />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="top"
-                  align="start"
-                  sideOffset={12}
-                  className="min-w-[180px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl"
-                >
-                  <DropdownMenuGroup>
-                    <DropdownMenuLabel className="text-xs text-zinc-400 px-2 py-1.5">
-                      Attach
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-zinc-700" />
-                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                      <Upload
-                        className="w-4 h-4 text-blue-400"
-                      />
-                      <span>Upload</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                      <ImageIcon className="w-4 h-4 text-emerald-400"  />
-                      <span>Image</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
-                      <FileText className="w-4 h-4 text-amber-400" />
-                      <span>File</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
               <textarea
                 value={question}
                 onChange={(event) => setQuestion(event.target.value)}
@@ -562,14 +582,61 @@ const LetsStartpage = () => {
                 placeholder="Ask a mathematical question..."
                 className="composer-input"
               />
-              <button
-                type="submit"
-                aria-label="Send question"
-                disabled={!question.trim() || isLoading}
-                className="send-button"
-              >
-                <Send size={18} />
-              </button>
+              <div className="composer-toolbar">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button type="button" aria-label="Add an image or voice question" className="composer-tool-button attach-trigger">
+                      <LuPlus size={20} />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="top" align="start" sideOffset={12} className="min-w-[200px] rounded-xl bg-zinc-900 border border-zinc-700 p-1 shadow-2xl">
+                    <DropdownMenuItem onSelect={() => fileInputRef.current?.click()} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <ImageIcon className="w-4 h-4 text-blue-400" />
+                      <span>Image question</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={toggleVoiceInput} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white cursor-pointer hover:bg-white/10 focus:bg-white/10 transition-colors">
+                      <Mic className="w-4 h-4 text-emerald-400" />
+                      <span>Voice question</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button type="button" className="solution-mode-trigger" aria-label="Choose solution mode">
+                      <span>{solutionMode === "single" ? "Single solution" : "Multiple solutions"}</span>
+                      <ChevronDown size={15} />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="top" align="start" className="solution-mode-menu">
+                    <DropdownMenuItem onClick={() => setSolutionMode("single")} className={`solution-mode-item${solutionMode === "single" ? " is-selected" : ""}`}>
+                      <span>Single solution</span>{solutionMode === "single" && <Check size={15} className="solution-mode-check" />}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSolutionMode("multiple")} className={`solution-mode-item${solutionMode === "multiple" ? " is-selected" : ""}`}>
+                      <span>Multiple solutions</span>{solutionMode === "multiple" && <Check size={15} className="solution-mode-check" />}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <button
+                  type="button"
+                  className={`examiner-toggle${examinerMode ? " is-active" : ""}`}
+                  aria-pressed={examinerMode}
+                  onClick={() => setExaminerMode((active) => !active)}
+                >
+                  <span className="examiner-toggle-track"><span className="examiner-toggle-thumb" /></span>
+                  <span>Ask question</span>
+                </button>
+
+                <span className="composer-toolbar-spacer" />
+
+                <button type="button" aria-label={isListening ? "Stop voice input" : "Start voice input"} aria-pressed={isListening} onClick={toggleVoiceInput} className={`voice-button${isListening ? " is-listening" : ""}`}>
+                  {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+                </button>
+                <button type="submit" aria-label="Send question" disabled={!question.trim() || isLoading} className="send-button">
+                  <Send size={18} />
+                </button>
+              </div>
             </form>
             {error && <p className="assistant-error" role="alert">{error}</p>}
             <p className="composer-note">Ganitam can make mistakes. Check important work.</p>

@@ -3,6 +3,7 @@ import cors from "cors";
 // import cookieParser from "cookie-parser";
 import bodyParser from 'body-parser'
 import solverRoutes from './features/solver/solver.routes.js'
+import ocrRoutes from './features/ocr/ocr.routes.js'
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors())
 
 app.use(bodyParser.json())
 app.use('/api/solver', solverRoutes)
+app.use('/api/ocr', ocrRoutes)
 // app.use(express.urlencoded({
 //     extended: true,
 //     limit: "16kb",

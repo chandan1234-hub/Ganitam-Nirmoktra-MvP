@@ -1,129 +1,91 @@
-import Subscription from "../../components/Uicomponents/SubscriptionPlans/Subscription.jsx";
-import './Subscription.style.css';
-import {RiCheckboxCircleFill} from "react-icons/ri";
-import { MdCancel } from "react-icons/md";
+import Subscription from '../../components/Uicomponents/SubscriptionPlans/Subscription.jsx'
+import './Subscription.style.css'
+import { RiCheckboxCircleFill } from 'react-icons/ri'
+import { MdCancel } from 'react-icons/md'
+import { HiArrowLongDown } from 'react-icons/hi2'
+
+const comparisonRows = [
+    ['AI chats per month', '5', '25', '50'],
+    ['Speech to text', '2', '20', '40'],
+    ['Multi-answer solver', '2', '20', '40'],
+]
+
+const accessRows = [
+    ['Export answer to PDF', true, true, true],
+    ['Access to AI features', true, true, true],
+    ['Priority support', false, true, true],
+]
+
+const AccessIcon = ({ enabled }) => enabled
+    ? <RiCheckboxCircleFill className="access-icon access-icon-yes" aria-label="Included" />
+    : <MdCancel className="access-icon access-icon-no" aria-label="Not included" />
 
 const SubscriptionPage = () => {
     return (
-        <div className="min-w-full min-h-screen mt-20 cursor-pointer">
-            <section
-                className={
-                    "flex flex-col justify-center zoom-100 items-center mx-auto mt-10 w-[70%] gap-2"
-                }
-            >
-                <h1 className={"text-5xl font-light font-bold tracking-wider lowercase text-center text-white"}>
-                    Find the plan that matches your learning goals.
-                </h1>
-                <p className="text-lg text-amber-300  lowercase">
-                    Design your future with learing and growing.
-                </p>
-
+        <main className="plans-page">
+            <section className="plans-hero" aria-labelledby="plans-title">
+                <span className="plans-shape plans-shape-square" aria-hidden="true" />
+                <span className="plans-shape plans-shape-dot" aria-hidden="true" />
+                <div className="plans-kicker"><span /> choose your pace</div>
+                <h1 id="plans-title">Find the plan that matches your learning goals.</h1>
+                <p>Simple paths for curious minds. Start small, grow steadily, and keep asking better questions.</p>
+                <a className="plans-scroll-link" href="#plans-table">
+                    compare the paths
+                    <HiArrowLongDown />
+                </a>
             </section>
-            <div className={"mt-20 mb-5"}>
-                <Subscription/>
-            </div>
-            {/* </section> */}
-            <p className={'text-md w-[80%] text-center mx-auto text-grey-50 flex flex-row justify-center items-center font-sans mb-20'}>Prices
-                shown don't include applicable tax.Prices and plans are subject to change at Ganitam Nirmoktra
-                discretion. </p>
-            <div className={'border border-white w-[75%] mx-auto mb-10'}></div>
-            <section className={"w-[80%] mx-auto mb-20 "}>
-                <h1 className={"text-2xl mx-auto w-[85%] font-bold mb-3 "}>Top features</h1>
-                <table className={'w-[90%] text-lg mx-auto text-center rounded-lg leading-10'}>
-                    <tbody>
-                    <tr>
-                        <th></th>
-                        <th>Free</th>
-                        <th>Pro</th>
-                        <th>Max</th>
-                    </tr>
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td className={'w-[30%]'}>AI chats per month</td>
-                        <td>5</td>
-                        <td>25</td>
-                        <td>50</td>
-                    </tr>
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td>Speech To text</td>
-                        <td>2</td>
-                        <td>20</td>
-                        <td>40</td>
-                    </tr>
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td>Multi Answer Solver</td>
-                        <td>2</td>
-                        <td>20</td>
-                        <td>40</td>
-                    </tr>
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td>Export Answer to Pdf</td>
-                        <td className={''}>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td>Access to AI features</td>
-                        <td className={''}>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Priority Suppo</td>
-                        <td className={''}>
-                            <div className={'items-center flex justify-center'}>
-                                <MdCancel/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className={'items-center flex justify-center'}>
-                                <RiCheckboxCircleFill/>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    );
-};
 
-export default SubscriptionPage;
+            <section id="plans-table" className="plans-pricing-section" aria-labelledby="pricing-title">
+                <div className="plans-section-heading">
+                    <span className="plans-kicker">choose what fits today</span>
+                    <h2 id="pricing-title">Your next step, clearly priced.</h2>
+                </div>
+                <div className="plans-pricing-table">
+                    <Subscription />
+                </div>
+                <p className="plans-disclaimer">Prices shown do not include applicable tax. Plans and prices may change at Ganitam Nirmoktra&apos;s discretion.</p>
+            </section>
+
+            <section className="comparison-section" aria-labelledby="comparison-title">
+                <div className="comparison-heading">
+                    <span className="plans-kicker">at a glance</span>
+                    <h2 id="comparison-title">More room to think.</h2>
+                    <p>Compare the everyday tools that help turn a stuck moment into a useful one.</p>
+                </div>
+                <div className="comparison-table-wrap">
+                    <table className="comparison-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Features</th>
+                                <th scope="col">Free</th>
+                                <th scope="col" className="comparison-featured">Pro</th>
+                                <th scope="col">Max</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {comparisonRows.map(([label, free, pro, max]) => (
+                                <tr key={label}>
+                                    <th scope="row">{label}</th>
+                                    <td>{free}</td><td className="comparison-featured">{pro}</td><td>{max}</td>
+                                </tr>
+                            ))}
+                            {accessRows.map(([label, free, pro, max]) => (
+                                <tr key={label}>
+                                    <th scope="row">{label}</th>
+                                    <td><AccessIcon enabled={free} /></td><td className="comparison-featured"><AccessIcon enabled={pro} /></td><td><AccessIcon enabled={max} /></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section className="plans-note" aria-label="Plans support">
+                <span className="plans-note-mark">still deciding?</span>
+                <p>Start with the plan that feels comfortable. Your curiosity can grow from there.</p>
+            </section>
+        </main>
+    )
+}
+
+export default SubscriptionPage
