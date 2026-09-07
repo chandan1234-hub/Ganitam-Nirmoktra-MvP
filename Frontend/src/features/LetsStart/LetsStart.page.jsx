@@ -2,10 +2,11 @@ import "./LetsStart.style.css";
 import "katex/dist/katex.min.css";
 import { UserButton } from "@clerk/react";
 import { useEffect, useRef, useState } from "react";
-import { BlockMath, InlineMath } from "react-katex";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useSmoothScroll } from "../../Hooks/useSmoothScroll";
 import { AnimatedText } from "../../components/AnimatedText";
 import { LuPlus } from "react-icons/lu";
 import { Logo } from "@/components/ui/Logo";
@@ -54,41 +55,41 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const renderAssistantContent = (content) => {
-  const parts = content.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$)/g);
-
-  return parts.map((part, index) => {
-    if (part.startsWith("$$") && part.endsWith("$$")) {
-      return <BlockMath key={index} math={part.slice(2, -2).trim()} />;
-    }
-
-    if (part.startsWith("$") && part.endsWith("$")) {
-      return <InlineMath key={index} math={part.slice(1, -1).trim()} />;
-    }
-
-    return <span key={index}>{part}</span>;
-  });
-};
+const normalizeMathDelimiters = (content) => content
+  .replace(/(?<!\\)\\\[([\s\S]*?)(?<!\\)\\\]/g, (_, expression) => `$$${expression}$$`)
+  .replace(/(?<!\\)\\\(([\s\S]*?)(?<!\\)\\\)/g, (_, expression) => `$${expression}$`);
 
 const RevealingAssistantContent = ({ content }) => {
   const [visibleContent, setVisibleContent] = useState("");
+  const safeContent = normalizeMathDelimiters(
+    typeof content === "string" ? content : String(content ?? ""),
+  );
 
   useEffect(() => {
     setVisibleContent("");
     let position = 0;
     const revealTimer = window.setInterval(() => {
-      position = Math.min(position + 4, content.length);
-      setVisibleContent(content.slice(0, position));
+      position = Math.min(position + 4, safeContent.length);
+      setVisibleContent(safeContent.slice(0, position));
 
-      if (position >= content.length) {
+      if (position >= safeContent.length) {
         window.clearInterval(revealTimer);
       }
     }, 14);
 
     return () => window.clearInterval(revealTimer);
-  }, [content]);
+  }, [safeContent]);
 
-  return <div className="assistant-reveal">{renderAssistantContent(visibleContent)}</div>;
+  return (
+    <div className="assistant-reveal">
+      <ReactMarkdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[[rehypeKatex, { throwOnError: false }]]}
+      >
+        {visibleContent}
+      </ReactMarkdown>
+    </div>
+  );
 };
 
 const data = {
@@ -166,6 +167,16 @@ const SidebarFooterAuth = () => {
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
+  );
+};
+
+const SidebarCollapseButton = () => {
+  const { state } = useSidebar();
+
+  return (
+    <SidebarTrigger
+      className={`lets-start-collapse-button${state === "collapsed" ? " is-collapsed" : ""}`}
+    />
   );
 };
 
@@ -349,9 +360,6 @@ const LetsStartpage = () => {
     setError("");
   };
 
-
-  useSmoothScroll();
-
   useGSAP(
     () => {
       const tl = gsap.timeline({ delay: 0.2 });
@@ -392,36 +400,38 @@ const LetsStartpage = () => {
 
   return (
     <SidebarProvider>
+      <SidebarCollapseButton />
       {/* The default shadcn sidebar is variant="sidebar" which styles it nicely based on CSS vars */}
       <Sidebar collapsible="icon">
-        <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton
-                    size="lg"
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
-                  >
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                      <ActiveTeamLogo className="size-4" />
-                    </div>
-                    <div className="grid flex-1 text-left leading-tight">
-                      <span className="truncate font-semibold text-lg">
-                        {activeTeam.name}
-                      </span>
-                      <span className="truncate text-sm">
-                        {activeTeam.plan}
-                      </span>
-                    </div>
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarHeader>
+        <div className="lets-start-sidebar-scroll">
+          <SidebarHeader>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton
+                      size="lg"
+                      className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
+                    >
+                      <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                        <ActiveTeamLogo className="size-4" />
+                      </div>
+                      <div className="grid flex-1 text-left leading-tight">
+                        <span className="truncate font-semibold text-lg">
+                          {activeTeam.name}
+                        </span>
+                        <span className="truncate text-sm">
+                          {activeTeam.plan}
+                        </span>
+                      </div>
+                    </SidebarMenuButton>
+                  </DropdownMenuTrigger>
+                </DropdownMenu>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent className="lets-start-sidebar-content">
           <SidebarGroup>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -485,49 +495,47 @@ const LetsStartpage = () => {
             </SidebarMenu>
           </SidebarGroup>
 
-          <SidebarGroup>
+          <SidebarGroup className="lets-start-history-group">
             <SidebarGroupLabel className="text-sm uppercase tracking-wider mt-2 mb-1">
               History
             </SidebarGroupLabel>
-            <SidebarMenu>
-              {historyItems.length === 0 ? (
-                <SidebarMenuItem>
-                  <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
-                    No previous chats
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ) : (
-                historyItems.map((historyItem, index) => (
-                  <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
-                    <SidebarMenuButton
-                      type="button"
-                      tooltip={historyItem.question}
-                      onClick={() => openHistoryChat(historyItem)}
-                      className="h-9 text-sm"
-                    >
-                      <span className="truncate">{historyItem.question}</span>
+            <div className="lets-start-history-list">
+              <SidebarMenu>
+                {historyItems.length === 0 ? (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton disabled className="text-sm text-sidebar-foreground/60">
+                      No previous chats
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))
-              )}
-            </SidebarMenu>
+                ) : (
+                  historyItems.map((historyItem, index) => (
+                    <SidebarMenuItem key={historyItem._id || historyItem.id || index}>
+                      <SidebarMenuButton
+                        type="button"
+                        tooltip={historyItem.question}
+                        onClick={() => openHistoryChat(historyItem)}
+                        className="h-9 text-sm"
+                      >
+                        <span className="truncate">{historyItem.question}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))
+                )}
+              </SidebarMenu>
+            </div>
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter>
-          <SidebarFooterAuth />
-        </SidebarFooter>
+          <SidebarFooter>
+            <SidebarFooterAuth />
+          </SidebarFooter>
+        </div>
       </Sidebar>
 
       <div
         className="flex-1 flex flex-col min-h-screen w-full relative bg-black"
         ref={containerRef}
       >
-        {/* Header with trigger */}
-        <header className="fixed top-0 left-0 z-20 p-4 pointer-events-none">
-          <SidebarTrigger className="pointer-events-auto text-white hover:text-gray-300" />
-        </header>
-
         <main className="lets-start-page" aria-label="Ganitam Nirmoktra assistant">
           <div className="assistant-workspace">
             {messages.length === 0 ? (
