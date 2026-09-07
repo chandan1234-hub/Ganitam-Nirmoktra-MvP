@@ -77,22 +77,39 @@
 }
 
 .lets-start-sidebar-content {
-  overflow: hidden;
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: visible !important;
+}
+
+.lets-start-sidebar-scroll {
+  min-height: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .lets-start-history-group {
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .lets-start-history-list {
   min-height: 0;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   flex: 1 1 auto;
-  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.65) rgba(255, 255, 255, 0.08);
   scrollbar-width: thin;
+  scrollbar-gutter: stable;
 }
 
 .lets-start-history-list::-webkit-scrollbar {
@@ -100,16 +117,16 @@
 }
 
 .lets-start-history-list::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .lets-start-history-list::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .lets-start-history-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .assistant-workspace {
@@ -410,6 +427,11 @@
 @keyframes voice-pulse { 50% { transform: scale(1.12); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.12); } }
 
 @media (max-width: 640px) {
+  .lets-start-collapse-button,
+  .lets-start-collapse-button.is-collapsed {
+    left: auto;
+    right: 0.75rem;
+  }
   .assistant-workspace, .search-bar { width: calc(100% - 32px); }
   .assistant-workspace { padding-bottom: 160px; }
   .assistant-welcome .text-5xl { font-size: 2rem; }
