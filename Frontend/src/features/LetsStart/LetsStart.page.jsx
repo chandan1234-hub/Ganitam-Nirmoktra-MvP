@@ -198,10 +198,13 @@ const LetsStartpage = () => {
   const [examinerMode, setExaminerMode] = useState(false);
 
   useEffect(() => {
+    const navigationEntry = window.performance.getEntriesByType("navigation")[0];
+    const isReload = navigationEntry?.type === "reload"
+      || window.performance.navigation?.type === 1;
+
     try {
       const savedMessages = JSON.parse(localStorage.getItem(historyStorageKey) || "[]");
       if (Array.isArray(savedMessages)) {
-        setMessages(savedMessages);
         const savedHistory = [];
         for (let index = 0; index < savedMessages.length - 1; index += 1) {
           if (savedMessages[index].role === "user" && savedMessages[index + 1].role === "assistant") {
@@ -213,6 +216,10 @@ const LetsStartpage = () => {
           }
         }
         setHistoryItems(savedHistory.slice(-maxHistoryChats).reverse());
+
+        if (isReload) {
+          setMessages(savedMessages);
+        }
       }
     } catch {
       localStorage.removeItem(historyStorageKey);
@@ -227,7 +234,7 @@ const LetsStartpage = () => {
           { role: "assistant", content: item.solution },
         ]);
 
-        if (restoredMessages.length > 0) {
+        if (isReload && restoredMessages.length > 0) {
           setMessages((current) => current.length > 0 ? current : restoredMessages.reverse());
         }
       })
@@ -356,6 +363,7 @@ const LetsStartpage = () => {
 
   const startNewChat = () => {
     setMessages([]);
+    localStorage.removeItem(historyStorageKey);
     setQuestion("");
     setError("");
   };
