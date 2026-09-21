@@ -4,7 +4,7 @@ import autocannon from 'autocannon'
 async function runLoadTest() {
   const result = await autocannon({
     url: 'http://localhost:8000',
-    connections: 10, // default
+    connections: 1, // default
     pipelining: 10, // default
     duration: 10 // default in seconds
   })
