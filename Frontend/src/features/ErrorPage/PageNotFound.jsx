@@ -1,9 +1,23 @@
+import './PageNotFound.css'
 const PageNotFound = () => {
   return (
-    <div className="w-full h-screen bg-cover bg-no-repeat">
-      <img src="/src/assets/images/404.png" alt="Page Not Found" className="w-full h-screen bg-no-repeat bg-clip-border bg-cover" />
-    </div>
-  );
-};
+    < div className="error-page" >
+      <div className="face">
+        <div className="band">
+          <div className="red"></div>
+          <div className="white"></div>
+          <div className="blue"></div>
+        </div>
+        <div className="eyes"></div>
+        <div className="dimples"></div>
+        <div className="mouth"></div>
+      </div>
+
+      <h1>Oops! Something went wrong!</h1>
+      <div className="btn"
+      onClick={()=>window.location.href='/'}>Return to Home</div>
+    </div >
+  )
+}
 
 export default PageNotFound;
