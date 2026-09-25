@@ -15,7 +15,7 @@ const PageNotFound = () => {
 
       <h1>Oops! Something went wrong!</h1>
       <div className="btn"
-      onClick={()=>window.location.href='/'}>Return to Home</div>
+        onClick={() => window.location.href = '/'}>Return to Home</div>
     </div >
   )
 }
