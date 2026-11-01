@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigation } from 'react-router'
 import { useEffect, useState } from 'react'
 import Header from '../PageComponents/Header.jsx'
-import Navbar from '../PageComponents/Navbar.jsx'
+
 import Footer from '../PageComponents/Footer.jsx'
 import Loader from '../../components/loader.jsx'
 

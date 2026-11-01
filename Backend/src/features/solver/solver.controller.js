@@ -1,4 +1,4 @@
-import { MathAgent } from '../../services/agent.service.js'
+import { runMathAgent } from '../../services/SingleAgent/agent.service.js'
 import { SolverHistory } from './solver.history.model.js'
 
 export const solveProblem = async (req, res) => {
@@ -9,7 +9,7 @@ export const solveProblem = async (req, res) => {
     }
 
     try {
-        const result = await MathAgent(question.trim(), subject, grade, solutionMode, examinerMode)
+        const result = await runMathAgent(question.trim(), subject, grade, solutionMode, examinerMode)
         return res.status(200).json({ success: true, data: result })
     } catch (error) {
         console.error('Ollama Cloud solver request failed:', error.message)

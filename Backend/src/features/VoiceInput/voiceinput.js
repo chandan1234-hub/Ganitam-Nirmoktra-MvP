@@ -2,7 +2,9 @@ import { log } from 'console';
 import fs from 'fs';
 import OpenAI from 'openai';
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 const filepath = 'audio.mp3'
 const transcribeaudio = async (filepath) => {
     try {
@@ -18,7 +20,7 @@ const transcribeaudio = async (filepath) => {
         // print the final text output
         console.log("transcription : ", transcription.text);
 
-        // delete the file after getting the text from it 
+        // delete the file after getting the text from it
         fs.unlinkSync(filepath)
         return transcription.text;
 

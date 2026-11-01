@@ -16,7 +16,8 @@ export const classifyInput = (question) => {
     "howdy",
     "sup",
   ];
-  if (greetings.some((g) => q.includes(g))) {
+  const normalizedQuestion = q.replace(/[.!?,]+$/, '');
+  if (greetings.some((g) => normalizedQuestion === g || normalizedQuestion.startsWith(`${g} `))) {
     return "greeting";
   }
 
@@ -55,4 +56,10 @@ export const classifyInput = (question) => {
     "porn",
     "nudity",
   ];
+
+  if (outOfScope.some((pattern) => q.includes(pattern))) {
+    return "out_of_scope";
+  }
+
+  return "math";
 };
