@@ -10,4 +10,25 @@ const storage = multer.diskStorage({
     }
 })
 
-export const upload = multer({storage});
+export const upload = multer({
+    storage,
+    limits: {
+        files: 1,
+        fileSize: 5 * 1024 * 1024,
+    },
+})
+
+export const uploadSingleImage = (req, res, next) => {
+    upload.single('image')(req, res, (error) => {
+        if (!error) return next()
+
+        if (error instanceof multer.MulterError) {
+            const message = error.code === 'LIMIT_FILE_SIZE'
+                ? 'Image must be 5 MB or smaller.'
+                : 'Invalid image upload.'
+            return res.status(400).json({ success: false, message })
+        }
+
+        return next(error)
+    })
+}

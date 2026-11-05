@@ -4,9 +4,6 @@ import { SolverHistory } from './solver.history.model.js'
 export const solveProblem = async (req, res) => {
     const { question, subject = 'mathematics', grade = 'general', solutionMode = 'single', examinerMode = false } = req.body
 
-    if (!question?.trim()) {
-        return res.status(400).json({ success: false, message: 'A question is required.' })
-    }
 
     try {
         const result = await runMathAgent(question.trim(), subject, grade, solutionMode, examinerMode)
@@ -23,9 +20,6 @@ export const solveProblem = async (req, res) => {
 export const saveSolverHistory = async (req, res) => {
     const { question, solution, subject = 'mathematics', grade = 'general' } = req.body
 
-    if (!question?.trim() || !solution?.trim()) {
-        return res.status(400).json({ success: false, message: 'Question and solution are required.' })
-    }
 
     const history = await SolverHistory.create({
         question: question.trim(),

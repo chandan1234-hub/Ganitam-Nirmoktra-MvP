@@ -1,6 +1,7 @@
 import { Ollama } from 'ollama'
 import { buildCompletePrompt } from '../utils/promptBuilder.utils.js'
 
+
 const getOllamaClient = () => new Ollama({
     host: process.env.OLLAMA_URL || process.env.OLLAMA_HOST || 'https://ollama.com',
     headers: process.env.OLLAMA_API_KEY
@@ -11,7 +12,7 @@ const getOllamaClient = () => new Ollama({
 export const generateSolution = async (question, subject, grade, solutionMode = 'single', examinerMode = false, outputResponseChecklist = '') => {
     const { system, user } = buildCompletePrompt(question, subject, grade, solutionMode, examinerMode)
     const response = await getOllamaClient().chat({
-        model: process.env.OLLAMA_MODEL || 'gpt-oss:120b',
+        model: process.env.OLLAMA_MODEL || 'beam:cloud',
         messages: [
             { role: 'system', content: [system, outputResponseChecklist].filter(Boolean).join('\n\n') },
             { role: 'user', content: user },
