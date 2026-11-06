@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log*
+dist
+dist-ssr
+coverage
+.env
+.env.*
+.git
+.idea
+.agents
+agents
