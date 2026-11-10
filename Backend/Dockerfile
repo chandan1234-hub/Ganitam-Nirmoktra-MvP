@@ -8,7 +8,7 @@ RUN npm ci --omit=dev
 
 RUN mkdir -p /app/public/temp && chown -R node:node /app/public
 COPY --chown=node:node src ./src
-COPY --chown=node:node public ./public
+
 
 USER node
 EXPOSE 8000
