@@ -5,7 +5,7 @@ import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Subscription from '../../components/Uicomponents/SubscriptionPlans/Subscription.jsx'
+// import Subscription from '../../components/Uicomponents/SubscriptionPlans/Subscription.jsx'
 import questionOverview from '../../assets/images/questions overview bar.svg'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -130,9 +130,9 @@ const Homepage = () => {
                 <GeometryField />
             </section>
 
-            <div className="subscription-section-wrapper">
+            {/* <div className="subscription-section-wrapper">
                 <Subscription />
-            </div>
+            </div>*/}
 
             <section className="feature-section" aria-labelledby="feature-title">
                 <div className="section-intro">
