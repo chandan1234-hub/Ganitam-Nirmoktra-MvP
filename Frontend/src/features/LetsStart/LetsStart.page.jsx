@@ -122,10 +122,10 @@ const data = {
           title: "FAQ",
           to: "/faq",
         },
-        {
-          title: "Privacy Policy",
-          to: "/privacy-policy",
-        },
+        // {
+        //   title: "Privacy Policy",
+        //   to: "/privacy-policy",
+        // },
       ],
     },
     {
