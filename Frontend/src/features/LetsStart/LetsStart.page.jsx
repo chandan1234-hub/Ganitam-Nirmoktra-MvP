@@ -1,6 +1,7 @@
 import "./LetsStart.style.css";
 import "katex/dist/katex.min.css";
 import { UserButton } from "@clerk/react";
+import { Link } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
@@ -107,38 +108,33 @@ const data = {
       items: [
         {
           title: "Home",
-          url: "/",
+          to: "/",
         },
         {
           title: "About",
-          url: "/about",
+          to: "/about",
         },
         {
           title: "Contact",
-          url: "/contact",
+          to: "/contact",
+        },
+        {
+          title: "FAQ",
+          to: "/faq",
+        },
+        {
+          title: "Privacy Policy",
+          to: "/privacy-policy",
         },
       ],
     },
     {
       title: "Settings",
-      url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "/SubscriptionPlans",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Subscription Plans",
+          to: "/SubscriptionPlans",
         },
       ],
     },
@@ -487,11 +483,11 @@ const LetsStartpage = () => {
                               asChild
                               className="text-sm h-8"
                             >
-                              <a href={subItem.url}>
+                              <Link to={subItem.to}>
                                 <span className="text-base">
                                   {subItem.title}
                                 </span>
-                              </a>
+                              </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
