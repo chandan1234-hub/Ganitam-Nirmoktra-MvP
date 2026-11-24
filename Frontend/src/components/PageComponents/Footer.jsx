@@ -89,8 +89,8 @@ const Footer = () => {
                     <div>
                         <h3>Explore</h3>
                         <Link to="/about">About us</Link>
-                        <Link to="/lets-start">Let&apos;s start</Link>
-                        <Link to="/SubscriptionPlans">Plans</Link>
+                        <Link to="/chat">Let&apos;s start</Link>
+                        <Link to="/pricing">Plans</Link>
                     </div>
                     <div>
                         <h3>Support</h3>
