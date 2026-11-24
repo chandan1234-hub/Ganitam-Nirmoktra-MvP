@@ -1,7 +1,7 @@
-import React from 'react'
 import Navbar from './Navbar'
 import './Header.css'
-import {SignInButton ,SignUpButton,UserButton  ,Show }  from '@clerk/react'
+import { SignInButton, SignUpButton, UserButton, Show } from '@clerk/react'
+import { Link } from 'react-router'
 const BrandLogo = () => {
     return (
         <svg width="200" height="52" viewBox="0 0 122 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,20 +22,29 @@ const Header = () => {
                 </div>
                 <Navbar
                     mobileActions={
-                        <Show when="signed-out">
-                            <div className="mobile-auth-buttons">
-                                <SignInButton className="mobile-auth-button mobile-auth-button-primary" />
-                                <SignUpButton className="mobile-auth-button mobile-auth-button-secondary" />
-                            </div>
-                        </Show>
+                        <>
+                            <Show when="signed-out">
+                                <div className="mobile-auth-buttons">
+                                    <SignInButton forceRedirectUrl="/chat" className="mobile-auth-button mobile-auth-button-primary" />
+                                    <SignUpButton forceRedirectUrl="/chat" className="mobile-auth-button mobile-auth-button-secondary" />
+                                </div>
+                            </Show>
+                            <Show when="signed-in">
+                                <div className="mobile-auth-buttons">
+                                    <Link className="mobile-auth-button mobile-auth-button-primary" to="/chat">Open chat</Link>
+                                    <UserButton />
+                                </div>
+                            </Show>
+                        </>
                     }
                 />
                 <div className="header-actions">
                     <Show when="signed-out">
-                        <SignInButton className="header-auth-button header-auth-button-light" />
-                        <SignUpButton className="header-auth-button header-auth-button-outline" />
+                        <SignInButton forceRedirectUrl="/chat" className="header-auth-button header-auth-button-light" />
+                        <SignUpButton forceRedirectUrl="/chat" className="header-auth-button header-auth-button-outline" />
                     </Show>
                     <Show when="signed-in">
+                        <Link className="header-chat-link" to="/chat">Open chat</Link>
                         <UserButton />
                     </Show>
                 </div>
