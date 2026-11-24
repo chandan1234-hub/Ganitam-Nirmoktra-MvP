@@ -51,7 +51,7 @@
 
 .mobile-auth-actions { display: none; }
 .mobile-auth-buttons { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
-.mobile-auth-button { min-height: 2.75rem; padding: 0 0.75rem; border: 0; border-radius: 999px; color: white; background: transparent; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; }
+.mobile-auth-button { display: flex; align-items: center; min-height: 2.75rem; padding: 0 0.75rem; border: 0; border-radius: 999px; color: white; background: transparent; font: inherit; letter-spacing: inherit; text-align: left; text-decoration: none; cursor: pointer; }
 .mobile-auth-button-primary { background: #102d63; }
 .mobile-auth-button-secondary { border: 2px solid #102d63; color: #102d63; }
 
