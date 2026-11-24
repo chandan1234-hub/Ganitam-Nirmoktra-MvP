@@ -17,6 +17,7 @@
     "request": "node ./src/autocannon.js"
   },
   "dependencies": {
+    "@clerk/backend": "^3.32.0",
     "autocannon": "^8.0.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.3.0",
