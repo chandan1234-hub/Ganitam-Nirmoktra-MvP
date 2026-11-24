@@ -24,7 +24,7 @@ const Navbar = ({ mobileActions }) => {
                         <NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/lets-start" onClick={() => setIsMenuOpen(false)}>Let's Start</NavLink>
+                        <NavLink to="/chat" onClick={() => setIsMenuOpen(false)}>Let's Start</NavLink>
                     </li>
                     <li>
                         <NavLink to="/SubscriptionPlans" onClick={() => setIsMenuOpen(false)}>Plans</NavLink>
