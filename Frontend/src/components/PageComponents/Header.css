@@ -40,6 +40,19 @@
     gap: 0.55rem;
 }
 
+.header-chat-link {
+    color: #102d63;
+    font-family: 'ABeeZee-Regular', sans-serif;
+    font-size: 0.82rem;
+    text-decoration: none;
+}
+
+.header-chat-link:hover,
+.header-chat-link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+}
+
 .header-auth-button {
     min-width: 5.25rem;
     min-height: 2.5rem;
