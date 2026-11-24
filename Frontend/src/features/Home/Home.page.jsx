@@ -117,7 +117,7 @@ const Homepage = () => {
                         solve with confidence, and let each answer open a better question.
                     </p>
                     <div className="hero-actions">
-                        <NavLink className="hero-primary-button" to="/lets-start">
+                        <NavLink className="hero-primary-button" to="/chat">
                             start your journey
                             <span className="button-icon"><HiArrowLongRight /></span>
                         </NavLink>
@@ -156,7 +156,7 @@ const Homepage = () => {
                     <span className="section-kicker">your practice room</span>
                     <h2 id="practice-title">Questions are better when they lead somewhere.</h2>
                     <p>Collect the problems that catch your attention, then return to them when you are ready to see a new angle.</p>
-                    <NavLink className="outline-button" to="/lets-start">
+                    <NavLink className="outline-button" to="/chat">
                         explore the practice room
                         <HiArrowLongRight />
                     </NavLink>
@@ -174,7 +174,7 @@ const Homepage = () => {
                 </div>
                 <div className="topic-grid">
                     {topicItems.map((topic) => (
-                        <NavLink className="topic-item" to="/lets-start" key={topic.title}>
+                        <NavLink className="topic-item" to="/chat" key={topic.title}>
                             <span className="topic-mark">{topic.mark}</span>
                             <span className="topic-title">{topic.title}</span>
                             <HiArrowLongRight />
@@ -228,7 +228,7 @@ const Homepage = () => {
                 </h2>
                 <div className="final-cta">
                     <p>Bring one question. We will take it from there.</p>
-                    <NavLink className="hero-primary-button" to="/lets-start">
+                    <NavLink className="hero-primary-button" to="/chat">
                         let&apos;s start
                         <span className="button-icon"><HiArrowLongRight /></span>
                     </NavLink>
