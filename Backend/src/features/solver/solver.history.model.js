@@ -2,6 +2,11 @@ import mongoose from 'mongoose'
 
 const solverHistorySchema = new mongoose.Schema(
     {
+        clerkId: {
+            type: String,
+            required: true,
+            index: true,
+        },
         question: {
             type: String,
             required: true,
