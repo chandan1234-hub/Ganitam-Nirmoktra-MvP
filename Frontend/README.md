@@ -14,3 +14,9 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Authenticated chat setup
+
+Set `VITE_CLERK_PUBLISHABLE_KEY` for the frontend and `CLERK_SECRET_KEY` for the backend. The backend also needs its existing `MONGODB_URI`. The chat uses `/api/user/sync` and `/api/user/usage` by default; override them with `VITE_USER_SYNC_ENDPOINT` and `VITE_USER_USAGE_ENDPOINT` when deploying to a different API layout. Configure `VITE_API_URL` when the API is hosted on another origin.
+
+Solver, chat-history, OCR, and user routes require a Clerk bearer token. The usage display uses the Free plan's five-chat count shown on the plans page.
