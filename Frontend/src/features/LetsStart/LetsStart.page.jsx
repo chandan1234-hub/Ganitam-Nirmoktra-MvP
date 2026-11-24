@@ -1,8 +1,8 @@
 import "./LetsStart.style.css";
 import "katex/dist/katex.min.css";
-import { UserButton } from "@clerk/react";
+import { UserButton, useAuth, useUser } from "@clerk/react";
 import { Link } from "react-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -55,6 +55,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+const USER_SYNC_ENDPOINT = import.meta.env.VITE_USER_SYNC_ENDPOINT || "api/user/sync";
+const USER_USAGE_ENDPOINT = import.meta.env.VITE_USER_USAGE_ENDPOINT || "api/user/usage";
 
 const normalizeMathDelimiters = (content) => content
   .replace(/(?<!\\)\\\[([\s\S]*?)(?<!\\)\\\]/g, (_, expression) => `$$${expression}$$`)
@@ -177,23 +180,79 @@ const SidebarCollapseButton = () => {
 };
 
 const LetsStartpage = () => {
-  const historyStorageKey = "ganitam-solver-history";
+  const { getToken, isLoaded, isSignedIn, sessionId, userId } = useAuth();
+  const { user } = useUser();
+  const historyStorageKey = `ganitam-solver-history:${userId || "anonymous"}`;
   const maxHistoryChats = 10;
   const activeTeam = data.teams[0];
   const ActiveTeamLogo = activeTeam.logo;
   const containerRef = useRef(null);
   const fileInputRef = useRef(null);
   const recognitionRef = useRef(null);
+  const accountSyncRef = useRef(Promise.resolve());
+  const sessionUserIdRef = useRef(null);
+  const attemptedSyncSessionIdsRef = useRef(new Set());
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [historyItems, setHistoryItems] = useState([]);
+  const [usage, setUsage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [solutionMode, setSolutionMode] = useState("single");
   const [examinerMode, setExaminerMode] = useState(false);
 
+  const getAuthConfig = useCallback(async () => {
+    const token = await getToken();
+    if (!token) throw new Error("Clerk did not provide an authentication token.");
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }, [getToken]);
+
+  const refreshUsage = async () => {
+    try {
+      const authConfig = await getAuthConfig();
+      const response = await ApiClient.get(USER_USAGE_ENDPOINT, authConfig);
+      setUsage(response.data?.data ?? null);
+    } catch (usageError) {
+      console.warn("Could not refresh solution usage:", usageError);
+    }
+  };
+
   useEffect(() => {
+    if (!isLoaded || !isSignedIn || !sessionId || !userId) return undefined;
+
+    if (sessionUserIdRef.current !== userId) {
+      sessionUserIdRef.current = userId;
+      accountSyncRef.current = Promise.resolve();
+    }
+
+    const syncKey = `ganitam-user-sync:${sessionId}`;
+    let syncWasAttempted = false;
+    try {
+      syncWasAttempted = sessionStorage.getItem(syncKey) === "attempted";
+    } catch (storageError) {
+      console.warn("Could not check the user-sync session marker:", storageError);
+    }
+
+    if (!syncWasAttempted && !attemptedSyncSessionIdsRef.current.has(sessionId)) {
+      attemptedSyncSessionIdsRef.current.add(sessionId);
+      try {
+        sessionStorage.setItem(syncKey, "attempted");
+      } catch (storageError) {
+        console.warn("Could not save the user-sync session marker:", storageError);
+      }
+      accountSyncRef.current = (async () => {
+        const authConfig = await getAuthConfig();
+        await ApiClient.post(USER_SYNC_ENDPOINT, {}, { ...authConfig, timeout: 10000 });
+      })().catch((syncError) => {
+        console.error("Could not sync the signed-in user with the backend:", syncError);
+      });
+    } else if (syncWasAttempted && !attemptedSyncSessionIdsRef.current.has(sessionId)) {
+      attemptedSyncSessionIdsRef.current.add(sessionId);
+      accountSyncRef.current = Promise.resolve();
+    }
+
+    let active = true;
     const navigationEntry = window.performance.getEntriesByType("navigation")[0];
     const isReload = navigationEntry?.type === "reload"
       || window.performance.navigation?.type === 1;
@@ -221,8 +280,13 @@ const LetsStartpage = () => {
       localStorage.removeItem(historyStorageKey);
     }
 
-    ApiClient.get("api/solver/history")
-      .then((response) => {
+    const loadAccountData = async () => {
+      await accountSyncRef.current;
+      if (!active) return;
+
+      try {
+        const authConfig = await getAuthConfig();
+        const response = await ApiClient.get("api/solver/history", authConfig);
         const history = response.data?.data?.history || [];
         setHistoryItems(history.slice(0, maxHistoryChats));
         const restoredMessages = history.slice(0, maxHistoryChats).reverse().flatMap((item) => [
@@ -233,11 +297,22 @@ const LetsStartpage = () => {
         if (isReload && restoredMessages.length > 0) {
           setMessages((current) => current.length > 0 ? current : restoredMessages.reverse());
         }
-      })
-      .catch(() => {
-        // The browser copy remains available when the API is offline.
-      });
-  }, []);
+      } catch (historyError) {
+        console.warn("Could not load chat history; keeping the local copy:", historyError);
+      }
+
+      try {
+        const authConfig = await getAuthConfig();
+        const response = await ApiClient.get(USER_USAGE_ENDPOINT, authConfig);
+        if (active) setUsage(response.data?.data ?? null);
+      } catch (usageError) {
+        console.warn("Could not load solution usage:", usageError);
+      }
+    };
+
+    void loadAccountData();
+    return () => { active = false; };
+  }, [getAuthConfig, historyStorageKey, isLoaded, isSignedIn, sessionId, userId]);
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -248,11 +323,11 @@ const LetsStartpage = () => {
         setMessages(limitedMessages);
       }
     }
-  }, [messages]);
+  }, [historyStorageKey, messages]);
 
-  const askAssistant = async (event) => {
+  const askAssistant = async (event, prompt) => {
     event?.preventDefault();
-    const trimmedQuestion = question.trim();
+    const trimmedQuestion = (prompt ?? question).trim();
 
     if (!trimmedQuestion || isLoading) return;
 
@@ -262,6 +337,8 @@ const LetsStartpage = () => {
     setIsLoading(true);
 
     try {
+      await accountSyncRef.current;
+      const authConfig = await getAuthConfig();
       const endpoint = import.meta.env.VITE_AI_ENDPOINT || "api/solver/solve";
       const response = await ApiClient.post(endpoint, {
         question: trimmedQuestion,
@@ -269,25 +346,27 @@ const LetsStartpage = () => {
         grade: "general",
         solutionMode,
         examinerMode,
-      }, { timeout: 120000 });
+      }, { ...authConfig, timeout: 120000 });
       const solution = response.data?.data?.solution || response.data?.solution;
 
       if (!solution) throw new Error("The assistant returned an empty response.");
       setMessages((current) => [...current, { role: "assistant", content: solution }]);
+      void refreshUsage();
       setHistoryItems((current) => [
         { id: `local-${Date.now()}`, question: trimmedQuestion, solution },
         ...current,
       ].slice(0, maxHistoryChats));
-      ApiClient.post("api/solver/history", {
+      const history = {
         question: trimmedQuestion,
         solution,
         subject: "mathematics",
         grade: "general",
         solutionMode,
         examinerMode,
-      }).catch(() => {
-        // localStorage preserves the conversation if the history API is unavailable.
-      });
+      };
+      void getAuthConfig()
+        .then((historyAuthConfig) => ApiClient.post("api/solver/history", history, historyAuthConfig))
+        .catch((historyError) => console.error("Could not save chat history:", historyError));
     } catch (requestError) {
       setError(requestError.response?.data?.message || "The assistant is unavailable right now.");
     } finally {
@@ -296,7 +375,7 @@ const LetsStartpage = () => {
   };
 
   const handleSuggestion = (suggestion) => {
-    setQuestion(suggestion);
+    void askAssistant(undefined, suggestion);
   };
 
   const handleImageSelected = async (event) => {
@@ -309,8 +388,10 @@ const LetsStartpage = () => {
     try {
       const formData = new FormData();
       formData.append("image", image);
+      const authConfig = await getAuthConfig();
       const response = await ApiClient.post("api/ocr/extract", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        ...authConfig,
+        headers: { ...authConfig.headers, "Content-Type": "multipart/form-data" },
         timeout: 120000,
       });
       const extractedQuestion = response.data?.extractedQuestion;
@@ -362,7 +443,12 @@ const LetsStartpage = () => {
     localStorage.removeItem(historyStorageKey);
     setQuestion("");
     setError("");
+    void refreshUsage();
   };
+
+  const welcomeTitle = user?.firstName
+    ? `Welcome back, ${user.firstName}`
+    : "Welcome";
 
   useGSAP(
     () => {
@@ -546,21 +632,33 @@ const LetsStartpage = () => {
               <section className="assistant-welcome">
                 <div className="assistant-mark" aria-hidden="true"><Sparkles size={18} /></div>
                 <AnimatedText
-                  text="Welcome to Ganitam Nirmoktra"
-                  className="justify-center text-5xl font-semibold"
+                  text={welcomeTitle}
+                  className="assistant-welcome-title justify-center text-5xl font-semibold"
                   wordClass="hero-word"
                 />
                 <AnimatedText
-                  text="Work through a question with a clear, patient explanation."
-                  className="justify-center text-lg mt-4 text-gray-300"
+                  text="Explore multiple methods, follow each step, or upload a photo of a problem."
+                  className="assistant-welcome-copy justify-center text-lg mt-4 text-gray-300"
                   wordClass="hero-sub-word"
                 />
+                {usage?.plan === "free" && Number.isFinite(usage.used) && Number.isFinite(usage.limit) && (
+                  <p className="assistant-usage">
+                    {usage.used} of {usage.limit} solutions used this month
+                  </p>
+                )}
                 <div className="suggestion-row" aria-label="Example questions">
-                  {["Explain quadratic equations", "Solve 2x + 7 = 19", "Teach me integration"].map((suggestion) => (
+                  {[
+                    "Solve x² + 5x + 6 = 0",
+                    "Explain the Pythagoras theorem",
+                    "Find the integral of tan⁴x",
+                  ].map((suggestion) => (
                     <button type="button" key={suggestion} onClick={() => handleSuggestion(suggestion)}>
                       {suggestion}
                     </button>
                   ))}
+                  <button type="button" onClick={() => fileInputRef.current?.click()}>
+                    Upload a photo of a problem
+                  </button>
                 </div>
               </section>
             ) : (
