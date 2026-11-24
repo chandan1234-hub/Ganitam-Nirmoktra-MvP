@@ -174,7 +174,8 @@
 }
 
 .assistant-welcome .text-5xl {
-  font-size: 2.7rem;
+  max-width: 100%;
+  font-size: clamp(1.7rem, 8vw, 2.7rem);
   line-height: 1.15;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -182,6 +183,20 @@
 
 .assistant-welcome .text-lg {
   color: var(--assistant-muted);
+  line-height: 1.65;
+}
+
+.assistant-welcome-copy {
+  max-width: 54ch;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.assistant-usage {
+  margin: 1rem 0 0;
+  color: #a1a1aa;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .suggestion-row {
@@ -193,13 +208,15 @@
 }
 
 .suggestion-row button {
+  max-width: 100%;
   border: 1px solid var(--assistant-line);
   border-radius: 999px;
-  padding: 9px 13px;
+  padding: 9px 12px;
   color: #d4d4d8;
   background: transparent;
   font: inherit;
   font-size: 0.8rem;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
 }
@@ -209,6 +226,11 @@
   border-color: rgba(96, 165, 250, 0.7);
   background: rgba(96, 165, 250, 0.1);
   color: #fff;
+}
+
+.suggestion-row button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
 }
 
 .conversation {
@@ -450,7 +472,6 @@
   }
   .assistant-workspace, .search-bar { width: calc(100% - 32px); }
   .assistant-workspace { padding-bottom: 160px; }
-  .assistant-welcome .text-5xl { font-size: 2rem; }
   .message { max-width: 92%; }
   .search-bar { bottom: 12px; padding-top: 12px; }
   .composer { min-height: 122px; padding: 10px; }
